@@ -1,4 +1,4 @@
-package com.manta.worldcup.dataclass
+package com.manta.worldcup.model
 
 import android.graphics.Bitmap
 

@@ -1,8 +1,9 @@
-package com.manta.worldcup
+package com.manta.worldcup.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayoutMediator
+import com.manta.worldcup.R
 import com.manta.worldcup.adapter.ViewPageAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -13,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         mViewPagerAdapter = ViewPageAdapter(supportFragmentManager, lifecycle);
 

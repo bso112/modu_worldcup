@@ -8,14 +8,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
-import com.manta.worldcup.dataclass.Topic
+import com.manta.worldcup.model.Topic
 import kotlinx.android.synthetic.main.item_topic.view.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 class TopicAdapter : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>() {
 
     private var mDataset : List<Topic> = ArrayList();
+    private var mOnItemClickListener : OnItemClickListener? = null;
+
+    interface OnItemClickListener{
+        fun onItemClick(note : Topic);
+    }
+
 
     class TopicDiffUtilCallback(private val oldList : List<Topic>, private val newList : List<Topic>) : DiffUtil.Callback(){
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -35,11 +40,19 @@ class TopicAdapter : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>() {
         }
     }
 
-    class TopicViewHolder(view : View) : RecyclerView.ViewHolder(view){
+    inner class TopicViewHolder(view : View) : RecyclerView.ViewHolder(view){
 
         val mTumbnail : ImageView = view.iv_thumbnail;
         val mTitle : TextView = view.tv_title;
         val mManagerName : TextView = view.tv_managerName;
+
+
+        init {
+            view.setOnClickListener {
+                if(adapterPosition != RecyclerView.NO_POSITION)
+                    mOnItemClickListener?.onItemClick(mDataset.get(adapterPosition));
+            }
+        }
 
         fun setTopic(topic : Topic){
             if(topic.mPictures.isNotEmpty())
@@ -49,9 +62,9 @@ class TopicAdapter : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>() {
         }
     }
 
-    //parent는 뭘까? 어댑터에 연결된 리사이클러뷰인가? attachToRoot를 true로 하는거랑 false로 하는거의 차이는 눈에보이나?
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
-       val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic, parent, true);
+       val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic, parent, false);
         return TopicViewHolder(view);
     }
 
@@ -64,11 +77,14 @@ class TopicAdapter : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>() {
             holder.setTopic(mDataset[position]);
     }
 
-    fun SetTopics(topics : List<Topic>){
+    fun setTopics(topics : List<Topic>){
         val result = DiffUtil.calculateDiff(TopicDiffUtilCallback(mDataset, topics));
         mDataset = topics;
         result.dispatchUpdatesTo(this);
     }
 
+    fun setOnItemClickListener(listenr : OnItemClickListener){
+        mOnItemClickListener = listenr;
+    }
 
 }

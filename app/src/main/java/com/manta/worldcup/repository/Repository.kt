@@ -1,33 +1,14 @@
 package com.manta.worldcup.repository
 
-import android.app.Application
-import com.manta.worldcup.dataclass.User
-import com.manta.worldcup.repository.Dao.PictureDao
-import com.manta.worldcup.repository.Dao.UserDao
+import com.manta.worldcup.api.RetrofitInstance
+import com.manta.worldcup.model.Topic
+import retrofit2.Response
 
-class Repository(application: Application) {
+class Repository() {
 
-    private val mUserDao : UserDao
-    private val mPictureDao : PictureDao
-
-    init {
-        val database = Database.getInstance(application);
-        mUserDao = database.userDao();
-        mPictureDao = database.pictureDao();
+    suspend fun getAllTopic() : Response<List<Topic>> {
+        return RetrofitInstance.api.getAllTopic();
     }
-
-    fun insertUser(user : User){
-        mUserDao.insert(user);
-    }
-
-    fun deleteUser(user : User){
-        mUserDao.delete(user);
-    }
-
-    fun updateUser(user : User){
-        mUserDao.update(user);
-    }
-
 
 
 

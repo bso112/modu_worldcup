@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddTopicActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <ImageButton
+            android:id="@+id/btn_addPicture"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignBottom="@id/tv_add_topic"
+            android:backgroundTint="?attr/colorPrimary"
+            android:background="@drawable/ic_baseline_add_photo_alternate_24" />
+
+
+
+        <TextView
+            android:id="@+id/tv_add_topic"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/rounded_corner_fg"
+            android:backgroundTint="?attr/colorPrimary"
+            android:gravity="center"
+            android:text="@string/submit"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_addPicture"
+            android:layout_marginTop="5dp"
+            android:hint="@string/hint_topic_title"
+            android:maxLength="25"
+            android:backgroundTint="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_titleCnt"
+            android:layout_marginStart="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_title"
+            android:layout_alignStart="@id/et_title"
+            android:text="(0/0)"
+            android:textSize="12sp"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_titleCnt"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardBackgroundColor="?attr/colorAccent"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="0dp">
+
+
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:hint="@string/topic_description"
+                android:maxLength="77"
+                android:backgroundTint="?android:attr/textColorPrimary"
+                android:textSize="15sp" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/tv_upload_contentCnt"
+            android:layout_marginStart="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cv_content"
+            android:layout_alignStart="@id/cv_content"
+            android:text="(0/0)"
+            android:textSize="12sp"/>
+
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_upload_contentCnt"
+            android:layout_marginTop="15dp"
+            android:scrollbars="none"
+            />
+
+
+    </RelativeLayout>
+
+
+</ScrollView>
