@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.AddTopicActivity
 import com.manta.worldcup.adapter.TopicAdapter
 import com.manta.worldcup.model.Topic
-import com.manta.worldcup.viewmodel.TopicViewModelFactory
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.frag_topic.*
 
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.frag_topic.*
  */
 class TopicFragment : Fragment() {
     val mViewModel : TopicViewModel by lazy{
-        ViewModelProvider(this, TopicViewModelFactory()).get(TopicViewModel::class.java)
+        ViewModelProvider(this).get(TopicViewModel::class.java)
     }
 
     val mTopicAdaptor : TopicAdapter = TopicAdapter();
@@ -41,7 +41,10 @@ class TopicFragment : Fragment() {
         //당겨서 토픽 리프레쉬
         refresh_topic.setOnRefreshListener { mViewModel.getAllTopics(); }
 
-        //토픽생성 액티비티 띄우기
+        rv_topic.adapter = mTopicAdaptor;
+        rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        //토픽 클릭시 토픽생성 액티비티 띄우기
         mTopicAdaptor.setOnItemClickListener(object : TopicAdapter.OnItemClickListener{
             override fun onItemClick(note: Topic) {
                 Intent(context, AddTopicActivity::class.java).apply {
@@ -49,6 +52,12 @@ class TopicFragment : Fragment() {
                 }
             }
         })
+
+        btn_add_topic.setOnClickListener {
+            Intent(context, AddTopicActivity::class.java).apply {
+                startActivity(this);
+            }
+        }
 
         mViewModel.mTopics.observe(this, Observer {res->
             if(res.isSuccessful) res.body()?.let { mTopicAdaptor.setTopics(it); }

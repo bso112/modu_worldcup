@@ -15,5 +15,7 @@ interface SimpleApi {
     @GET("topic/get_all")
     suspend fun getAllTopic() : Response<List<Topic>>
 
+    @GET("topic/get")
+    suspend fun getTopic(topicId : Int) : Response<Topic>
 
 }

@@ -6,9 +6,14 @@ import retrofit2.Response
 
 class Repository() {
 
-    suspend fun getAllTopic() : Response<List<Topic>> {
-        return RetrofitInstance.api.getAllTopic();
-    }
+    private val api  = RetrofitInstance.api;
+
+    suspend fun getTopic(topicId : Int) : Response<Topic> = api.getTopic(topicId);
+
+    suspend fun getAllTopic() : Response<List<Topic>> = api.getAllTopic();
+
+    suspend fun  insertTopic(topic : Topic) = api.insertTopic(topic);
+
 
 
 

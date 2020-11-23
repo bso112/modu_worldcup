@@ -4,9 +4,8 @@ import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
+
 
 object BitmapHelper {
 
@@ -17,13 +16,13 @@ object BitmapHelper {
      * @param action 갤러리에서 이미지를 불러온 인텐트 액션. ACTION_GET_CONTENT 이외의 다른
      * 액션을 넣으면 빈 리스트를 반환한다.
      */
-    fun getBitmapFromIntent(data: Intent?, contentResolver : ContentResolver, action : String) : ArrayList<Bitmap>{
-        if(action != Intent.ACTION_GET_CONTENT)
+    fun getBitmapFromIntent(data: Intent?, contentResolver: ContentResolver, action: String): ArrayList<Bitmap> {
+        if (action != Intent.ACTION_GET_CONTENT)
             return ArrayList();
 
         val bitmapList = ArrayList<Bitmap>();
         val uris = getUrisFromData(data);
-        for(uri in uris){
+        for (uri in uris) {
             val bitmap = getBitmapFromUri(uri, contentResolver) ?: continue;
             bitmapList.add(bitmap);
         }
@@ -37,36 +36,33 @@ object BitmapHelper {
      * 그대로 ImageView를 통해 보여주기에는 해상도가 너무 높은경우가 많으므로
      * 적절히 해상도를 낮춰서 뽑는다.
      */
-    private fun getBitmapFromUri(uri: Uri, contentResolver : ContentResolver): Bitmap? {
-        var bitmap : Bitmap? = null;
+    private fun getBitmapFromUri(uri: Uri, contentResolver: ContentResolver): Bitmap? {
+        var bitmap: Bitmap? = null;
         //어차피 다운샘플링시에 1/4 처럼 비율로 줄이니까 비율은 유지됨.
         //대충 이정도 크기로 줄여라라고 하면 됨.
-        val requestWidth : Int = 512;
-        val requestHeight : Int = 512;
+        val requestWidth: Int = 512;
+        val requestHeight: Int = 512;
 
-        //The new ImageDecoder api is much more powerful and supports a variety of different types.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            val source = ImageDecoder.createSource(contentResolver, uri)
-            //크기를 줄여서 디코딩한다.
-            bitmap = ImageDecoder.decodeBitmap(source) { decoder, info, src ->
-                decoder.setTargetSampleSize(calculateInSampleSize(info.size.height, info.size.width,requestWidth, requestHeight))
-            };
-        } else {
-            contentResolver.openInputStream(uri)?.use { inputStream ->
 
-                val option = BitmapFactory.Options();
+        val option: BitmapFactory.Options = BitmapFactory.Options();
 
-                //먼저 비트맵을 조사한다.
-                option.inJustDecodeBounds = true
-                BitmapFactory.decodeStream(inputStream, null, option)
+        contentResolver.openInputStream(uri)?.use { inputStream ->
+            //먼저 비트맵을 조사한다.
+            option.inJustDecodeBounds = true
+            BitmapFactory.decodeStream(inputStream, null, option)
 
-                //비트맵의 크기를 토대로 샘플링할 사이즈를 구한다.
-                option.inSampleSize = calculateInSampleSize(option.outHeight, option.outWidth, requestWidth, requestHeight)
-
-                //크기를 줄여서 디코딩한다.
-                bitmap = BitmapFactory.decodeStream(inputStream, null, option)
-            }
+            //비트맵의 크기를 토대로 샘플링할 사이즈를 구한다.
+            option.inSampleSize = calculateInSampleSize(option.outHeight, option.outWidth, requestWidth, requestHeight)
         }
+
+        // BitmapFactory.decodeStream 하면 inputStream이 변형되므로, 옵션을 얻고난다음에는
+        // 다시 inputStream을 만들어야한다.
+        contentResolver.openInputStream(uri)?.use { inputStream ->
+            option.inJustDecodeBounds = false
+            //크기를 줄여서 디코딩한다.
+            bitmap = BitmapFactory.decodeStream(inputStream, null, option)
+        }
+
 
         return bitmap;
     }
@@ -78,7 +74,7 @@ object BitmapHelper {
      * you cant map 2 pixel to 1.5 pixels, thats way it`s power of 2.
      * https://stackoverrun.com/ko/q/10820265
      */
-    private fun calculateInSampleSize(rawHeight : Int, rawWidth : Int, reqWidth: Int, reqHeight: Int): Int {
+    private fun calculateInSampleSize(rawHeight: Int, rawWidth: Int, reqWidth: Int, reqHeight: Int): Int {
 
         var inSampleSize = 1
 

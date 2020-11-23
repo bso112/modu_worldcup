@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_picture.view.*
 
 class ImageAdaper : RecyclerView.Adapter<ImageAdaper.ImageViewHolder>(){
 
-    var mDataset : ArrayList<Bitmap> = ArrayList();
+    private val mDataset : ArrayList<Bitmap> = ArrayList();
 
     inner class ImageViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val picture : ImageView = view.iv_picture;
@@ -50,10 +50,12 @@ class ImageAdaper : RecyclerView.Adapter<ImageAdaper.ImageViewHolder>(){
      * 토픽에 들어갈 비트맵들의 미리보기를 이 어댑터에 제공한다.
      * notifyDataSetChanged()를 부르므로, 자주부르지 않는 것이 좋다.
      */
-    fun setBitmaps(bitmaps : ArrayList<Bitmap>){
-        mDataset = bitmaps;
-        notifyDataSetChanged();
+    fun addBitmaps(bitmap : Bitmap){
+        mDataset.add(bitmap);
+        notifyItemInserted(mDataset.size - 1);
     }
+
+    fun getBitmaps() = ArrayList(mDataset);
 
 
 
