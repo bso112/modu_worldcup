@@ -4,23 +4,34 @@ import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
+import com.manta.worldcup.model.Picture
 import kotlinx.android.synthetic.main.item_picture.view.*
 
 class ImageAdaper : RecyclerView.Adapter<ImageAdaper.ImageViewHolder>(){
 
-    private val mDataset : ArrayList<Bitmap> = ArrayList();
+    private val mDataset : ArrayList<Picture> = ArrayList();
 
     inner class ImageViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val picture : ImageView = view.iv_picture;
         val cancelBtn : ImageButton  = view.btn_cancel;
+        val title : EditText = view.et_title;
+        val description : EditText = view.et_description;
 
         init {
             cancelBtn.setOnClickListener {
                 removeImage(adapterPosition);
+            }
+            title.addTextChangedListener{
+                mDataset[adapterPosition].mPictureName = it.toString();
+            }
+            description.addTextChangedListener {
+                mDataset[adapterPosition].mDescription = it.toString();
             }
         }
     }
@@ -35,7 +46,7 @@ class ImageAdaper : RecyclerView.Adapter<ImageAdaper.ImageViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.picture.setImageBitmap(mDataset[position]);
+        holder.picture.setImageBitmap(mDataset[position].mBitmap);
     }
 
     fun removeImage(position : Int){
@@ -45,17 +56,15 @@ class ImageAdaper : RecyclerView.Adapter<ImageAdaper.ImageViewHolder>(){
         notifyItemRemoved(position)
     }
 
-    /**
-     * by변성욱
-     * 토픽에 들어갈 비트맵들의 미리보기를 이 어댑터에 제공한다.
-     * notifyDataSetChanged()를 부르므로, 자주부르지 않는 것이 좋다.
-     */
-    fun addBitmaps(bitmap : Bitmap){
-        mDataset.add(bitmap);
+
+    fun addBitmap(bitmap : Bitmap){
+        mDataset.add(Picture(emptyList(), "", bitmap, 0, ""));
         notifyItemInserted(mDataset.size - 1);
     }
 
-    fun getBitmaps() = ArrayList(mDataset);
+    fun getPictures() = ArrayList(mDataset);
+
+
 
 
 

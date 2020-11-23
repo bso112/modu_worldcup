@@ -10,8 +10,10 @@ import com.manta.worldcup.adapter.ImageAdaper
 import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.model.Picture
 import com.manta.worldcup.model.Topic
+import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.AddTopicViewModel
 import kotlinx.android.synthetic.main.activity_add_topic.*
+import kotlinx.android.synthetic.main.activity_add_topic.et_title
 
 class AddTopicActivity : AppCompatActivity() {
 
@@ -27,11 +29,6 @@ class AddTopicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_topic)
 
-        val pictures = ArrayList<Picture>();
-//        for(bitmap in mImageAdapter.getBitmaps()){
-//            pictures.add(Picture(emptyList(), , bitmap, ))
-//        }
-      //  mViewModel.insertTopic(Topic(0, et_title.text.toString(), emptyList(), , ))
 
         btn_add_Picture.setOnClickListener {
             pickPictureFromGallay();
@@ -41,7 +38,8 @@ class AddTopicActivity : AppCompatActivity() {
         rv_picture.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         btn_submit.setOnClickListener {
-
+            mViewModel.insertTopic(Topic(0, et_title.text.toString(), emptyList(), mImageAdapter.getPictures(),
+                User(emptyList(), "임시", 0, emptyList(), 0)))
         }
     }
 
@@ -52,7 +50,7 @@ class AddTopicActivity : AppCompatActivity() {
         if (resultCode == RESULT_OK && requestCode == REQUEST_PICK_FROM_ALBUM) {
             val bitmapList = BitmapHelper.getBitmapFromIntent(data, contentResolver, Intent.ACTION_GET_CONTENT);
             for (bitmap in bitmapList)
-                mImageAdapter.addBitmaps(bitmap);
+                mImageAdapter.addBitmap(bitmap);
 
         }
     }

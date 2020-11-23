@@ -21,16 +21,13 @@ import kotlinx.android.synthetic.main.frag_topic.*
  * by 변성욱
  * 전체 토픽을 보여주는 프래그먼트
  */
-class TopicFragment : Fragment() {
+class TopicFragment : Fragment(R.layout.frag_topic) {
     val mViewModel : TopicViewModel by lazy{
         ViewModelProvider(this).get(TopicViewModel::class.java)
     }
 
     val mTopicAdaptor : TopicAdapter = TopicAdapter();
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.frag_topic, container, false);
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

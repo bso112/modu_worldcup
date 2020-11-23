@@ -4,12 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.widget.EditText
 import android.widget.TextView
 import com.manta.worldcup.R
 
 
 @SuppressLint("AppCompatCustomView")
-class CustomTextOutLineView : TextView {
+class CustomTextOutLineView : EditText {
 
     private var stroke = false
     private var strokeWidth = 0.0f

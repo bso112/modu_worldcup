@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Worldcup">
-        <activity android:name=".activity.AddTopicActivity"></activity>
+        <activity
+            android:name=".activity.AddTopicActivity"
+            android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.AddPictureActivity" />
         <activity android:name=".activity.GameActivity" />
         <activity android:name=".activity.MainActivity">
