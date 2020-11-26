@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import java.io.ByteArrayOutputStream
 
 
 object BitmapHelper {
@@ -115,5 +116,15 @@ object BitmapHelper {
 
         return uriList
     }
+
+    /**
+     * 네트워크로 비트맵을 보내기위해 byteArray로 변환한다.
+     */
+    fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.WEBP, 60, byteArrayOutputStream)
+        return byteArrayOutputStream.toByteArray()
+    }
+
 
 }

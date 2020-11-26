@@ -1,4 +1,4 @@
-package com.manta.worldcup.fragment
+package com.manta.worldcup.activity.fragment
 
 import androidx.fragment.app.Fragment
 

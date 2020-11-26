@@ -1,7 +1,8 @@
-package com.manta.worldcup.repository
+package com.manta.worldcup.api.repository
 
 import com.manta.worldcup.api.RetrofitInstance
 import com.manta.worldcup.model.Topic
+import okhttp3.MultipartBody
 import retrofit2.Response
 
 class Repository() {
@@ -12,7 +13,11 @@ class Repository() {
 
     suspend fun getAllTopic() : Response<List<Topic>> = api.getAllTopic();
 
-    suspend fun  insertTopic(topic : Topic) = api.insertTopic(topic);
+   // suspend fun  insertTopic(image :  List<MultipartBody.Part>) = api.insertTopic(image);
+
+    suspend fun  insertTopic(image :  List<MultipartBody.Part>) = api.insertTopic(image);
+
+    suspend fun  echo(string : String) = api.echo()
 
 
 

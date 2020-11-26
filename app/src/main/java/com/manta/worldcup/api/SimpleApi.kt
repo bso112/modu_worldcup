@@ -1,21 +1,32 @@
 package com.manta.worldcup.api
 
 import com.manta.worldcup.model.Topic
+import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 //Dao에 해당
 interface SimpleApi {
 
-    @POST("topic/new")
-    suspend fun insertTopic(@Body topic : Topic)
+//    @Multipart
+//    @POST("anime/topic/new")
+//    suspend fun insertTopic(@Part image :  List<MultipartBody.Part>)
 
-    @GET("topic/get_all")
+    @Multipart
+    @POST("anime/topic/new")
+    suspend fun insertTopic(@Part image :  List<MultipartBody.Part>)
+
+    @GET("anime/topic/get_all")
     suspend fun getAllTopic() : Response<List<Topic>>
 
-    @GET("topic/get")
+    @GET("anime/topic/get")
     suspend fun getTopic(topicId : Int) : Response<Topic>
+
+    @GET("/")
+    suspend fun echo() :Response<String>
+
+    @GET("/{msg}")
+    suspend fun echo(@Path("msg") string : String) :Response<String>
+
 
 }

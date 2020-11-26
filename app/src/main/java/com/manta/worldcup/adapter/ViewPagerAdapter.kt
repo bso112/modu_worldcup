@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.manta.worldcup.fragment.MyPictureFragement
-import com.manta.worldcup.fragment.TopicFragment
+import com.manta.worldcup.activity.fragment.MyPictureFragement
+import com.manta.worldcup.activity.fragment.TopicFragment
 
 
 class ViewPageAdapter(fm : FragmentManager, lifecycle : Lifecycle) : FragmentStateAdapter(fm, lifecycle){
