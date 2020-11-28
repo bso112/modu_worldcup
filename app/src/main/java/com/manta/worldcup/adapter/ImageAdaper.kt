@@ -10,12 +10,12 @@ import android.widget.ImageView
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
-import com.manta.worldcup.model.Picture
+import com.manta.worldcup.model.PictureModel
 import kotlinx.android.synthetic.main.item_picture.view.*
 
 class ImageAdaper : RecyclerView.Adapter<ImageAdaper.ImageViewHolder>(){
 
-    private val mDataset : ArrayList<Picture> = ArrayList();
+    private val mDataset : ArrayList<PictureModel> = ArrayList();
 
     inner class ImageViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val picture : ImageView = view.iv_picture;
@@ -58,7 +58,7 @@ class ImageAdaper : RecyclerView.Adapter<ImageAdaper.ImageViewHolder>(){
 
 
     fun addBitmap(bitmap : Bitmap){
-        mDataset.add(Picture(emptyList(), "", bitmap, 0, ""));
+        mDataset.add(PictureModel("", bitmap, 0, ""));
         notifyItemInserted(mDataset.size - 1);
     }
 

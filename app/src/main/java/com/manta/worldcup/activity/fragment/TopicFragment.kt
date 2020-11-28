@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.AddTopicActivity
 import com.manta.worldcup.adapter.TopicAdapter
-import com.manta.worldcup.model.Topic
+import com.manta.worldcup.model.TopicModel
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.frag_topic.*
 
@@ -41,7 +41,7 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
 
         //토픽 클릭시 토픽생성 액티비티 띄우기
         mTopicAdaptor.setOnItemClickListener(object : TopicAdapter.OnItemClickListener{
-            override fun onItemClick(note: Topic) {
+            override fun onItemClick(note: TopicModel) {
                 Intent(context, AddTopicActivity::class.java).apply {
                     startActivity(this)
                 }

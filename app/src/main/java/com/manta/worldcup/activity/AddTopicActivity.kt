@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.adapter.ImageAdaper
 import com.manta.worldcup.helper.BitmapHelper
-import com.manta.worldcup.model.Picture
-import com.manta.worldcup.model.Topic
+import com.manta.worldcup.model.TopicModel
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.AddTopicViewModel
 import kotlinx.android.synthetic.main.activity_add_topic.*
 import kotlinx.android.synthetic.main.activity_add_topic.et_title
+import kotlinx.android.synthetic.main.item_picture.*
 
 class AddTopicActivity : AppCompatActivity() {
 
@@ -38,8 +38,9 @@ class AddTopicActivity : AppCompatActivity() {
         rv_picture.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         btn_submit.setOnClickListener {
-            mViewModel.insertTopic(Topic(0, et_title.text.toString(), emptyList(), mImageAdapter.getPictures(),
-                User(emptyList(), "임시", 0, emptyList(), 0)))
+            mViewModel.insertTopic(TopicModel(0, et_title.text.toString(), et_description.text.toString() ,"관리자", 0),
+            mImageAdapter.getPictures())
+
         }
     }
 
