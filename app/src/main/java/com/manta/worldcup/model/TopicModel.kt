@@ -1,6 +1,7 @@
 package com.manta.worldcup.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class TopicModel(
     @SerializedName("id")
@@ -13,7 +14,7 @@ data class TopicModel(
     val mManagerName: String,
     @SerializedName("image_length")
     val mImageLength : Int
-)
+) : Serializable
 
 data class Topic
     (

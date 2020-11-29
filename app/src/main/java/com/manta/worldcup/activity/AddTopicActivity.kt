@@ -3,6 +3,7 @@ package com.manta.worldcup.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,13 +36,17 @@ class AddTopicActivity : AppCompatActivity() {
         }
 
         rv_picture.adapter = mImageAdapter;
-        rv_picture.layoutManager = LinearLayoutManager(this, GridLayoutManager.VERTICAL, false)
+        rv_picture.layoutManager = GridLayoutManager(this, 3)
 
         btn_submit.setOnClickListener {
-            mViewModel.insertTopic(
-                TopicModel(0, et_title.text.toString(), et_content.text.toString(), "관리자", 0),
-                mImageAdapter.getPictures())
-            finish();
+            if(mImageAdapter.isPicturesReadyToSubmit()){
+                mViewModel.insertTopic(
+                    TopicModel(0, et_title.text.toString(), et_content.text.toString(), "관리자", 0),
+                    mImageAdapter.getPictures())
+                finish();
+            }else{
+                Toast.makeText(this, resources.getString(R.string.warn_unnamed_picture), Toast.LENGTH_SHORT).show();
+            }
 
         }
     }

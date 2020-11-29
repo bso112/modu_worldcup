@@ -42,8 +42,8 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
 
         //토픽 클릭시 게임 or 선수출진 다이어로그 띄우기
         mTopicAdaptor.setOnItemClickListener(object : TopicAdapter.OnItemClickListener{
-            override fun onItemClick(note: TopicModel) {
-                fragmentManager?.let { OnTopicClickDialog().newInstance(note.mId).show(it, null) };
+            override fun onItemClick(topicModel: TopicModel) {
+                fragmentManager?.let { OnTopicClickDialog().newInstance(topicModel).show(it, null) };
             }
         })
 

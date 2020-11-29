@@ -16,8 +16,8 @@ interface SimpleApi {
     @GET("topic/get_all")
     suspend fun getAllTopic() : Response<List<TopicModel>>
 
-    @GET("topic/get")
-    suspend fun getTopic(topicId : Int) : Response<TopicModel>
+    @GET("topic/get/{topic_id}")
+    suspend fun getTopic(@Path("topic_id")topicId : Long) : Response<TopicModel>
 
     @Multipart
     @POST("picture/new")
@@ -30,7 +30,8 @@ interface SimpleApi {
     @GET("picture/get_names/{topic_id}")
     suspend fun getPicturesName(@Path("topic_id") topicId : Long) : Response<HashSet<String>>
 
-
+    @GET("picture/get/{topic_id}/{picture_index}")
+    suspend fun getTopicPicture(@Path("topic_id") topicId : Long, @Path("picture_index") pictureIndex :Int) : Response<PictureModel>
 
 
 }

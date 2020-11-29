@@ -10,11 +10,7 @@ class Repository() {
 
     private val api  = RetrofitInstance.api;
 
-    suspend fun getTopic(topicId : Int) : Response<TopicModel> = api.getTopic(topicId);
-
     suspend fun getAllTopic() : Response<List<TopicModel>> = api.getAllTopic();
-
-   // suspend fun  insertTopic(image :  List<MultipartBody.Part>) = api.insertTopic(image);
 
     suspend fun  insertTopic(topicModel: TopicModel, pictures : List<PictureModel> ,image :  List<MultipartBody.Part>) = api.insertTopic(topicModel,pictures, image);
 
@@ -22,6 +18,7 @@ class Repository() {
 
     suspend fun getPicturesName(topic_id :Long) = api.getPicturesName(topic_id);
 
+    suspend fun getTopicPicture(topic_id: Long, imageLength : Int) = api.getTopicPicture(topic_id, imageLength);
 
 
 

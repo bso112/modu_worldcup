@@ -1,6 +1,7 @@
 package com.manta.worldcup.adapter
 
 import android.graphics.Bitmap
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,19 @@ import com.manta.worldcup.activity.fragment.dialog.PictureDescriptionDialog
 import com.manta.worldcup.model.Picture
 import com.manta.worldcup.model.PictureModel
 import kotlinx.android.synthetic.main.item_picture.view.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 class PictureAdapter(private val fragmentManager : FragmentManager) : RecyclerView.Adapter<PictureAdapter.ImageViewHolder>() {
 
     private val mDataset: ArrayList<Picture> = ArrayList();
+
+    /**
+     * by 변성욱
+     * 각 사진들이 이름이 지어졌는가
+     */
+    private val mIsPictureNamed = LinkedList<Boolean>();
     private var mPictureNames = HashSet<String>();
 
     inner class ImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -28,6 +38,9 @@ class PictureAdapter(private val fragmentManager : FragmentManager) : RecyclerVi
         init {
             //엑스클릭하면 항목지우기
             mCancelBtn.setOnClickListener {
+                //removeImage(adapterPosition); 하고나면 adapterPosition 바뀌어버려서 먼저해야함.
+                if(adapterPosition < mIsPictureNamed.size)
+                    mIsPictureNamed.removeAt(adapterPosition);
                 removeImage(adapterPosition);
             }
 
@@ -42,6 +55,7 @@ class PictureAdapter(private val fragmentManager : FragmentManager) : RecyclerVi
                     override fun onSubmit(pictureName: String) {
                         mDataset[adapterPosition].pictureModel.mPictureName = pictureName;
                         mCheckedView.visibility = View.VISIBLE;
+                        mIsPictureNamed[adapterPosition] = true;
                     }
                 }).show(fragmentManager, null);
 
@@ -75,6 +89,7 @@ class PictureAdapter(private val fragmentManager : FragmentManager) : RecyclerVi
 
     fun addBitmap(bitmap: Bitmap) {
         mDataset.add(Picture(PictureModel(0, ""), bitmap, emptyList()));
+        mIsPictureNamed.add(false);
         notifyItemInserted(mDataset.size - 1);
     }
 
@@ -87,4 +102,16 @@ class PictureAdapter(private val fragmentManager : FragmentManager) : RecyclerVi
     fun setPictureNames(pictureNames : HashSet<String>){
         mPictureNames = pictureNames;
     }
+
+    /**
+     * by 변성욱
+     * 모든 사진의 이름이 지어졌는가?
+     */
+    fun isPicturesReadyToSubmit() : Boolean{
+        for(isNamed in mIsPictureNamed){
+            if(!isNamed) return false;
+        }
+        return true;
+    }
+
 }

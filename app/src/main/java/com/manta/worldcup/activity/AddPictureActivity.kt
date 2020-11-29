@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
-import com.manta.worldcup.activity.fragment.dialog.PictureDescriptionDialog
 import com.manta.worldcup.adapter.PictureAdapter
 import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.helper.Constants
@@ -21,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AddPictureActivity : AppCompatActivity() {
-    lateinit var mPictureAdapter : PictureAdapter;
+    lateinit var mPictureAdapter: PictureAdapter;
     val REQUEST_PICK_FROM_ALBUM = 0;
     var mTopicImageNames: HashSet<String>? = null;
 
@@ -38,7 +37,7 @@ class AddPictureActivity : AppCompatActivity() {
 
         val topicId = intent.getLongExtra(Constants.EXTRA_TOPIC_ID, -1);
         if (topicId < 0) {
-            Toast.makeText(this, "오류가 발생했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, resources.getString(R.string.warn_error), Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -54,17 +53,22 @@ class AddPictureActivity : AppCompatActivity() {
 
 
         rv_picture.adapter = mPictureAdapter;
-        rv_picture.layoutManager = LinearLayoutManager(this, GridLayoutManager.VERTICAL, false)
+        rv_picture.layoutManager = GridLayoutManager(this, 3)
 
         //갤러리에서 사진가져오기
         btn_add_Picture.setOnClickListener {
             pickPictureFromGallay();
         }
 
-        //중복된 사진이 있으면 제출불가
         btn_submit.setOnClickListener {
-            mViewModel.insertPictureToTopic(mPictureAdapter.getPictures(), topicId);
-            finish();
+            if (mPictureAdapter.isPicturesReadyToSubmit()) {
+                mViewModel.insertPictureToTopic(mPictureAdapter.getPictures(), topicId);
+                finish();
+            }else{
+                Toast.makeText(this, resources.getString(R.string.warn_unnamed_picture), Toast.LENGTH_SHORT).show();
+            }
+
+
         }
     }
 
