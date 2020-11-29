@@ -4,23 +4,22 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
-import com.manta.worldcup.adapter.ImageAdaper
+import com.manta.worldcup.adapter.PictureAdapter
 import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.model.TopicModel
-import com.manta.worldcup.model.User
-import com.manta.worldcup.viewmodel.AddTopicViewModel
+import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.activity_add_topic.*
 import kotlinx.android.synthetic.main.activity_add_topic.et_title
-import kotlinx.android.synthetic.main.item_picture.*
 
 class AddTopicActivity : AppCompatActivity() {
 
-    private val mViewModel : AddTopicViewModel by lazy{
-        ViewModelProvider(this).get(AddTopicViewModel::class.java);
+    private val mViewModel: TopicViewModel by lazy {
+        ViewModelProvider(this).get(TopicViewModel::class.java);
     }
-    private val mImageAdapter = ImageAdaper();
+    private lateinit var mImageAdapter : PictureAdapter;
 
     val REQUEST_PICK_FROM_ALBUM = 0;
 
@@ -29,17 +28,20 @@ class AddTopicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_topic)
 
+        mImageAdapter = PictureAdapter(supportFragmentManager);
 
         btn_add_Picture.setOnClickListener {
             pickPictureFromGallay();
         }
 
         rv_picture.adapter = mImageAdapter;
-        rv_picture.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_picture.layoutManager = LinearLayoutManager(this, GridLayoutManager.VERTICAL, false)
 
         btn_submit.setOnClickListener {
-            mViewModel.insertTopic(TopicModel(0, et_title.text.toString(), et_description.text.toString() ,"관리자", 0),
-            mImageAdapter.getPictures())
+            mViewModel.insertTopic(
+                TopicModel(0, et_title.text.toString(), et_content.text.toString(), "관리자", 0),
+                mImageAdapter.getPictures())
+            finish();
 
         }
     }

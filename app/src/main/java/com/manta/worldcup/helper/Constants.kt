@@ -4,7 +4,10 @@ import android.util.Log
 import java.lang.Exception
 
 object Constants {
-    const val  BASE_URL = "http://192.168.219.101:8001/anime/";
+    const val BASE_URL = "http://192.168.219.101:8001/anime/";
+    const val EXTRA_TOPIC_ID =  "com.manta.worldcup.EXTRA_TOPIC_ID"
+    const val EXTRA_PICTURE_NAMES =  "com.manta.worldcup.EXTRA_PICTURE_NAMES"
+    const val EXTRA_SUBMIT_LISTENER =  "com.manta.worldcup.EXTRA_SUBMIT_LISTENER"
 
     /**
      * by 변성욱

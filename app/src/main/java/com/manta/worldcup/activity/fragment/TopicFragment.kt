@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.AddTopicActivity
+import com.manta.worldcup.activity.fragment.dialog.OnTopicClickDialog
 import com.manta.worldcup.adapter.TopicAdapter
 import com.manta.worldcup.model.TopicModel
 import com.manta.worldcup.viewmodel.TopicViewModel
@@ -39,12 +40,10 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
         rv_topic.adapter = mTopicAdaptor;
         rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        //토픽 클릭시 토픽생성 액티비티 띄우기
+        //토픽 클릭시 게임 or 선수출진 다이어로그 띄우기
         mTopicAdaptor.setOnItemClickListener(object : TopicAdapter.OnItemClickListener{
             override fun onItemClick(note: TopicModel) {
-                Intent(context, AddTopicActivity::class.java).apply {
-                    startActivity(this)
-                }
+                fragmentManager?.let { OnTopicClickDialog().newInstance(note.mId).show(it, null) };
             }
         })
 
@@ -55,7 +54,7 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
         }
 
         mViewModel.mTopics.observe(this, Observer {res->
-            if(res.isSuccessful) res.body()?.let { mTopicAdaptor.setTopics(it); }
+            if(res.isSuccessful) res.body()?.let { mTopicAdaptor.setTopics(it); refresh_topic.isRefreshing = false; }
             else Log.d(javaClass.toString(), res.errorBody().toString());
         })
     }

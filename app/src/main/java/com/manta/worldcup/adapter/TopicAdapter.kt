@@ -57,7 +57,7 @@ class TopicAdapter : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>() {
         }
 
         fun setTopic(topic: TopicModel) {
-            Glide.with(view).load(Constants.BASE_URL + "image/get/${topic.mId}/0").into(mTumbnail);
+            Glide.with(view).load(Constants.BASE_URL + "picture/get/${topic.mId}/0").into(mTumbnail);
             //mTumbnail.setImageBitmap(topic.mPictures.first().mBitmap)
 
             mTitle.text = topic.mTitle;
