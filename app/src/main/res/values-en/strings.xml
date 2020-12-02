@@ -11,6 +11,7 @@
     <string name="hint_description">설명을 입력하세요</string>
     <string name="warn_name">중복 된 이름입니다.</string>
     <string name="warn_unnamed_picture">이름이 정해지지 않은 사진이 있습니다.</string>
+    <string name="warn_not_enough_picture">사진을 두개이상 등록하주세요.</string>
     <string name="warn_error">오류가 발생했습니다. 다시 시도해 주세요.</string>
     <string name="win">우승</string>
 </resources>

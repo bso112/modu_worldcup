@@ -114,4 +114,6 @@ class PictureAdapter(private val fragmentManager : FragmentManager) : RecyclerVi
         return true;
     }
 
+    fun getPictureSize() = mDataset.size;
+
 }

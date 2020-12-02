@@ -42,6 +42,8 @@ class GameResultActivity : AppCompatActivity() {
         val topicModel = intent.getSerializableExtra(Constants.EXTRA_TOPICMODEL) as TopicModel;
         val picturModel = intent.getSerializableExtra(Constants.EXTRA_PICTUREMODEL) as PictureModel;
 
+        tv_winner_name.text = picturModel.mPictureName;
+
         //우승 사진 표시
         Glide.with(this).load(Constants.BASE_URL + "image/get/${picturModel.mId}/").into(iv_winner);
 
@@ -63,6 +65,8 @@ class GameResultActivity : AppCompatActivity() {
             val comment = Comment(0 ,tv_winner_name.text.toString(), et_content.text.toString(),
                 SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date), topicModel.mId)
            mCommentViewModel.insertComment(comment);
+            //작성 후 덧글창 비우기
+            et_content.setText("");
         }
 
     }

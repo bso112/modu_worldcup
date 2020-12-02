@@ -19,7 +19,6 @@ class GameActivity : AppCompatActivity() {
     private lateinit var mPictureModels: ArrayList<PictureModel>;
     private lateinit var mTopicModel: TopicModel;
 
-    private var mGameReady = false;
     private val mViewModel: TopicViewModel by lazy {
         ViewModelProvider(this).get(TopicViewModel::class.java);
     }
@@ -37,13 +36,10 @@ class GameActivity : AppCompatActivity() {
             mPictureModels = ArrayList(it);
             mPictureModels.shuffle();
             showImage();
-            mGameReady = true;
         })
 
         iv_A.setOnClickListener { choose(true); showImage(); }
-        iv_B.setOnClickListener {
-            choose(false); showImage();
-        }
+        iv_B.setOnClickListener { choose(false); showImage(); }
 
 
     }
@@ -54,22 +50,33 @@ class GameActivity : AppCompatActivity() {
      * 두 사진 중 하나를 고른다. 위쪽 사진을 골랐으면 true를 인자로 넣는다.
      */
     fun choose(isA: Boolean) {
-        if (mPictureModels.size < 2) {
-            if (mGameReady && mPictureModels.isNotEmpty())
-                Intent(this, GameResultActivity::class.java).apply {
-                    putExtra(Constants.EXTRA_TOPICMODEL, mTopicModel);
-                    putExtra(Constants.EXTRA_PICTUREMODEL, mPictureModels.first());
-                    startActivity(this);
-                    finish();
-                }
-            return;
-        }
 
-        if (isA) mPictureModels.removeAt(0); else mPictureModels.removeAt(1);
+        //예외처리
+        if (mPictureModels.size < 2)
+            return;
+
+        //고르지 않은것을 지운다.
+        if (isA) mPictureModels.removeAt(1); else mPictureModels.removeAt(0);
+    
+        //결과를 셔플
+        mPictureModels.shuffle();
+
+        //사진이 하나만 남으면 우승결정됨
+        if (mPictureModels.size < 2) {
+            Intent(this, GameResultActivity::class.java).apply {
+                putExtra(Constants.EXTRA_TOPICMODEL, mTopicModel);
+                putExtra(Constants.EXTRA_PICTUREMODEL, mPictureModels.first());
+                startActivity(this);
+                finish();
+                return;
+            }
+        }
     }
 
     fun showImage() {
         if (mPictureModels.size < 2) return;
+        tv_picture_name_A.text = mPictureModels[0].mPictureName;
+        tv_picture_name_B.text = mPictureModels[1].mPictureName;
         Glide.with(this).load(Constants.BASE_URL + "image/get/${mPictureModels[0].mId}/").into(iv_A);
         Glide.with(this).load(Constants.BASE_URL + "image/get/${mPictureModels[1].mId}/").into(iv_B);
     }

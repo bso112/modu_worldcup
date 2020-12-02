@@ -20,7 +20,7 @@ class AddTopicActivity : AppCompatActivity() {
     private val mViewModel: TopicViewModel by lazy {
         ViewModelProvider(this).get(TopicViewModel::class.java);
     }
-    private lateinit var mImageAdapter : PictureAdapter;
+    private lateinit var mImageAdapter: PictureAdapter;
 
     val REQUEST_PICK_FROM_ALBUM = 0;
 
@@ -39,15 +39,18 @@ class AddTopicActivity : AppCompatActivity() {
         rv_picture.layoutManager = GridLayoutManager(this, 3)
 
         btn_submit.setOnClickListener {
-            if(mImageAdapter.isPicturesReadyToSubmit()){
+            if (!mImageAdapter.isPicturesReadyToSubmit()) {
+                Toast.makeText(this, resources.getString(R.string.warn_unnamed_picture), Toast.LENGTH_SHORT).show();
+            }else if(mImageAdapter.getPictureSize() < 2)
+                Toast.makeText(this, resources.getString(R.string.warn_not_enough_picture), Toast.LENGTH_SHORT).show();
+            else{
                 mViewModel.insertTopic(
                     TopicModel(0, et_title.text.toString(), et_content.text.toString(), "관리자", 0),
-                    mImageAdapter.getPictures())
+                    mImageAdapter.getPictures()
+                )
                 finish();
-            }else{
-                Toast.makeText(this, resources.getString(R.string.warn_unnamed_picture), Toast.LENGTH_SHORT).show();
-            }
 
+            }
         }
     }
 
