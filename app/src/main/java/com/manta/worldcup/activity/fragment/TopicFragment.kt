@@ -53,9 +53,9 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
             }
         }
 
-        mViewModel.mTopics.observe(this, Observer {res->
-            if(res.isSuccessful) res.body()?.let { mTopicAdaptor.setTopics(it); refresh_topic.isRefreshing = false; }
-            else Log.d(javaClass.toString(), res.errorBody().toString());
+        mViewModel.mTopics.observe(this, Observer {
+           mTopicAdaptor.setTopics(it);
+            refresh_topic.isRefreshing = false;
         })
     }
 

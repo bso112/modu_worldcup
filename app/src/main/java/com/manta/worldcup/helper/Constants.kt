@@ -9,6 +9,7 @@ object Constants {
     const val EXTRA_PICTURE_NAMES =  "com.manta.worldcup.EXTRA_PICTURE_NAMES"
     const val EXTRA_SUBMIT_LISTENER =  "com.manta.worldcup.EXTRA_SUBMIT_LISTENER"
     const val EXTRA_TOPICMODEL = "com.manta.worldcup.EXTRA_TOPIC"
+    const val EXTRA_PICTUREMODEL = "com.manta.worldcup.EXTRA_PICTUREMODEL"
     /**
      * by 변성욱
      * 블록에서 실행되는 모든 익셉션은 로그로 처리된다.

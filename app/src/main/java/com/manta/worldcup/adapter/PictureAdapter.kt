@@ -88,7 +88,7 @@ class PictureAdapter(private val fragmentManager : FragmentManager) : RecyclerVi
 
 
     fun addBitmap(bitmap: Bitmap) {
-        mDataset.add(Picture(PictureModel(0, ""), bitmap, emptyList()));
+        mDataset.add(Picture(PictureModel(0, 0, ""), bitmap));
         mIsPictureNamed.add(false);
         notifyItemInserted(mDataset.size - 1);
     }

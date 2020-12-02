@@ -8,4 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="warning">#FF0000</color>
+    <color name="primary">#4a56a8</color>
+    <color name="primary_weak">#f3f3f3</color>
+    <color name="transparent">#00000000</color>
 </resources>
