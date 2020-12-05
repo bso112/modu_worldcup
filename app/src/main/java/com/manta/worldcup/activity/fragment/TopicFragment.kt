@@ -1,11 +1,13 @@
 package com.manta.worldcup.activity.fragment
 
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
@@ -21,15 +23,26 @@ import kotlinx.android.synthetic.main.frag_topic.*
  * 전체 토픽을 보여주는 프래그먼트
  */
 class TopicFragment : Fragment(R.layout.frag_topic) {
-    val mViewModel : TopicViewModel by lazy{
-        ViewModelProvider(this).get(TopicViewModel::class.java)
-    }
+    private lateinit var mViewModel: TopicViewModel;
 
-    val mTopicAdaptor : TopicAdapter = TopicAdapter();
+    private lateinit var  mTopicAdaptor: TopicAdapter;
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (activity == null) return;
+        if(context == null) return;
+
+        mTopicAdaptor = TopicAdapter(context!!);
+
+        mViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return TopicViewModel(activity!!.application) as T;
+            }
+
+        }).get(TopicViewModel::class.java);
+
 
         //토픽받아오기
         mViewModel.getAllTopics();
@@ -41,7 +54,7 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
         rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         //토픽 클릭시 게임 or 선수출진 다이어로그 띄우기
-        mTopicAdaptor.setOnItemClickListener(object : TopicAdapter.OnItemClickListener{
+        mTopicAdaptor.setOnItemClickListener(object : TopicAdapter.OnItemClickListener {
             override fun onItemClick(topicModel: TopicModel) {
                 fragmentManager?.let { OnTopicClickDialog().newInstance(topicModel).show(it, null) };
             }
@@ -54,7 +67,7 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
         }
 
         mViewModel.mTopics.observe(this, Observer {
-           mTopicAdaptor.setTopics(it);
+            mTopicAdaptor.setTopics(it);
             refresh_topic.isRefreshing = false;
         })
     }

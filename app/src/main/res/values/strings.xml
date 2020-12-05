@@ -13,4 +13,6 @@
     <string name="warn_not_enough_picture">사진을 두개이상 등록하주세요.</string>
     <string name="warn_error">오류가 발생했습니다. 다시 시도해 주세요.</string>
     <string name="win">우승</string>
+    <!--내 백엔드서버의 웹 클라이언트 아이디. requestIdToken 이나 requestServerAuthCode 시에 필요하다.-->
+    <string name="default_web_client_id">111890520747-07dnc8pb1jg7a170p98tqh6drof24d4m.apps.googleusercontent.com</string>
 </resources>

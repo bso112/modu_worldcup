@@ -10,7 +10,7 @@ import retrofit2.Response
 import retrofit2.http.*
 
 //Dao에 해당
-interface SimpleApi {
+interface TopicAPI {
 
     @Multipart
     @POST("topic/new")

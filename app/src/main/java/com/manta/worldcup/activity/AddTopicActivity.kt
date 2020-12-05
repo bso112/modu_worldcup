@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +19,12 @@ import kotlinx.android.synthetic.main.activity_add_topic.et_title
 class AddTopicActivity : AppCompatActivity() {
 
     private val mViewModel: TopicViewModel by lazy {
-        ViewModelProvider(this).get(TopicViewModel::class.java);
+        ViewModelProvider(this, object : ViewModelProvider.Factory{
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return TopicViewModel(application) as T;
+            }
+
+        }).get(TopicViewModel::class.java);
     }
     private lateinit var mImageAdapter: PictureAdapter;
 

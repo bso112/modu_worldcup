@@ -1,5 +1,6 @@
 package com.manta.worldcup.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.manta.worldcup.R
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicModel
 import kotlinx.android.synthetic.main.item_topic.view.*
 import kotlin.collections.ArrayList
 
-class TopicAdapter : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>() {
+class TopicAdapter(private val mContext: Context) : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>() {
 
     private var mDataset: List<TopicModel> = ArrayList();
     private var mOnItemClickListener: OnItemClickListener? = null;
@@ -57,8 +60,9 @@ class TopicAdapter : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>() {
         }
 
         fun setTopic(topic: TopicModel) {
-            Glide.with(view).load(Constants.BASE_URL + "image/get/${topic.mId}/0").into(mTumbnail);
-            //mTumbnail.setImageBitmap(topic.mPictures.first().mBitmap)
+
+            val url = Constants.BASE_URL + "image/get/${topic.mId}/0";
+            Constants.GlideWithHeader(url, view, mTumbnail, mContext);
 
             mTitle.text = topic.mTitle;
             mManagerName.text = topic.mManagerName;

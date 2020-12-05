@@ -1,5 +1,6 @@
 package com.manta.worldcup.viewmodel
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.manta.worldcup.model.TopicModel
@@ -14,9 +15,9 @@ import okhttp3.RequestBody
 import java.lang.Exception
 
 
-class TopicViewModel() : ViewModel() {
+class TopicViewModel(application: Application) : ViewModel() {
 
-    private val repository: Repository = Repository();
+    private val repository: Repository = Repository(application);
 
     val mTopics: MutableLiveData<List<TopicModel>> = MutableLiveData();
     val mPictures: MutableLiveData<List<PictureModel>> = MutableLiveData();

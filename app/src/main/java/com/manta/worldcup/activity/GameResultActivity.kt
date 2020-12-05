@@ -1,13 +1,10 @@
 package com.manta.worldcup.activity
 
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.LocaleList
-import android.util.Log
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -26,7 +23,10 @@ import java.util.*
 class GameResultActivity : AppCompatActivity() {
 
     private val mCommentViewModel: CommentViewModel by lazy {
-        ViewModelProvider(this).get(CommentViewModel::class.java);
+        ViewModelProvider(this, object : ViewModelProvider.Factory{
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return CommentViewModel(application) as T; }
+        }).get(CommentViewModel::class.java);
     }
 
     private val mCommentAdapter  = CommentAdapter();
@@ -45,7 +45,9 @@ class GameResultActivity : AppCompatActivity() {
         tv_winner_name.text = picturModel.mPictureName;
 
         //우승 사진 표시
-        Glide.with(this).load(Constants.BASE_URL + "image/get/${picturModel.mId}/").into(iv_winner);
+        val url = Constants.BASE_URL + "image/get/${picturModel.mId}/";
+        Constants.GlideWithHeader(url, this, iv_winner, this);
+        //Glide.with(this).load(Constants.BASE_URL + "image/get/${picturModel.mId}/").into(iv_winner);
 
         //덧글 표시
         rv_comment.adapter = mCommentAdapter;

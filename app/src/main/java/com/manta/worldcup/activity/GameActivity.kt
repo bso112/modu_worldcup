@@ -3,6 +3,7 @@ package com.manta.worldcup.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.manta.worldcup.R
@@ -20,7 +21,12 @@ class GameActivity : AppCompatActivity() {
     private lateinit var mTopicModel: TopicModel;
 
     private val mViewModel: TopicViewModel by lazy {
-        ViewModelProvider(this).get(TopicViewModel::class.java);
+        ViewModelProvider(this, object : ViewModelProvider.Factory{
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return TopicViewModel(application) as T;
+            }
+
+        }).get(TopicViewModel::class.java);
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,8 +83,13 @@ class GameActivity : AppCompatActivity() {
         if (mPictureModels.size < 2) return;
         tv_picture_name_A.text = mPictureModels[0].mPictureName;
         tv_picture_name_B.text = mPictureModels[1].mPictureName;
-        Glide.with(this).load(Constants.BASE_URL + "image/get/${mPictureModels[0].mId}/").into(iv_A);
-        Glide.with(this).load(Constants.BASE_URL + "image/get/${mPictureModels[1].mId}/").into(iv_B);
+        val url1 = Constants.BASE_URL + "image/get/${mPictureModels[0].mId}/";
+        Constants.GlideWithHeader(url1, this, iv_A, this);
+        val url2 = Constants.BASE_URL + "image/get/${mPictureModels[1].mId}/";
+        Constants.GlideWithHeader(url2, this, iv_B, this);
+
+//        Glide.with(this).load(Constants.BASE_URL + "image/get/${mPictureModels[0].mId}/").into(iv_A);
+//        Glide.with(this).load(Constants.BASE_URL + "image/get/${mPictureModels[1].mId}/").into(iv_B);
     }
 
 
