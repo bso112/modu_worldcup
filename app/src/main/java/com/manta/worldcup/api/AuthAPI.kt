@@ -1,5 +1,6 @@
 package com.manta.worldcup.api
 
+import com.manta.worldcup.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -10,4 +11,7 @@ interface AuthAPI {
     @FormUrlEncoded
     @POST("auth/verify_idToken")
     suspend fun sendIdToken(@Field("token") token : String) : Response<String>
+
+    @POST("auth/verify_accessToken")
+    suspend fun sendAceessToken() : Response<User>
 }

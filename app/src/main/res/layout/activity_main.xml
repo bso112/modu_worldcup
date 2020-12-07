@@ -9,6 +9,32 @@
     android:id="@+id/parent">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="right"
+        android:paddingHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_nickname"
+            android:layout_marginEnd="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorPrimary"/>
+
+
+        <TextView
+            android:id="@+id/btn_login_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:attr/textColorPrimary"
+            android:text="로그인"/>
+
+
+    </LinearLayout>
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tl_mainTab"
         android:layout_width="match_parent"

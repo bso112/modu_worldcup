@@ -19,8 +19,6 @@ class AddCookiesInterceptor(private val context: Context) : Interceptor {
             builder.addHeader("Cookie", cookie)
         }
 
-        //
-
         return chain.proceed(builder.build())
     }
 }

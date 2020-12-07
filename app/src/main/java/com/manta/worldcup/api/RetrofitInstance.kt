@@ -2,6 +2,7 @@ package com.manta.worldcup.api
 
 import android.content.Context
 import com.manta.worldcup.api.intercepter.AddCookiesInterceptor
+import com.manta.worldcup.api.intercepter.AddTokenInterceptor
 import com.manta.worldcup.api.intercepter.ReceivedCookiesInterceptor
 import com.manta.worldcup.helper.Constants.BASE_URL
 import okhttp3.OkHttpClient
@@ -24,6 +25,7 @@ class RetrofitInstance(context: Context) {
     private val retrofit by lazy {
         val client = OkHttpClient.Builder()
             .addInterceptor(AddCookiesInterceptor(context))
+            .addInterceptor(AddTokenInterceptor(context))
             .addInterceptor(ReceivedCookiesInterceptor(context))
             .build();
 

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.manta.worldcup.R
 import com.manta.worldcup.adapter.CommentAdapter
+import com.manta.worldcup.helper.AuthSingleton
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Comment
 import com.manta.worldcup.model.PictureModel
@@ -59,12 +60,19 @@ class GameResultActivity : AppCompatActivity() {
 
         mCommentViewModel.getTopicComments(topicModel.mId);
 
+        //로그인한 유저는 닉네임 그대로 쓴다.
+        AuthSingleton.getInstance(application).CheckUserSignIn({
+            tv_nickname.setText(it.mNickname);
+            tv_nickname.isEnabled = false;
+            tv_nickname.setTextColor(resources.getColor(R.color.disabled))
+        });
+
         //덧글 작성
         btn_submit.setOnClickListener {
             val date = Calendar.getInstance().time;
             val locale = applicationContext.resources.configuration.locale;
 
-            val comment = Comment(0 ,tv_winner_name.text.toString(), et_content.text.toString(),
+            val comment = Comment(0 ,tv_nickname.text.toString(), et_content.text.toString(),
                 SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date), topicModel.mId)
            mCommentViewModel.insertComment(comment);
             //작성 후 덧글창 비우기

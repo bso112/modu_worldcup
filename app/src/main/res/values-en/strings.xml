@@ -14,4 +14,6 @@
     <string name="warn_not_enough_picture">사진을 두개이상 등록하주세요.</string>
     <string name="warn_error">오류가 발생했습니다. 다시 시도해 주세요.</string>
     <string name="win">우승</string>
+    <string name="nickname">닉네임</string>
+    <string name="comment">덧글</string>
 </resources>

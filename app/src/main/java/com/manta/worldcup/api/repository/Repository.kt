@@ -28,6 +28,7 @@ class Repository(application : Application) {
     suspend fun insertComment(comment : Comment) = topicAPI.insertComment(comment);
 
     suspend fun sendIdToken(token : String) = authAPI.sendIdToken(token);
+    suspend fun sendAccessToken() = authAPI.sendAceessToken();
 
 
 
