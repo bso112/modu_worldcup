@@ -39,6 +39,14 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/tv_show_all_result"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="모든 결과 보기"
+            android:textColor="@color/primary"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"

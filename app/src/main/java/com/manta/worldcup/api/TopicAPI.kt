@@ -19,13 +19,12 @@ interface TopicAPI {
     @GET("topic/get_all")
     suspend fun getAllTopic() : Response<ArrayList<TopicModel>>
 
-    @GET("topic/get/{topic_id}")
-    suspend fun getTopic(@Path("topic_id")topicId : Long) : Response<TopicModel>
-
     @Multipart
     @POST("picture/new")
     suspend fun insertPictures(@Part("topic_id") topic_id : Long, @Part("pictures") pictures : List<PictureModel>, @Part image :  List<MultipartBody.Part>) : Response<String>;
 
+    @GET("topic/get/:manager_email")
+    suspend fun getTopics(@Path("manager_email") email : String) : Response<TopicModel>
     /**
      * by 변성욱
      * 토픽id와 관련된 picture들의 이름을 얻는다.
@@ -36,8 +35,19 @@ interface TopicAPI {
     @GET("pictures/get/{topic_id}")
     suspend fun getPictures(@Path("topic_id") topicId : Long) : Response<List<PictureModel>>
 
+    @GET("pictures/get_all/{owner_email}")
+    suspend fun getPictures(@Path("owner_email") ownerEmail : String) : Response<List<PictureModel>>
+
+    @FormUrlEncoded
+    @POST("picture/add_winCnt")
+    suspend fun addWinCnt(@Field("picture_id") pictureID : Long);
+
     @GET("comment/get_all/{topic_id}")
     suspend fun getComments(@Path("topic_id") topicId : Long) : Response<ArrayList<Comment>>
+
+    @FormUrlEncoded
+    @POST("point/consume")
+    suspend fun addPoint(@Field("amount") amount : Int, @Field("email") email : String);
 
     /**
      * by 변성욱
@@ -45,4 +55,5 @@ interface TopicAPI {
      */
     @POST("comment/new")
     suspend fun insertComment(@Body comment : Comment) : Response<String>
+
 }

@@ -1,6 +1,7 @@
 package com.manta.worldcup.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class User (
     @SerializedName("email")
@@ -10,4 +11,4 @@ data class User (
     @SerializedName("tier")
     val mTier : Int,
     @SerializedName("point")
-    val mCurrPoint : Int);
+    val mCurrPoint : Int) : Serializable;

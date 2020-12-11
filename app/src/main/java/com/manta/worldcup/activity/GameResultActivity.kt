@@ -1,5 +1,6 @@
 package com.manta.worldcup.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
@@ -7,7 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.manta.worldcup.R
 import com.manta.worldcup.adapter.CommentAdapter
 import com.manta.worldcup.helper.AuthSingleton
@@ -40,13 +40,13 @@ class GameResultActivity : AppCompatActivity() {
         //인풋모드 설정 (EditText가 키보드에 가려지지않게)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        val topicModel = intent.getSerializableExtra(Constants.EXTRA_TOPICMODEL) as TopicModel;
-        val picturModel = intent.getSerializableExtra(Constants.EXTRA_PICTUREMODEL) as PictureModel;
+        val topicModel = (intent.getSerializableExtra(Constants.EXTRA_TOPICMODEL) as? TopicModel)  ?: return;
+        val winner = (intent.getSerializableExtra(Constants.EXTRA_PICTUREMODEL) as? PictureModel) ?: return;
 
-        tv_winner_name.text = picturModel.mPictureName;
+        tv_winner_name.text = winner.mPictureName;
 
         //우승 사진 표시
-        val url = Constants.BASE_URL + "image/get/${picturModel.mId}/";
+        val url = Constants.BASE_URL + "image/get/${winner.mId}/";
         Constants.GlideWithHeader(url, this, iv_winner, this);
         //Glide.with(this).load(Constants.BASE_URL + "image/get/${picturModel.mId}/").into(iv_winner);
 
@@ -79,6 +79,14 @@ class GameResultActivity : AppCompatActivity() {
             et_content.setText("");
         }
 
+        //모든 결과보기
+        tv_show_all_result.setOnClickListener {
+            Intent(this, StatisticActivity::class.java).apply {
+                putExtra(Constants.EXTRA_TOPIC_ID, topicModel.mId);
+                startActivity(this);
+                
+            }
+        }
     }
 
 

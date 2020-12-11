@@ -2,7 +2,6 @@ package com.manta.worldcup.viewmodel
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.manta.worldcup.model.TopicModel
 import com.manta.worldcup.api.repository.Repository
@@ -11,6 +10,7 @@ import com.manta.worldcup.model.Picture
 import com.manta.worldcup.model.PictureModel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.lang.Exception
@@ -18,23 +18,32 @@ import java.lang.Exception
 
 class TopicViewModel(private val application: Application) : ViewModel() {
 
-    private val repository: Repository = Repository(application);
+    private val mRepository: Repository = Repository(application);
 
     val mTopics: MutableLiveData<List<TopicModel>> = MutableLiveData();
     val mPictures: MutableLiveData<List<PictureModel>> = MutableLiveData();
 
     fun getAllTopics() {
         viewModelScope.launch {
-            val response = repository.getAllTopic()
+            val response = mRepository.getAllTopic()
             if (response.isSuccessful)
                 mTopics.value = response.body(); //옵저버에게 알림
 
         }
     }
 
+    fun getTopics(userEmail : String){
+        viewModelScope.launch{
+            val response = mRepository.getAllTopic()
+            if(response.isSuccessful){
+                mTopics.value = response.body();
+            }
+        }
+    }
+
     fun getPictures(topicId: Long) {
         viewModelScope.launch {
-            val res = repository.getPictures(topicId);
+            val res = mRepository.getPictures(topicId);
             if (res.isSuccessful) {
                 mPictures.value = res.body();
             }
@@ -46,23 +55,21 @@ class TopicViewModel(private val application: Application) : ViewModel() {
             val bodyParts: ArrayList<MultipartBody.Part> = ArrayList();
             for (picture in pictures) {
                 val bitmapData = BitmapHelper.bitmapToByteArray(picture.mBitmap);
-                val reqBody = RequestBody.create(MediaType.parse("image/webp"), bitmapData);
+                val reqBody = RequestBody.create("image/webp".toMediaTypeOrNull(), bitmapData);
                 val bodyPart = MultipartBody.Part.createFormData("image", "tmp", reqBody);
                 bodyParts.add(bodyPart);
             }
 
             val pictureModels = ArrayList<PictureModel>()
             for (picture in pictures) pictureModels.add(picture.pictureModel);
-            val result = repository.insertPictures(topicId, pictureModels, bodyParts);
-            if(!result.isSuccessful)
-                Toast.makeText(application, result.errorBody().toString(), Toast.LENGTH_SHORT);
+            mRepository.insertPictures(topicId, pictureModels, bodyParts);
 
 
         }
 
     }
 
-    suspend fun getTopicImageNames(topicId: Long) = repository.getPicturesName(topicId);
+    suspend fun getTopicImageNames(topicId: Long) = mRepository.getPicturesName(topicId);
 
     fun insertTopic(topicModel: TopicModel, pictures: List<Picture>) {
         viewModelScope.launch {
@@ -71,7 +78,7 @@ class TopicViewModel(private val application: Application) : ViewModel() {
             val bodyParts: ArrayList<MultipartBody.Part> = ArrayList();
             for (picture in pictures) {
                 val bitmapData = BitmapHelper.bitmapToByteArray(picture.mBitmap);
-                val reqBody = RequestBody.create(MediaType.parse("image/webp"), bitmapData);
+                val reqBody = RequestBody.create("image/webp".toMediaTypeOrNull(), bitmapData);
                 //filename null주면 서버에서 못받음.
                 val bodyPart = MultipartBody.Part.createFormData("image", "tmp", reqBody);
                 bodyParts.add(bodyPart);
@@ -79,7 +86,7 @@ class TopicViewModel(private val application: Application) : ViewModel() {
             try {
                 val pictureModels = ArrayList<PictureModel>()
                 for (picture in pictures) pictureModels.add(picture.pictureModel);
-                repository.insertTopic(topicModel, pictureModels, bodyParts);
+                mRepository.insertTopic(topicModel, pictureModels, bodyParts);
             } catch (e: Exception) {
                 e.message?.let { Log.d(javaClass.toString(), it) };
             }
@@ -87,6 +94,19 @@ class TopicViewModel(private val application: Application) : ViewModel() {
 
         }
     }
+
+    fun addPoint(amount : Int, email : String) {
+        viewModelScope.launch {
+            mRepository.addPoint(amount, email);
+        }
+    }
+
+    fun addWinCnt(pictureID : Long){
+        viewModelScope.launch {
+            mRepository.addwinCnt(pictureID);
+        }
+    }
+
 
 
 }

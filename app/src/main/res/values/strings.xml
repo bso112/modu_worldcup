@@ -17,4 +17,7 @@
     <string name="default_web_client_id">111890520747-07dnc8pb1jg7a170p98tqh6drof24d4m.apps.googleusercontent.com</string>
     <string name="nickname">닉네임</string>
     <string name="comment">덧글</string>
+    <string name="alert_add_topic">스타포인트를 100점 차감하게 됩니다. 계속하시겠습니까?</string>
+    <string name="warn_not_enough_point">포인트가 부족합니다.</string>
+    <string name="signin">로그인</string>
 </resources>

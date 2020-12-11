@@ -13,7 +13,9 @@ data class TopicModel(
     @SerializedName("manager")
     val mManagerName: String,
     @SerializedName("image_length")
-    val mImageLength : Int
+    val mImageLength : Int,
+    @SerializedName("manager_email")
+    val mManagerEmail : String
 ) : Serializable
 
 data class Topic

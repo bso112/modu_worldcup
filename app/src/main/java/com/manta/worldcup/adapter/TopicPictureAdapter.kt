@@ -1,7 +1,6 @@
 package com.manta.worldcup.adapter
 
 import android.graphics.Bitmap
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
-class PictureAdapter(private val fragmentManager : FragmentManager) : RecyclerView.Adapter<PictureAdapter.ImageViewHolder>() {
+class TopicPictureAdapter(private val fragmentManager : FragmentManager) : RecyclerView.Adapter<TopicPictureAdapter.ImageViewHolder>() {
 
     private val mDataset: ArrayList<Picture> = ArrayList();
 
@@ -87,8 +86,8 @@ class PictureAdapter(private val fragmentManager : FragmentManager) : RecyclerVi
     }
 
 
-    fun addBitmap(bitmap: Bitmap) {
-        mDataset.add(Picture(PictureModel(0, 0, ""), bitmap));
+    fun addBitmap(bitmap: Bitmap, ownerEmail : String) {
+        mDataset.add(Picture(PictureModel(0, 0, "", ownerEmail), bitmap));
         mIsPictureNamed.add(false);
         notifyItemInserted(mDataset.size - 1);
     }

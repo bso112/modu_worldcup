@@ -33,6 +33,7 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>(
 
         override fun getOldListSize(): Int {
             return oldList.size;
+
         }
 
         override fun getNewListSize(): Int {

@@ -1,7 +1,6 @@
 package com.manta.worldcup.api.repository
 
 import android.app.Application
-import android.content.Context
 import com.manta.worldcup.api.RetrofitInstance
 import com.manta.worldcup.model.Comment
 import com.manta.worldcup.model.PictureModel
@@ -15,7 +14,11 @@ class Repository(application : Application) {
 
     suspend fun getAllTopic()  = topicAPI.getAllTopic();
 
+    suspend fun getTopics(userEmail : String) = topicAPI.getTopics(userEmail)
+
     suspend fun  insertTopic(topicModel: TopicModel, pictures : List<PictureModel> ,image :  List<MultipartBody.Part>) = topicAPI.insertTopic(topicModel,pictures, image);
+
+    suspend fun  getAllPictures(ownerEmail : String) = topicAPI.getPictures(ownerEmail);
 
     suspend fun  insertPictures(topic_id :Long , pictures : List<PictureModel> , image :  List<MultipartBody.Part>) = topicAPI.insertPictures(topic_id ,pictures, image);
 
@@ -28,8 +31,10 @@ class Repository(application : Application) {
     suspend fun insertComment(comment : Comment) = topicAPI.insertComment(comment);
 
     suspend fun sendIdToken(token : String) = authAPI.sendIdToken(token);
+
     suspend fun sendAccessToken() = authAPI.sendAceessToken();
 
+    suspend fun addPoint(amount : Int, email : String) = topicAPI.addPoint(amount, email);
 
-
+    suspend fun addwinCnt(pictureID : Long) = topicAPI.addWinCnt(pictureID);
 }

@@ -5,12 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.manta.worldcup.R
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.helper.Constants.EXTRA_TOPICMODEL
+import com.manta.worldcup.helper.Constants.EXTRA_USER
 import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.TopicModel
+import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlin.collections.ArrayList
@@ -19,8 +20,9 @@ class GameActivity : AppCompatActivity() {
 
     private lateinit var mPictureModels: ArrayList<PictureModel>;
     private lateinit var mTopicModel: TopicModel;
+    private lateinit var mUser : User;
 
-    private val mViewModel: TopicViewModel by lazy {
+    private val mTopicViewModel: TopicViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return TopicViewModel(application) as T;
@@ -34,11 +36,12 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
 
         mTopicModel = intent.getSerializableExtra(EXTRA_TOPICMODEL) as? TopicModel ?: return;
+        mUser = intent.getSerializableExtra(EXTRA_USER) as? User ?: return;
 
         //토픽이 포함하는 사진들을 가져온다.
-        mViewModel.getPictures(mTopicModel.mId);
-        //서버에서 받아온 데이터를 copy
-        mViewModel.mPictures.observe(this, androidx.lifecycle.Observer {
+        mTopicViewModel.getPictures(mTopicModel.mId);
+        //서버에서 받아온 사진 데이터를 copy해서 어댑터에 넣는다.
+        mTopicViewModel.mPictures.observe(this, androidx.lifecycle.Observer {
             mPictureModels = ArrayList(it);
             mPictureModels.shuffle();
             showImage();
@@ -69,6 +72,16 @@ class GameActivity : AppCompatActivity() {
 
         //사진이 하나만 남으면 우승결정됨
         if (mPictureModels.size < 2) {
+            //플레이어가 토픽 주최자면 포인트는 얻지 못한다.
+            if(mUser.mEmail != mPictureModels.first().mOwnerEmail){
+                //토픽 주최자에게 포인트 플러스
+                mTopicViewModel.addPoint(Constants.POINT_END_GAME, mTopicModel.mManagerEmail);
+                //이긴 사진의 주인에게 포인트 플러스
+                mTopicViewModel.addPoint(Constants.POINT_WIN_PICTURE, mPictureModels.first().mOwnerEmail);
+            }
+            //사진의 winCnt 증가
+            mTopicViewModel.addWinCnt(mPictureModels.first().mId);
+
             Intent(this, GameResultActivity::class.java).apply {
                 putExtra(Constants.EXTRA_TOPICMODEL, mTopicModel);
                 putExtra(Constants.EXTRA_PICTUREMODEL, mPictureModels.first());
@@ -88,8 +101,6 @@ class GameActivity : AppCompatActivity() {
         val url2 = Constants.BASE_URL + "image/get/${mPictureModels[1].mId}/";
         Constants.GlideWithHeader(url2, this, iv_B, this);
 
-//        Glide.with(this).load(Constants.BASE_URL + "image/get/${mPictureModels[0].mId}/").into(iv_A);
-//        Glide.with(this).load(Constants.BASE_URL + "image/get/${mPictureModels[1].mId}/").into(iv_B);
     }
 
 
