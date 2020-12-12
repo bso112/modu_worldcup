@@ -12,7 +12,7 @@ import com.manta.worldcup.R
 import com.manta.worldcup.adapter.TopicPictureAdapter
 import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.helper.Constants
-import com.manta.worldcup.viewmodel.TopicViewModel
+import com.manta.worldcup.viewmodel.MasterViewModel
 import kotlinx.android.synthetic.main.activity_add_picture.btn_add_Picture
 import kotlinx.android.synthetic.main.activity_add_picture.rv_picture
 import kotlinx.android.synthetic.main.activity_add_topic.*
@@ -25,13 +25,13 @@ class AddPictureActivity : AppCompatActivity() {
     val REQUEST_PICK_FROM_ALBUM = 0;
     var mTopicImageNames: HashSet<String>? = null;
 
-    private val mViewModel: TopicViewModel by lazy {
+    private val mViewModel: MasterViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(application) as T;
+                return MasterViewModel(application) as T;
             }
 
-        }).get(TopicViewModel::class.java);
+        }).get(MasterViewModel::class.java);
     }
 
 

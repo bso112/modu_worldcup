@@ -57,6 +57,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    implementation 'com.github.amarjain07:StickyScrollView:1.0.2'
 
 }
 

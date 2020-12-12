@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 //entity에 해당
+
 data class Comment (
     @SerializedName("id")
     val mId : Long,
@@ -13,5 +14,11 @@ data class Comment (
     val mContents : String,
     @SerializedName("date")
     val mDate : String,
-    @SerializedName("topic_id")
-    val mTopicId : Long)
+    /**
+     * by 변성욱
+     * 이 코멘트가 붙는 요소의 id를 말한다.
+     * topic의 코멘트면 topic의 id.
+     * picture의 코멘트면 picture의 id
+     */
+    @SerializedName("parent_id")
+    val mParentID : Long)

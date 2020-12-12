@@ -10,7 +10,7 @@ import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.User
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val application: Application) : ViewModel() {
+class UserViewModel(private val application: Application) : ViewModel() {
     private val mRepository: Repository = Repository(application);
 
     val mPictures: MutableLiveData<List<PictureModel>> = MutableLiveData();

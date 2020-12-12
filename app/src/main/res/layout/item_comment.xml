@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/comment_border"
@@ -12,17 +13,15 @@
         android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/tv_nickname"
+        android:id="@+id/et_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="아하항"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginEnd="10dp"/>
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2014"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -32,6 +31,6 @@
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="aasdasdasdasdasdasdasdasdasdasdasd"/>
+        />
 
 </LinearLayout>

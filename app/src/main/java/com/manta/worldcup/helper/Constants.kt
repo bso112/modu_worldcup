@@ -9,6 +9,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import com.manta.worldcup.R
 import com.manta.worldcup.activity.AddTopicActivity
 import com.manta.worldcup.activity.LoginActivity
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 object Constants {
-    const val BASE_URL = "http://192.168.219.159:8001/anime/";
+    const val BASE_URL = "http://192.168.219.144:8001/anime/";
     const val LOG_TAG = "com.manta.worldcup"
 
     const val EXTRA_TOPIC_ID = "com.manta.worldcup.EXTRA_TOPIC_ID"
@@ -119,6 +120,12 @@ object Constants {
         alertDialog?.show()
     }
 
+    fun getTierIconID(tier : Int) : Int? {
+        return when (tier) {
+            0 -> R.drawable.ic_tier0_24
+            else -> null;
+        }
+    }
 
 
 

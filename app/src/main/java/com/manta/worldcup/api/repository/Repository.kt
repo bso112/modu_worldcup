@@ -4,7 +4,7 @@ import android.app.Application
 import com.manta.worldcup.api.RetrofitInstance
 import com.manta.worldcup.model.Comment
 import com.manta.worldcup.model.PictureModel
-import com.manta.worldcup.model.TopicModel
+import com.manta.worldcup.model.Topic
 import okhttp3.MultipartBody
 
 class Repository(application : Application) {
@@ -12,11 +12,11 @@ class Repository(application : Application) {
     private val topicAPI  = RetrofitInstance(application).topicAPI;
     private val authAPI = RetrofitInstance(application).authAPI;
 
-    suspend fun getAllTopic()  = topicAPI.getAllTopic();
+    suspend fun getAllTopicJoinUser() =  topicAPI.getAllTopicJoinUser();
 
-    suspend fun getTopics(userEmail : String) = topicAPI.getTopics(userEmail)
+    suspend fun getTopicJoinUsers(userEmail : String) = topicAPI.getTopicJoinUsers(userEmail)
 
-    suspend fun  insertTopic(topicModel: TopicModel, pictures : List<PictureModel> ,image :  List<MultipartBody.Part>) = topicAPI.insertTopic(topicModel,pictures, image);
+    suspend fun  insertTopic(topic: Topic, pictures : List<PictureModel>, image :  List<MultipartBody.Part>) = topicAPI.insertTopic(topic,pictures, image);
 
     suspend fun  getAllPictures(ownerEmail : String) = topicAPI.getPictures(ownerEmail);
 
@@ -26,9 +26,14 @@ class Repository(application : Application) {
 
     suspend fun getPictures(topic_id: Long) = topicAPI.getPictures(topic_id);
 
-    suspend fun getComments(topic_id: Long) = topicAPI.getComments(topic_id);
+    suspend fun getTopicComment(topic_id: Long) = topicAPI.getTopicComments(topic_id);
 
-    suspend fun insertComment(comment : Comment) = topicAPI.insertComment(comment);
+    suspend fun getPictureComment(picture_id : Long) = topicAPI.getPictureComments(picture_id);
+
+    suspend fun insertTopicComment(comment : Comment) = topicAPI.insertTopicComment(comment);
+
+    suspend fun insertPictureComment(comment : Comment) = topicAPI.insertPictureComment(comment);
+
 
     suspend fun sendIdToken(token : String) = authAPI.sendIdToken(token);
 
@@ -37,4 +42,7 @@ class Repository(application : Application) {
     suspend fun addPoint(amount : Int, email : String) = topicAPI.addPoint(amount, email);
 
     suspend fun addwinCnt(pictureID : Long) = topicAPI.addWinCnt(pictureID);
+
+    suspend fun getUser(email : String) = topicAPI.getUser(email);
+
 }

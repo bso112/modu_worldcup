@@ -16,8 +16,8 @@ import com.manta.worldcup.activity.fragment.dialog.OnTopicClickDialog
 import com.manta.worldcup.adapter.TopicAdapter
 import com.manta.worldcup.helper.AuthSingleton
 import com.manta.worldcup.helper.Constants
-import com.manta.worldcup.model.TopicModel
-import com.manta.worldcup.viewmodel.MainViewModel
+import com.manta.worldcup.model.TopicJoinUser
+import com.manta.worldcup.viewmodel.UserViewModel
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.frag_topic.*
 import kotlin.math.abs
@@ -28,7 +28,7 @@ import kotlin.math.abs
  */
 class TopicFragment : Fragment(R.layout.frag_topic) {
     private lateinit var mTopicViewModel: TopicViewModel;
-    private lateinit var mMainViewModel: MainViewModel;
+    private lateinit var mUserViewModel: UserViewModel;
     private lateinit var mTopicAdaptor: TopicAdapter;
 
 
@@ -40,42 +40,42 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
 
         mTopicAdaptor = TopicAdapter(context!!);
 
-        mTopicViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+
+        mTopicViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return TopicViewModel(activity!!.application) as T;
             }
-
-
         }).get(TopicViewModel::class.java);
 
-        mMainViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
+        mUserViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MainViewModel(requireActivity().application) as T;
+                return UserViewModel(requireActivity().application) as T;
             }
 
-        }).get(MainViewModel::class.java);
+        }).get(UserViewModel::class.java);
 
 
         //토픽받아오기
-        mTopicViewModel.getAllTopics();
+        mTopicViewModel.getAllTopic();
 
         //당겨서 토픽 리프레쉬
-        refresh_topic.setOnRefreshListener { mTopicViewModel.getAllTopics(); }
+        refresh_topic.setOnRefreshListener { mTopicViewModel.getAllTopic(); }
 
         rv_topic.adapter = mTopicAdaptor;
         rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         //토픽 클릭시 게임 or 선수출진 다이어로그 띄우기
         mTopicAdaptor.setOnItemClickListener(object : TopicAdapter.OnItemClickListener {
-            override fun onItemClick(topicModel: TopicModel) {
-                if(mMainViewModel.mUser.value == null){
-                    Toast.makeText(context, "유저 정보가 없습니다.", Toast.LENGTH_SHORT).show()
+            override fun onItemClick(topicJoinUser : TopicJoinUser) {
+                if(mUserViewModel.mUser.value == null){
+                    Toast.makeText(context, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
                     return;
                 }
-                fragmentManager?.let { OnTopicClickDialog().newInstance(topicModel, mMainViewModel.mUser.value!!).show(it, null) };
+                fragmentManager?.let { OnTopicClickDialog().newInstance(topicJoinUser.getTopic(), mUserViewModel.mUser.value!!).show(it, null) };
             }
         })
-
+        
+        //토픽버튼 눌렀을때
         btn_add_topic.setOnClickListener {
             AuthSingleton.getInstance(activity!!.application).CheckUserSignIn(
                 //로그인이 되어있다면 토픽추가 액티비티로 간다.
@@ -98,10 +98,16 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
                 })
         }
 
-        mTopicViewModel.mTopics.observe(this, Observer {
+        mTopicViewModel.mDataset.observe(this, Observer {
             mTopicAdaptor.setTopics(it);
             refresh_topic.isRefreshing = false;
         })
+
     }
 
+    override fun onStart() {
+        super.onStart()
+        //토픽받아오기
+        mTopicViewModel.getAllTopic();
+    }
 }

@@ -56,7 +56,7 @@
                 android:background="@drawable/ic_tier0_24" />
 
             <TextView
-                android:id="@+id/tv_nickname"
+                android:id="@+id/et_nickname"
                 android:layout_marginEnd="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

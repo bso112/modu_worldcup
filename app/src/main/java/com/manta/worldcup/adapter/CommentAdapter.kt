@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
 import com.manta.worldcup.model.Comment
-import com.manta.worldcup.model.TopicModel
 import kotlinx.android.synthetic.main.item_comment.view.*
 
 class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
@@ -15,7 +14,7 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>(
     private var mDataset : ArrayList<Comment> =  ArrayList();
 
     class CommentViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        val mNickname = view.tv_nickname;
+        val mNickname = view.et_nickname;
         val mContent = view.tv_content;
         val mDate = view.tv_date;
 

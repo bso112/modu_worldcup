@@ -15,23 +15,23 @@ import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.helper.Constants.EXTRA_TOPICMODEL
 import com.manta.worldcup.helper.Constants.EXTRA_TOPIC_ID
 import com.manta.worldcup.helper.Constants.EXTRA_USER
-import com.manta.worldcup.model.TopicModel
+import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
-import com.manta.worldcup.viewmodel.MainViewModel
+import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.dialog_ontopicclick.view.*
 
 class OnTopicClickDialog() : DialogFragment() {
 
 
-    private val mViewModel: MainViewModel by lazy {
+    private val mViewModel: UserViewModel by lazy {
        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MainViewModel(requireActivity().application) as T;
+                return UserViewModel(requireActivity().application) as T;
             }
-        }).get(MainViewModel::class.java);
+        }).get(UserViewModel::class.java);
     };
 
-    fun newInstance(topic : TopicModel, user : User) : OnTopicClickDialog{
+    fun newInstance(topic : Topic, user : User) : OnTopicClickDialog{
         val args = Bundle(1)
         args.putSerializable(EXTRA_TOPICMODEL, topic);
         args.putSerializable(EXTRA_USER, user);
@@ -43,7 +43,7 @@ class OnTopicClickDialog() : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_ontopicclick, container, false);
 
-        val topicModel = arguments?.getSerializable(EXTRA_TOPICMODEL) as? TopicModel ?: return view;
+        val topicModel = arguments?.getSerializable(EXTRA_TOPICMODEL) as? Topic ?: return view;
         val user = arguments?.getSerializable(EXTRA_USER) as? User ?: return view;
 
         view.tv_topic_title.text = topicModel.mTitle;

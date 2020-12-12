@@ -52,7 +52,7 @@ class PictureDescriptionDialog() : DialogFragment() {
                 tv_title_warning.visibility = View.VISIBLE;
             else{
                 tv_title_warning.visibility = View.INVISIBLE;
-                onSubmitListener?.onSubmit(pictureName);
+                onSubmitListener.onSubmit(pictureName);
                 dismiss();
             }
         }

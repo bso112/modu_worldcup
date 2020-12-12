@@ -2,7 +2,6 @@ package com.manta.worldcup.activity.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.GridLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -10,21 +9,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.adapter.MyPictureAdapter
-import com.manta.worldcup.viewmodel.MainViewModel
+import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.frag_mypicture.*
 
 class MyPictureFragement : Fragment(R.layout.frag_mypicture) {
-    private lateinit var mMainViewModel: MainViewModel;
+    private lateinit var mUserViewModel: UserViewModel;
     private val myPictureAdapter: MyPictureAdapter = MyPictureAdapter();
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mMainViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
+        mUserViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MainViewModel(requireActivity().application) as T;
+                return UserViewModel(requireActivity().application) as T;
             }
 
-        }).get(MainViewModel::class.java);
+        }).get(UserViewModel::class.java);
 
 
 
@@ -33,7 +32,7 @@ class MyPictureFragement : Fragment(R.layout.frag_mypicture) {
         rv_picture.adapter = myPictureAdapter;
         //rv_picture.addItemDecoration(SpaceItemDecoration(80))
 
-        mMainViewModel.mPictures.observe(this, Observer {
+        mUserViewModel.mPictures.observe(this, Observer {
             myPictureAdapter.setPictures(ArrayList(it));
         })
 
@@ -42,7 +41,7 @@ class MyPictureFragement : Fragment(R.layout.frag_mypicture) {
     override fun onStart() {
         super.onStart()
 
-        mMainViewModel.getAllPicture()
+        mUserViewModel.getAllPicture()
 
     }
 

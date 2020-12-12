@@ -11,21 +11,21 @@ import com.manta.worldcup.R
 import com.manta.worldcup.adapter.TopicPictureAdapter
 import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.helper.Constants
-import com.manta.worldcup.model.TopicModel
+import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
-import com.manta.worldcup.viewmodel.TopicViewModel
+import com.manta.worldcup.viewmodel.MasterViewModel
 import kotlinx.android.synthetic.main.activity_add_topic.*
 import kotlinx.android.synthetic.main.activity_add_topic.et_title
 
 class AddTopicActivity : AppCompatActivity() {
 
-    private val mTopicViewModel: TopicViewModel by lazy {
+    private val mMasterViewModel: MasterViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(application) as T;
+                return MasterViewModel(application) as T;
             }
 
-        }).get(TopicViewModel::class.java);
+        }).get(MasterViewModel::class.java);
     }
     private lateinit var mTopicPictureAdapter: TopicPictureAdapter;
 
@@ -59,10 +59,10 @@ class AddTopicActivity : AppCompatActivity() {
             else{
                 //제출
                 //포인트소모
-                mTopicViewModel.addPoint(Constants.POINT_ADD_TOPIC, user.mEmail);
+                mMasterViewModel.addPoint(Constants.POINT_ADD_TOPIC, user.mEmail);
                 //토픽생성
-                mTopicViewModel.insertTopic(
-                    TopicModel(0, et_title.text.toString(), et_content.text.toString(), user.mNickname, 0, user.mEmail),
+                mMasterViewModel.insertTopic(
+                    Topic(0, et_title.text.toString(), et_content.text.toString(), user.mNickname, 0, user.mEmail),
                     mTopicPictureAdapter.getPictures()
                 )
                 finish();

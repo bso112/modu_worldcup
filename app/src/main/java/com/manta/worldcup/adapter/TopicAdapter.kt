@@ -8,26 +8,26 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.manta.worldcup.R
 import com.manta.worldcup.helper.Constants
-import com.manta.worldcup.model.TopicModel
+import com.manta.worldcup.model.Topic
+import com.manta.worldcup.model.TopicJoinUser
+import com.manta.worldcup.model.User
 import kotlinx.android.synthetic.main.item_topic.view.*
 import kotlin.collections.ArrayList
 
 class TopicAdapter(private val mContext: Context) : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>() {
 
-    private var mDataset: List<TopicModel> = ArrayList();
+    private var mDataset: List<TopicJoinUser> = ArrayList();
     private var mOnItemClickListener: OnItemClickListener? = null;
 
+
     interface OnItemClickListener {
-        fun onItemClick(topicModel: TopicModel);
+        fun onItemClick(topicJoinUser : TopicJoinUser);
     }
 
 
-    class TopicDiffUtilCallback(private val oldList: List<TopicModel>, private val newList: List<TopicModel>) : DiffUtil.Callback() {
+    class TopicDiffUtilCallback(private val oldList: List<TopicJoinUser>, private val newList: List<TopicJoinUser>) : DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return oldList[oldItemPosition].mId == newList[newItemPosition].mId;
         }
@@ -45,6 +45,8 @@ class TopicAdapter(private val mContext: Context) : RecyclerView.Adapter<TopicAd
         }
     }
 
+
+
     inner class TopicViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         val mTumbnail: ImageView = view.iv_thumbnail;
@@ -59,13 +61,17 @@ class TopicAdapter(private val mContext: Context) : RecyclerView.Adapter<TopicAd
             }
         }
 
-        fun setTopic(topic: TopicModel) {
+        fun setTopic(data : TopicJoinUser) {
 
-            val url = Constants.BASE_URL + "image/get/${topic.mId}/0";
-            Constants.GlideWithHeader(url, view, mTumbnail, mContext);
+            val urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
+            Constants.GlideWithHeader(urlToPicture, view, mTumbnail, mContext);
 
-            mTitle.text = topic.mTitle;
-            mManagerName.text = topic.mManagerName;
+            mTitle.text = data.mTitle;
+            mManagerName.text = data.mManagerName;
+
+            val tierIconID = Constants.getTierIconID(data.mTier);
+            if(tierIconID != null)
+                view.iv_tier.setImageResource(tierIconID);
         }
     }
 
@@ -84,13 +90,13 @@ class TopicAdapter(private val mContext: Context) : RecyclerView.Adapter<TopicAd
             holder.setTopic(mDataset[position]);
     }
 
-    fun setTopics(topics: List<TopicModel>) {
+    fun setTopics(topics: List<TopicJoinUser>) {
         val result = DiffUtil.calculateDiff(TopicDiffUtilCallback(mDataset, topics));
         mDataset = topics;
         result.dispatchUpdatesTo(this);
-
-
     }
+
+
 
     fun setOnItemClickListener(listenr: OnItemClickListener) {
         mOnItemClickListener = listenr;

@@ -19,4 +19,5 @@
     <string name="signin">로그인</string>
     <string name="alert_add_topic">스타포인트를 100점 차감하게 됩니다. 계속하시겠습니까?</string>
     <string name="warn_not_enough_point">포인트가 부족합니다.</string>
+    <string name="show_result_picture">모든 결과 보기</string>
 </resources>

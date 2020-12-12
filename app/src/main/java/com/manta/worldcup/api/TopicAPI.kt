@@ -1,10 +1,6 @@
 package com.manta.worldcup.api
 
-import android.graphics.Bitmap
-import com.manta.worldcup.model.Comment
-import com.manta.worldcup.model.Picture
-import com.manta.worldcup.model.PictureModel
-import com.manta.worldcup.model.TopicModel
+import com.manta.worldcup.model.*
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -14,17 +10,22 @@ interface TopicAPI {
 
     @Multipart
     @POST("topic/new")
-    suspend fun insertTopic(@Part("topic") topicModel : TopicModel, @Part("pictures") pictures : List<PictureModel>, @Part image :  List<MultipartBody.Part>)  : Response<String>
+    suspend fun insertTopic(@Part("topic") topic : Topic, @Part("pictures") pictures : List<PictureModel>, @Part image :  List<MultipartBody.Part>)  : Response<String>
 
-    @GET("topic/get_all")
-    suspend fun getAllTopic() : Response<ArrayList<TopicModel>>
+    @GET("topicJoinUser/get_all")
+    suspend fun getAllTopicJoinUser() : Response<ArrayList<TopicJoinUser>>
+
+    @GET("topicJoinUser/get/{manager_email}")
+    suspend fun getTopicJoinUsers(@Path("manager_email")email : String) : Response<List<TopicJoinUser>>
+
+    @GET("user/get/{email}")
+    suspend fun getUser(@Path("email") email : String) : Response<ArrayList<User>>
 
     @Multipart
     @POST("picture/new")
     suspend fun insertPictures(@Part("topic_id") topic_id : Long, @Part("pictures") pictures : List<PictureModel>, @Part image :  List<MultipartBody.Part>) : Response<String>;
 
-    @GET("topic/get/:manager_email")
-    suspend fun getTopics(@Path("manager_email") email : String) : Response<TopicModel>
+
     /**
      * by 변성욱
      * 토픽id와 관련된 picture들의 이름을 얻는다.
@@ -38,22 +39,29 @@ interface TopicAPI {
     @GET("pictures/get_all/{owner_email}")
     suspend fun getPictures(@Path("owner_email") ownerEmail : String) : Response<List<PictureModel>>
 
-    @FormUrlEncoded
-    @POST("picture/add_winCnt")
-    suspend fun addWinCnt(@Field("picture_id") pictureID : Long);
+    @GET("comment/topic/get_all/{topic_id}")
+    suspend fun getTopicComments(@Path("topic_id") topicId : Long) : Response<ArrayList<Comment>>
 
-    @GET("comment/get_all/{topic_id}")
-    suspend fun getComments(@Path("topic_id") topicId : Long) : Response<ArrayList<Comment>>
-
-    @FormUrlEncoded
-    @POST("point/consume")
-    suspend fun addPoint(@Field("amount") amount : Int, @Field("email") email : String);
+    @GET("comment/picture/get_all/{picture_id}")
+    suspend fun getPictureComments(@Path("picture_id") topicId : Long) : Response<ArrayList<Comment>>
 
     /**
      * by 변성욱
      * 코멘트를 생성한뒤, 응답으로 새로운 코멘트 리스트를 받아온다.
      */
-    @POST("comment/new")
-    suspend fun insertComment(@Body comment : Comment) : Response<String>
+    @POST("comment/topic/new")
+    suspend fun insertTopicComment(@Body comment : Comment) : Response<String>
+
+    @POST("comment/picture/new")
+    suspend fun insertPictureComment(@Body comment : Comment) : Response<String>
+
+    @FormUrlEncoded
+    @POST("picture/add_winCnt")
+    suspend fun addWinCnt(@Field("picture_id") pictureID : Long);
+
+
+    @FormUrlEncoded
+    @POST("point/consume")
+    suspend fun addPoint(@Field("amount") amount : Int, @Field("email") email : String);
 
 }

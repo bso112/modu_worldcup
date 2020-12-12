@@ -11,19 +11,19 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.manta.worldcup.R
 import com.manta.worldcup.adapter.ViewPageAdapter
 import com.manta.worldcup.helper.Constants
-import com.manta.worldcup.viewmodel.MainViewModel
+import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mViewPagerAdapter: ViewPageAdapter;
-    private val mMainViewModel : MainViewModel by lazy{
+    private val mUserViewModel : UserViewModel by lazy{
         ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MainViewModel(application) as T;
+                return UserViewModel(application) as T;
             }
-        }).get(MainViewModel::class.java)
+        }).get(UserViewModel::class.java)
     }
 
 
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             if(btn_login_logout.text == "로그아웃"){
                 //로그아웃처리
                 btn_login_logout.text = "로그인"
-                tv_nickname.text = ""
+                et_nickname.text = ""
                 //토큰지우기
                 val pref = this.getSharedPreferences(Constants.PREF_FILENAME_TOKEN, Context.MODE_PRIVATE)
                 pref.edit().putString(Constants.PREF_TOKEN, "").apply();
@@ -63,21 +63,20 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
 
         //로그인 상태에따라 로그인, 로그아웃표시
-        mMainViewModel.CheckUserSignIn({
+        mUserViewModel.CheckUserSignIn({
             //로그인됬을때
             btn_login_logout.text = "로그아웃";
-            tv_nickname.text = it.mNickname;
+            et_nickname.text = it.mNickname;
             ll_point.visibility = View.VISIBLE;
             tv_point.text = it.mCurrPoint.toString();
-            when(it.mTier){
-                0 -> iv_tier.setImageResource(R.drawable.ic_tier0_24)
-            }
+            val tier = Constants.getTierIconID(it.mTier);
+            tier?.let{ _tier -> iv_tier.setImageResource(_tier)};
             iv_tier.visibility = View.VISIBLE;
         }, {
             btn_login_logout.text = "로그인"
             ll_point.visibility = View.INVISIBLE;
             iv_tier.visibility = View.INVISIBLE;
-            tv_nickname.text = "";
+            et_nickname.text = "";
         })
 
     }
