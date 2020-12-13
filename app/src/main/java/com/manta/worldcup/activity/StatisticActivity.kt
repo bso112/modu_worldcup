@@ -6,10 +6,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.TopicCommentDialog
-import com.manta.worldcup.adapter.CommentAdapter
 import com.manta.worldcup.adapter.MyPictureAdapter
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Topic

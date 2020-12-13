@@ -13,4 +13,5 @@
     <color name="transparent">#00000000</color>
     <color name="disabled">#9E9E9E</color>
     <color name="black_alpha">#CC000000</color>
+    <color name="red">#FF0000</color>
 </resources>

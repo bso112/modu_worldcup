@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -69,6 +70,7 @@ class TopicCommentDialog : DialogFragment() {
                 }else{
                     tv_reply_to.visibility = View.INVISIBLE;
                 }
+
             }
 
         })
@@ -82,7 +84,6 @@ class TopicCommentDialog : DialogFragment() {
         })
 
         mCommentViewModel.getTopicComments(topic.mId);
-
 
         btn_submit.setOnClickListener {
             val date = Calendar.getInstance().time;

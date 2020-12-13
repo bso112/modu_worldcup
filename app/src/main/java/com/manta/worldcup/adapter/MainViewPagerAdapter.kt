@@ -9,7 +9,7 @@ import com.manta.worldcup.activity.fragment.MyTopicFragment
 import com.manta.worldcup.activity.fragment.TopicFragment
 
 
-class ViewPageAdapter(fm : FragmentManager, lifecycle : Lifecycle) : FragmentStateAdapter(fm, lifecycle){
+class MainViewPageAdapter(fm : FragmentManager, lifecycle : Lifecycle) : FragmentStateAdapter(fm, lifecycle){
 
 
     override fun getItemCount(): Int {

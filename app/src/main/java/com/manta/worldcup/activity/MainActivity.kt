@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.manta.worldcup.R
-import com.manta.worldcup.adapter.ViewPageAdapter
+import com.manta.worldcup.adapter.MainViewPageAdapter
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.UserViewModel
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mViewPagerAdapter: ViewPageAdapter;
+    private lateinit var mMainViewPagerAdapter: MainViewPageAdapter;
     private val mUserViewModel : UserViewModel by lazy{
         ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mViewPagerAdapter = ViewPageAdapter(supportFragmentManager, lifecycle);
-        vp_mainPager.adapter = mViewPagerAdapter;
+        mMainViewPagerAdapter = MainViewPageAdapter(supportFragmentManager, lifecycle);
+        vp_mainPager.adapter = mMainViewPagerAdapter;
 
         TabLayoutMediator(tl_mainTab, vp_mainPager) { tab, position ->
             when (position) {

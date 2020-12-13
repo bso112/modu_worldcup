@@ -42,7 +42,16 @@ class CommentViewModel(application: Application) : ViewModel() {
         viewModelScope.launch {
             val result = repository.insertTopicComment(comment);
             if(result.isSuccessful){
-                mComments.value?.add(comment);
+                //새로운 리스트를 만든다.
+                val newArrayList =
+                    if(mComments.value == null )
+                        ArrayList<Comment>()
+                    else
+                        ArrayList<Comment>().also { it.addAll(mComments.value!!) }
+                //현재 삽입한 코멘트를 넣고
+                newArrayList.add(comment);
+                //현재 댓글을 갱신한다.
+                mComments.value = newArrayList;
             } else Log.d(javaClass.toString(), result.errorBody().toString());
 
         }
@@ -52,7 +61,17 @@ class CommentViewModel(application: Application) : ViewModel() {
         viewModelScope.launch {
             val result = repository.insertPictureComment(comment);
             if(result.isSuccessful){
-                mComments.value?.add(comment)
+                //새로운 리스트를 만든다.
+                val newArrayList =
+                    if(mComments.value == null )
+                        ArrayList<Comment>()
+                    else
+                        ArrayList<Comment>().also { it.addAll(mComments.value!!) }
+                //현재 삽입한 코멘트를 넣고
+                newArrayList.add(comment);
+                //현재 댓글을 갱신한다.
+                mComments.value = newArrayList;
+
             } else Log.d(javaClass.toString(), result.errorBody().toString());
 
         }
