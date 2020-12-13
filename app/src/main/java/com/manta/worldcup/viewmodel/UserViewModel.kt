@@ -28,8 +28,10 @@ class UserViewModel(private val application: Application) : ViewModel() {
 
     fun CheckUserSignIn(onSignIn: (user: User) -> Unit, onSignOut: ((user: User) -> Unit)? = null) {
         AuthSingleton.getInstance(application).CheckUserSignIn({
-            mUser.value = it;
-            onSignIn(it);
+            if(mUser.value != it){
+                mUser.value = it;
+                onSignIn(it);
+            }
         }, {
             mUser.value = null;
             if (onSignOut != null) onSignOut(it)

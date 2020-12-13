@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_statistic.rv_picture
 
 class StatisticActivity : AppCompatActivity() {
 
-    private val mMyPictureAdapter  = MyPictureAdapter();
+    private lateinit var mMyPictureAdapter : MyPictureAdapter;
    // private val mCommentAdapter = CommentAdapter();
     private val mMasterViewModel: MasterViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory{
@@ -48,17 +48,15 @@ class StatisticActivity : AppCompatActivity() {
         val topic = intent.getSerializableExtra(Constants.EXTRA_TOPICMODEL) as? Topic ?: return;
         val user = intent.getSerializableExtra(Constants.EXTRA_USER) as? User ?: return;
 
+        mMyPictureAdapter = MyPictureAdapter(supportFragmentManager);
+        mMyPictureAdapter.setUser(user);
         rv_picture.adapter = mMyPictureAdapter
         rv_picture.layoutManager = GridLayoutManager(this, 2 );
 
-//        rv_comment.adapter = mCommentAdapter;
-//        rv_comment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         mMasterViewModel.mPictures.observe(this, Observer { mMyPictureAdapter.setPictures(ArrayList(it)) })
-       // mCommentViewModel.mComments.observe(this, Observer { mCommentAdapter.setComments(it); })
 
         mMasterViewModel.getPictures(topic.mId)
-        //mCommentViewModel.getTopicComments(topicId);
 
         tv_show_comment.setOnClickListener {
             TopicCommentDialog().newInstance(topic, user).show(supportFragmentManager, null);

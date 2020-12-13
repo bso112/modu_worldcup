@@ -33,6 +33,7 @@ class AuthSingleton(application: Application) {
             //로그인체크
             val result = mRepository.sendAccessToken();
             if (result.isSuccessful) {
+                //잘못된 토큰이거나 만료되었을때
                 if (result.code() == 202) {
                     withContext(Dispatchers.Main) {
                         result.body()?.let {

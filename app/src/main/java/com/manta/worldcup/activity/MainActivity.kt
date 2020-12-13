@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.manta.worldcup.R
 import com.manta.worldcup.adapter.ViewPageAdapter
 import com.manta.worldcup.helper.Constants
+import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -45,12 +46,10 @@ class MainActivity : AppCompatActivity() {
 
         btn_login_logout.setOnClickListener {
             if(btn_login_logout.text == "로그아웃"){
-                //로그아웃처리
-                btn_login_logout.text = "로그인"
-                et_nickname.text = ""
                 //토큰지우기
                 val pref = this.getSharedPreferences(Constants.PREF_FILENAME_TOKEN, Context.MODE_PRIVATE)
                 pref.edit().putString(Constants.PREF_TOKEN, "").apply();
+                SignOut();
             }else{
                 Intent(this, LoginActivity::class.java).apply {
                     startActivity(this);
@@ -61,24 +60,35 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         //로그인 상태에따라 로그인, 로그아웃표시
         mUserViewModel.CheckUserSignIn({
-            //로그인됬을때
-            btn_login_logout.text = "로그아웃";
-            et_nickname.text = it.mNickname;
-            ll_point.visibility = View.VISIBLE;
-            tv_point.text = it.mCurrPoint.toString();
-            val tier = Constants.getTierIconID(it.mTier);
-            tier?.let{ _tier -> iv_tier.setImageResource(_tier)};
-            iv_tier.visibility = View.VISIBLE;
+            SignIn(it)
         }, {
-            btn_login_logout.text = "로그인"
-            ll_point.visibility = View.INVISIBLE;
-            iv_tier.visibility = View.INVISIBLE;
-            et_nickname.text = "";
+            //로그아웃 되었을때
+           SignOut()
         })
 
+    }
+
+    private fun SignOut(){
+        btn_login_logout.text = "로그인"
+        ll_point.visibility = View.INVISIBLE;
+        iv_tier.visibility = View.INVISIBLE;
+        et_nickname.text = "";
+        Intent(this, LoginActivity::class.java).apply {
+            startActivity(this);
+        }
+    }
+
+    private fun SignIn(user : User){
+        //로그인됬을때
+        btn_login_logout.text = "로그아웃";
+        et_nickname.text = user.mNickname;
+        ll_point.visibility = View.VISIBLE;
+        tv_point.text = user.mCurrPoint.toString();
+        val tier = Constants.getTierIconID(user.mTier);
+        tier?.let{ _tier -> iv_tier.setImageResource(_tier)};
+        iv_tier.visibility = View.VISIBLE;
     }
 
 

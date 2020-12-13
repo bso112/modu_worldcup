@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.frag_mypicture.*
 
 class MyPictureFragement : Fragment(R.layout.frag_mypicture) {
     private lateinit var mUserViewModel: UserViewModel;
-    private val myPictureAdapter: MyPictureAdapter = MyPictureAdapter();
+    private lateinit var myPictureAdapter: MyPictureAdapter;
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -25,12 +25,13 @@ class MyPictureFragement : Fragment(R.layout.frag_mypicture) {
 
         }).get(UserViewModel::class.java);
 
-
-
+        myPictureAdapter = MyPictureAdapter(requireActivity().supportFragmentManager)
         rv_picture.layoutManager = GridLayoutManager(context, 2)
-
         rv_picture.adapter = myPictureAdapter;
-        //rv_picture.addItemDecoration(SpaceItemDecoration(80))
+
+        mUserViewModel.mUser.observe(this, Observer {user->
+            myPictureAdapter.setUser(user);
+        })
 
         mUserViewModel.mPictures.observe(this, Observer {
             myPictureAdapter.setPictures(ArrayList(it));

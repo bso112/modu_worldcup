@@ -12,7 +12,7 @@
         android:id="@+id/sign_in_button"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="@drawable/rounded_corner_fg"
+        android:background="@drawable/rounded_corner"
         android:elevation="5dp"
         android:paddingHorizontal="15dp"
         android:paddingVertical="10dp"

@@ -12,4 +12,5 @@
     <color name="primary_weak">#f3f3f3</color>
     <color name="transparent">#00000000</color>
     <color name="disabled">#9E9E9E</color>
+    <color name="black_alpha">#CC000000</color>
 </resources>

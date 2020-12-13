@@ -3,6 +3,7 @@ package com.manta.worldcup.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
@@ -11,17 +12,43 @@ import kotlinx.android.synthetic.main.item_comment.view.*
 
 class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
-    private var mDataset : ArrayList<Comment> =  ArrayList();
+    private var mDataset: ArrayList<Comment> = ArrayList();
+    private var mSelected : Array<Boolean> = emptyArray();
+    private var mOnItemClickListener: OnItemClickListener? = null;
 
-    class CommentViewHolder(view : View) : RecyclerView.ViewHolder(view){
+    interface OnItemClickListener {
+        fun OnItemClick(comment: Comment, isCheckedAsParent: Boolean);
+    }
+
+    inner class CommentViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val mNickname = view.et_nickname;
         val mContent = view.tv_content;
         val mDate = view.tv_date;
 
-        fun setComment(comment : Comment){
+        init {
+            view.setOnClickListener {
+                //기존 셀렉션 대피해놓기.
+                val oldSelection = mSelected[adapterPosition];
+                //셀렉션 클리어
+                mSelected.fill(false);
+                mSelected[adapterPosition] = !oldSelection;
+                mOnItemClickListener?.OnItemClick(mDataset[adapterPosition], mSelected[adapterPosition]);
+                //다시 그리기
+                notifyDataSetChanged()
+            }
+        }
+
+        fun setComment(comment: Comment) {
             mNickname.text = comment.mWriter;
             mContent.text = comment.mContents;
-            mDate.text = comment.mDate.toString();
+            mDate.text = comment.mDate
+            //선택표시
+            if (mSelected[adapterPosition])
+                view.background = ResourcesCompat.getDrawable(view.resources, R.drawable.comment_border_selected, null);
+            else
+                view.background = ResourcesCompat.getDrawable(view.resources, R.drawable.comment_border, null);
+
+
         }
     }
 
@@ -59,10 +86,15 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>(
         holder.setComment(mDataset[position]);
     }
 
-    fun setComments(comments : ArrayList<Comment>){
+    fun setComments(comments: ArrayList<Comment>) {
         val result = DiffUtil.calculateDiff(CommentDiffUtilCallback(mDataset, comments))
         mDataset = comments;
+        mSelected = Array(mDataset.size) {false}
         result.dispatchUpdatesTo(this)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        mOnItemClickListener = listener;
     }
 
 }

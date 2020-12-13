@@ -15,13 +15,18 @@ import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.MasterViewModel
 import kotlinx.android.synthetic.main.activity_game.*
+import java.lang.Math.pow
 import kotlin.collections.ArrayList
+import kotlin.math.ceil
+import kotlin.math.log2
 
 class GameActivity : AppCompatActivity() {
 
     private lateinit var mPictureModels: ArrayList<PictureModel>;
     private lateinit var mTopic: Topic;
     private lateinit var mPlayer: User;
+    //토픽에 있는 사진의 총 갯수
+    private var mPictureSum = 0;
 
     private val mMasterViewModel: MasterViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -44,6 +49,7 @@ class GameActivity : AppCompatActivity() {
         //서버에서 받아온 사진 데이터를 copy해서 어댑터에 넣는다.
         mMasterViewModel.mPictures.observe(this, androidx.lifecycle.Observer {
             mPictureModels = ArrayList(it);
+            mPictureSum = mPictureModels.size;
             mPictureModels.shuffle();
             showImage();
         })
@@ -105,6 +111,14 @@ class GameActivity : AppCompatActivity() {
 
     fun showImage() {
         if (mPictureModels.size < 2) return;
+        val round = pow(2.0, ceil(log2(mPictureModels.size.toDouble()))).toInt();
+        var title = "";
+        if (round == 2)
+            title = "결승 (${mPictureModels.size}/${mPictureSum})"
+        else
+            title = "${round}강 (${mPictureModels.size}/${mPictureSum})"
+
+        tv_title.text = title;
         tv_picture_name_A.text = mPictureModels[0].mPictureName;
         tv_picture_name_B.text = mPictureModels[1].mPictureName;
         val url1 = Constants.BASE_URL + "image/get/${mPictureModels[0].mId}/";
