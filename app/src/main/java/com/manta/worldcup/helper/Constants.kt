@@ -38,8 +38,8 @@ object Constants {
 
     const val NOTIFICATION_CHANNEL_ID = "worldcup"
     const val NOTIFICATION_CHANNEL_NAME = "worldcup"
-    const val NOTIFICATION_ID = 1;
-
+    const val NOTIFICATION_ID = 2;
+    const val NOTIFICATION_ID_SUMMERY = 1;
     /**
      * 토픽생성할때 드는 포인트
      */
