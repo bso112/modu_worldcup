@@ -24,6 +24,8 @@ data class Comment (
      */
     @SerializedName("content_id")
     val mContentID : Long,
+    @SerializedName("content_owner_email")
+    val mContentOwnerEamil : String,
     /**
      * 이 댓글의 부모 댓글의 id를 의미한다.
      */

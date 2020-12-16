@@ -25,18 +25,18 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>(
         val mContent = view.tv_content;
         val mDate = view.tv_date;
 
-        init {
-            view.setOnClickListener {
-                //기존 셀렉션 대피해놓기.
-                val oldSelection = mSelected[adapterPosition];
-                //셀렉션 클리어
-                mSelected.fill(false);
-                mSelected[adapterPosition] = !oldSelection;
-                mOnItemClickListener?.OnItemClick(mDataset[adapterPosition], mSelected[adapterPosition]);
-                //다시 그리기
-                notifyDataSetChanged()
-            }
-        }
+//        init {
+//            view.setOnClickListener {
+//                //기존 셀렉션 대피해놓기.
+//                val oldSelection = mSelected[adapterPosition];
+//                //셀렉션 클리어
+//                mSelected.fill(false);
+//                mSelected[adapterPosition] = !oldSelection;
+//                mOnItemClickListener?.OnItemClick(mDataset[adapterPosition], mSelected[adapterPosition]);
+//                //다시 그리기
+//                notifyDataSetChanged()
+//            }
+//        }
 
         fun setComment(comment: Comment) {
             mNickname.text = comment.mWriter;

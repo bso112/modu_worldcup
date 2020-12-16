@@ -14,4 +14,8 @@ interface AuthAPI {
 
     @POST("auth/verify_accessToken")
     suspend fun sendAceessToken() : Response<User>
+
+    @FormUrlEncoded
+    @POST("firebase_token/register")
+    suspend fun registerFirebaseToken(@Field("email") userEmail : String, @Field("token") token : String);
 }

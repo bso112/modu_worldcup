@@ -38,4 +38,10 @@ class UserViewModel(private val application: Application) : ViewModel() {
         });
     }
 
+    fun registerFirebaseToken(userEmail : String,  token : String){
+        viewModelScope.launch {
+            mRepository.registerFirebaseToken(userEmail, token);
+        }
+    }
+
 }

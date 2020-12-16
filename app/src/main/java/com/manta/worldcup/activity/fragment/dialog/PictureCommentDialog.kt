@@ -87,8 +87,7 @@ class PictureCommentDialog : DialogFragment() {
             val locale = requireContext().applicationContext.resources.configuration.locale;
             val comment = Comment(
                 0, et_nickname.text.toString(), player.mEmail, et_content.text.toString(),
-                SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date), pictureModel.mId,
-                mParentComment?.mId, mParentComment?.mWriterEmail)
+                SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date), pictureModel.mId, pictureModel.mOwnerEmail)
             mCommentViewModel.insertPictureComment(comment);
             //작성 후 덧글창 비우기
             et_content.setText("");

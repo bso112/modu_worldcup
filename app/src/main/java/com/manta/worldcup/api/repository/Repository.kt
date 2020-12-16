@@ -39,10 +39,13 @@ class Repository(application : Application) {
 
     suspend fun sendAccessToken() = authAPI.sendAceessToken();
 
+    suspend fun registerFirebaseToken(userEmail : String,  token : String) = authAPI.registerFirebaseToken(userEmail, token)
+
     suspend fun addPoint(amount : Int, email : String) = topicAPI.addPoint(amount, email);
 
     suspend fun addwinCnt(pictureID : Long) = topicAPI.addWinCnt(pictureID);
 
     suspend fun getUser(email : String) = topicAPI.getUser(email);
+
 
 }

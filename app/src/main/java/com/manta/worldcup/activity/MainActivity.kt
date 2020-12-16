@@ -3,17 +3,24 @@ package com.manta.worldcup.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.messaging.FirebaseMessaging
 import com.manta.worldcup.R
 import com.manta.worldcup.adapter.MainViewPageAdapter
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,9 +39,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         mMainViewPagerAdapter = MainViewPageAdapter(supportFragmentManager, lifecycle);
         vp_mainPager.adapter = mMainViewPagerAdapter;
 
+        mMainViewPagerAdapter
         TabLayoutMediator(tl_mainTab, vp_mainPager) { tab, position ->
             when (position) {
                 0 -> { tab.text = "토픽" }
@@ -89,6 +98,19 @@ class MainActivity : AppCompatActivity() {
         val tier = Constants.getTierIconID(user.mTier);
         tier?.let{ _tier -> iv_tier.setImageResource(_tier)};
         iv_tier.visibility = View.VISIBLE;
+    
+        //파이어베이스 클라우드 메시징을 위한 토큰 요청
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(Constants.LOG_TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            //웹서버에 토큰 등록
+            mUserViewModel.registerFirebaseToken(user.mEmail, token!!);
+        })
     }
 
 

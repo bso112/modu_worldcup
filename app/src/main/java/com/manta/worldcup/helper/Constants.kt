@@ -36,7 +36,9 @@ object Constants {
     const val PREF_FILENAME_TOKEN = "com.manta.worldcup.PREF_FILENAME_TOKEN"
     const val PREF_TOKEN = "com.manta.worldcup.PREF_TOKEN"
 
-
+    const val NOTIFICATION_CHANNEL_ID = "worldcup"
+    const val NOTIFICATION_CHANNEL_NAME = "worldcup"
+    const val NOTIFICATION_ID = 1;
 
     /**
      * 토픽생성할때 드는 포인트
