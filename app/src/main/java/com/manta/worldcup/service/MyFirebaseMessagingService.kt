@@ -20,6 +20,7 @@ import com.manta.worldcup.helper.Constants
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
+
     var mNotificationCnt = 0;
     val NOTIFICATION_GROUP_COMMENT = "comment"
     private val mNotificationManager: NotificationManager by lazy {
@@ -75,6 +76,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setGroup(NOTIFICATION_GROUP_COMMENT)
             .setGroupSummary(true)
             .build()
+
+        //notify시의 id가 같다면 이미 있는걸 갱신한다.
 
         mNotificationManager.notify(Constants.NOTIFICATION_ID_SUMMERY, notificationSummary)
     }
