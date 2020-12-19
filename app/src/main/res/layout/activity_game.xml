@@ -56,13 +56,16 @@
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1" />
 
-                <TextView
+                <com.manta.worldcup.view.CustomTextOutLineView
                     android:id="@+id/tv_picture_name_A"
                     style="@style/TextAppearance.AppCompat.Large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:textSize="30sp"
+                    app:textStroke="true"
+                    app:textStrokeColor="@color/black"
+                    app:textStrokeWidth="5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -105,13 +108,16 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
 
-                <TextView
+                <com.manta.worldcup.view.CustomTextOutLineView
                     android:id="@+id/tv_picture_name_B"
                     style="@style/TextAppearance.AppCompat.Large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:textSize="30sp"
+                    app:textStroke="true"
+                    app:textStrokeColor="@color/black"
+                    app:textStrokeWidth="5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.501"

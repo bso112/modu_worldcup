@@ -65,6 +65,7 @@ class AddTopicActivity : AppCompatActivity() {
                     Topic(0, et_title.text.toString(), et_content.text.toString(), user.mNickname, 0, user.mEmail),
                     mTopicPictureAdapter.getPictures()
                 )
+                setResult(RESULT_OK);
                 finish();
 
             }

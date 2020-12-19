@@ -72,9 +72,9 @@ class PictureCommentDialog : DialogFragment() {
             }
         })
         //닉네임 적는 란 비활성화
-        et_nickname.setText(player.mNickname);
-        et_nickname.isEnabled = false;
-        et_nickname.setTextColor(resources.getColor(R.color.disabled))
+        tv_user_nickname.setText(player.mNickname);
+        tv_user_nickname.isEnabled = false;
+        tv_user_nickname.setTextColor(resources.getColor(R.color.disabled))
 
         mCommentViewModel.mComments.observe(this, androidx.lifecycle.Observer {
             mCommentAdapter.setComments(it);
@@ -86,7 +86,7 @@ class PictureCommentDialog : DialogFragment() {
             val date = Calendar.getInstance().time;
             val locale = requireContext().applicationContext.resources.configuration.locale;
             val comment = Comment(
-                0, et_nickname.text.toString(), player.mEmail, et_content.text.toString(),
+                0, tv_user_nickname.text.toString(), player.mEmail, et_content.text.toString(),
                 SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date), pictureModel.mId, pictureModel.mOwnerEmail)
             mCommentViewModel.insertPictureComment(comment);
             //작성 후 덧글창 비우기

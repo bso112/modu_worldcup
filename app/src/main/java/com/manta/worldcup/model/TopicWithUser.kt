@@ -18,7 +18,13 @@ data class TopicJoinUser (
     @SerializedName("tier")
     val mTier : Int,
     @SerializedName("point")
-    val mCurrPoint : Int){
+    val mCurrPoint : Int,
+    @SerializedName("like")
+    val mLike : Int = 0,
+    @SerializedName("dislike")
+    val mDislike : Int = 0,
+    @SerializedName("view")
+    val mView : Int = 0){
 
-    fun getTopic() : Topic = Topic(mId, mTitle, mDescription, mManagerName, mImageLength, mManagerEmail)
+    fun getTopic() : Topic = Topic(mId, mTitle, mDescription, mManagerName, mImageLength, mManagerEmail, mLike, mDislike, mView);
 }

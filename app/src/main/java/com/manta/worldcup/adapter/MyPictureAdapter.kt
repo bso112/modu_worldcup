@@ -1,9 +1,9 @@
 package com.manta.worldcup.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
@@ -27,20 +27,33 @@ import kotlin.math.floor
 class MyPictureAdapter(val mFragementManager : FragmentManager) : RecyclerView.Adapter<MyPictureAdapter.MyPictureViewHolder>() {
 
     private var mDataset: ArrayList<PictureModel> = ArrayList();
+    private var mNotification = emptySet<String>()
     private var mUser : User? = null;
 
     inner class MyPictureViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val mPictureView: ImageView = view.iv_picture;
         val mWinCnt: TextView = view.tv_winCnt;
-        val mCommentBtn : ImageButton = view.btn_comment
+        val mNotificationBadge = view.iv_notification;
 
         fun setPicture(picture: PictureModel) {
             Glide.with(view.context).load(Constants.BASE_URL + "image/get/${picture.mId}").into(mPictureView);
             mWinCnt.text = if(picture.WinCnt >= 1000) "${floor(picture.WinCnt / 100.0F) / 10.0F}K" else picture.WinCnt.toString();
-            mCommentBtn.setOnClickListener {
+            mPictureView.setOnClickListener {
                 if(mUser != null)
                     PictureCommentDialog().newInstance(picture, mUser!!).show(mFragementManager, null);
+
+                if(mNotificationBadge.visibility == View.VISIBLE){
+                    mNotificationBadge.visibility = View.INVISIBLE;
+                    //노피티케이션 확인했으니 삭제.
+                    val pref = view.context.applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
+                    val pictureNotification = pref.getStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, emptySet());
+                    pictureNotification?.remove("${picture.mId}")
+                    pref.edit().putStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, pictureNotification).apply();
+                }
             }
+
+            if(mNotification.contains(picture.mId.toString()))
+                mNotificationBadge.visibility = View.VISIBLE;
         }
     }
 
@@ -91,5 +104,11 @@ class MyPictureAdapter(val mFragementManager : FragmentManager) : RecyclerView.A
     fun setUser(user : User?){
         mUser = user;
     }
+
+    fun setNotification(notifications : Set<String>){
+        mNotification = notifications;
+        notifyDataSetChanged()
+    }
+
 
 }

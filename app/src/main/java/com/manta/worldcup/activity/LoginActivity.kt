@@ -24,7 +24,12 @@ import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var mGoogleSignInClient: GoogleSignInClient;
+    //다른 액티비티로 가도 유지하기 위해(로그아웃을 하려면 유지할 필요가 있음) companion object로 뺀다.
+    companion object {
+        private lateinit var mGoogleSignInClient: GoogleSignInClient;
+        fun isGoogleSignInInitialized() = ::mGoogleSignInClient.isInitialized;
+    }
+
     private lateinit var mAuth: FirebaseAuth
     private val RC_SIGN_IN = 0;
 
@@ -39,26 +44,46 @@ class LoginActivity : AppCompatActivity() {
 
         FirebaseApp.initializeApp(this)
 
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        mAuth = FirebaseAuth.getInstance();
 
         sign_in_button.setOnClickListener {
             signIn();
         }
 
+
     }
 
-    private fun updateUI(currentUser: FirebaseUser?) {
-        finish();
 
+    override fun onStart() {
+        super.onStart()
+        //이미 mGoogleSignInClient이 있으면 다시 받는다.
+        if (isGoogleSignInInitialized()) {
+            mGoogleSignInClient.signOut().addOnSuccessListener {
+                // Configure Google Sign In
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build()
+
+                mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+                mAuth = FirebaseAuth.getInstance();
+            }
+            //초기화
+        } else {
+            // Configure Google Sign In
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+            mAuth = FirebaseAuth.getInstance();
+        }
+    }
+
+    private fun onSignInSuccess(currentUser: FirebaseUser?) {
+        finish();
     }
 
     private fun signIn() {
@@ -103,7 +128,7 @@ class LoginActivity : AppCompatActivity() {
                             pref.edit().putString(Constants.PREF_TOKEN, result.body()).apply();
 
                             val user = mAuth.currentUser
-                            updateUI(user)
+                            onSignInSuccess(user)
                         } else
                             Snackbar.make(findViewById(R.id.parent), "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                     }
@@ -112,14 +137,13 @@ class LoginActivity : AppCompatActivity() {
                     Log.w(javaClass.toString(), "signInWithCredential:failure", task.exception)
                     // ...
                     Snackbar.make(findViewById(R.id.parent), "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-                    updateUI(null)
+                    onSignInSuccess(null)
                 }
 
             }
     }
 
     private suspend fun authenticateWithWebServer(idToken: String) = mRepository.sendIdToken(idToken);
-
 
 
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_home"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="홈"/>
+    <item
+        android:id="@+id/page_all_topic"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="전체 토픽"/>
+    <item
+        android:id="@+id/page_my_topic"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="내 토픽"/>
+    <item
+        android:id="@+id/page_my_picture"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="내 사진"/>
+</menu>

@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.manta.worldcup.activity.fragment.MyPictureFragement
 import com.manta.worldcup.activity.fragment.MyTopicFragment
+import com.manta.worldcup.activity.fragment.HomeFragment
 import com.manta.worldcup.activity.fragment.TopicFragment
 
 
@@ -13,15 +14,16 @@ class MainViewPageAdapter(fm : FragmentManager, lifecycle : Lifecycle) : Fragmen
 
 
     override fun getItemCount(): Int {
-        return 3
+        return 4
     }
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> TopicFragment()
-            1 -> MyTopicFragment();
-            2 -> MyPictureFragement()
-            else -> Fragment() //이 경우 어떻게 되는거지?
+            0 -> HomeFragment();
+            1 -> TopicFragment();
+            2 -> MyTopicFragment();
+            3 -> MyPictureFragement()
+            else -> Fragment()
         }
     }
 

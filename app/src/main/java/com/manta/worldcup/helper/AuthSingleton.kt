@@ -3,6 +3,7 @@ package com.manta.worldcup.helper
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.manta.worldcup.activity.AddTopicActivity
 import com.manta.worldcup.activity.LoginActivity
 import com.manta.worldcup.api.RetrofitInstance
@@ -46,6 +47,8 @@ class AuthSingleton(application: Application) {
                         result.body()?.let { onSignIn(it) };
                     }
                 }
+            } else{
+                Log.d(Constants.LOG_TAG, result.errorBody().toString());
             }
         }
     }

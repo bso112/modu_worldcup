@@ -64,4 +64,13 @@ interface TopicAPI {
     @POST("point/consume")
     suspend fun addPoint(@Field("amount") amount : Int, @Field("email") email : String);
 
+    @FormUrlEncoded
+    @POST("topic/recommend")
+    suspend fun updateRecommend(@Field("like") like : Boolean, @Field("topic_id") topicId : Long);
+
+    @FormUrlEncoded
+    @POST("topic/increase_view")
+    suspend fun increaseView(@Field("topic_id") topicId : Long);
+
+
 }

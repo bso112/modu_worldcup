@@ -1,3 +1,4 @@
+
 package com.manta.worldcup.viewmodel
 
 import android.app.Application
@@ -18,7 +19,7 @@ class UserViewModel(private val application: Application) : ViewModel() {
 
 
     fun getAllPicture() {
-        if(mUser.value == null) return;
+        if (mUser.value == null) return;
         viewModelScope.launch {
             val result = mRepository.getAllPictures(mUser.value!!.mEmail)
             if (result.isSuccessful)
@@ -28,19 +29,29 @@ class UserViewModel(private val application: Application) : ViewModel() {
 
     fun CheckUserSignIn(onSignIn: (user: User) -> Unit, onSignOut: ((user: User) -> Unit)? = null) {
         AuthSingleton.getInstance(application).CheckUserSignIn({
-            if(mUser.value != it){
+            if (mUser.value != it) {
                 mUser.value = it;
-                onSignIn(it);
             }
+            onSignIn(it);
         }, {
             mUser.value = null;
             if (onSignOut != null) onSignOut(it)
         });
     }
 
-    fun registerFirebaseToken(userEmail : String,  token : String){
+    fun registerFirebaseToken(userEmail: String, token: String) {
         viewModelScope.launch {
             mRepository.registerFirebaseToken(userEmail, token);
+        }
+    }
+
+     fun updateUserNickname(nickname : String, onSucess : ()->Unit){
+        viewModelScope.launch {
+            mUser.value?.mEmail?.let {
+                val response = mRepository.updateUserNickname(nickname, it)
+                if(response.isSuccessful)
+                    onSucess();
+            };
         }
     }
 

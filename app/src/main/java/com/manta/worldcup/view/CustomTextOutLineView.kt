@@ -10,7 +10,7 @@ import com.manta.worldcup.R
 
 
 @SuppressLint("AppCompatCustomView")
-class CustomTextOutLineView : EditText {
+class CustomTextOutLineView : TextView {
 
     private var stroke = false
     private var strokeWidth = 0.0f

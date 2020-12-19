@@ -21,7 +21,7 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>(
     }
 
     inner class CommentViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        val mNickname = view.et_nickname;
+        val mNickname = view.tv_user_nickname;
         val mContent = view.tv_content;
         val mDate = view.tv_date;
 

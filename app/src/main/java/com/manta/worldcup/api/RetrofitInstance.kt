@@ -50,5 +50,9 @@ class RetrofitInstance(context: Context) {
         retrofit.create(AuthAPI::class.java);
     }
 
+    val userAPI : UserAPI by lazy{
+        retrofit.create(UserAPI::class.java)
+    }
+
 
 }

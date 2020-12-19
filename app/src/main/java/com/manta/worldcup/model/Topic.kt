@@ -15,5 +15,11 @@ data class Topic(
     @SerializedName("image_length")
     val mImageLength : Int,
     @SerializedName("manager_email")
-    val mManagerEmail : String
+    val mManagerEmail : String,
+    @SerializedName("like")
+    val mLike : Int = 0,
+    @SerializedName("dislike")
+    val mDislike : Int = 0,
+    @SerializedName("view")
+    val mView : Int = 0
 ) : Serializable

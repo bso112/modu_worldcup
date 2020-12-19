@@ -1,5 +1,6 @@
 package com.manta.worldcup.activity.fragment
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -17,20 +18,17 @@ import com.manta.worldcup.adapter.TopicAdapter
 import com.manta.worldcup.helper.AuthSingleton
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
-import com.manta.worldcup.viewmodel.UserViewModel
 import com.manta.worldcup.viewmodel.TopicViewModel
+import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.frag_topic.*
 import kotlin.math.abs
 
-/**
- * by 변성욱
- * 전체 토픽을 보여주는 프래그먼트
- */
-class TopicFragment : Fragment(R.layout.frag_topic) {
+class TopicFragment : Fragment(R.layout.frag_topic){
     private lateinit var mTopicViewModel: TopicViewModel;
     private lateinit var mUserViewModel: UserViewModel;
     private lateinit var mTopicAdaptor: TopicAdapter;
 
+    private val REQUST_ADD_TOPIC = 0;
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,8 +38,15 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
 
         mTopicAdaptor = TopicAdapter(context!!);
 
+        //당겨서 토픽 리프레쉬
+        refresh_topic.setOnRefreshListener {
+            mTopicViewModel.getAllTopic();
+        }
 
-        mTopicViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
+        rv_topic.adapter = mTopicAdaptor;
+        rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        mTopicViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return TopicViewModel(activity!!.application) as T;
             }
@@ -55,14 +60,12 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
         }).get(UserViewModel::class.java);
 
 
-        //토픽받아오기
-        mTopicViewModel.getAllTopic();
 
-        //당겨서 토픽 리프레쉬
-        refresh_topic.setOnRefreshListener { mTopicViewModel.getAllTopic(); }
-
-        rv_topic.adapter = mTopicAdaptor;
-        rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        mTopicViewModel.mDataset.observe(this, Observer {topics->
+            val copyList = ArrayList(topics)
+            mTopicAdaptor.setTopics(copyList);
+            refresh_topic.isRefreshing = false;
+        })
 
         //토픽 클릭시 게임 or 선수출진 다이어로그 띄우기
         mTopicAdaptor.setOnItemClickListener(object : TopicAdapter.OnItemClickListener {
@@ -74,7 +77,7 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
                 fragmentManager?.let { OnTopicClickDialog().newInstance(topicJoinUser.getTopic(), mUserViewModel.mUser.value!!).show(it, null) };
             }
         })
-        
+
         //토픽버튼 눌렀을때
         btn_add_topic.setOnClickListener {
             AuthSingleton.getInstance(activity!!.application).CheckUserSignIn(
@@ -86,7 +89,7 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
                         }else{
                             Intent(context, AddTopicActivity::class.java).apply {
                                 putExtra(Constants.EXTRA_USER, user)
-                                startActivity(this);
+                                startActivityForResult(this, REQUST_ADD_TOPIC);
                             }
                         }})
                 },
@@ -97,17 +100,8 @@ class TopicFragment : Fragment(R.layout.frag_topic) {
                     }
                 })
         }
-
-        mTopicViewModel.mDataset.observe(this, Observer {
-            mTopicAdaptor.setTopics(it);
-            refresh_topic.isRefreshing = false;
-        })
-
     }
 
-    override fun onStart() {
-        super.onStart()
-        //토픽받아오기
-        mTopicViewModel.getAllTopic();
-    }
+
+
 }

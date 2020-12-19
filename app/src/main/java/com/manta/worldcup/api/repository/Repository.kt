@@ -11,6 +11,7 @@ class Repository(application : Application) {
 
     private val topicAPI  = RetrofitInstance(application).topicAPI;
     private val authAPI = RetrofitInstance(application).authAPI;
+    private val userAPI = RetrofitInstance(application).userAPI;
 
     suspend fun getAllTopicJoinUser() =  topicAPI.getAllTopicJoinUser();
 
@@ -47,5 +48,9 @@ class Repository(application : Application) {
 
     suspend fun getUser(email : String) = topicAPI.getUser(email);
 
+    suspend fun updateRecommned(like : Boolean, topicId : Long) = topicAPI.updateRecommend(like, topicId);
 
+    suspend fun increaseView( topicId : Long) = topicAPI.increaseView(topicId);
+
+    suspend fun updateUserNickname(nickname : String, email : String) = userAPI.updateUserNickname(nickname, email)
 }

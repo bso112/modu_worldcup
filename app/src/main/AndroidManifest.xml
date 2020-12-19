@@ -3,7 +3,8 @@
     package="com.manta.worldcup">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Worldcup"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.HomeActivity"></activity>
 
         <service
             android:name=".service.MyFirebaseMessagingService"
@@ -20,7 +22,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
 
         <activity android:name=".activity.StatisticActivity" />
         <activity android:name=".activity.LoginActivity" />
@@ -37,8 +38,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
     </application>
 
 </manifest>

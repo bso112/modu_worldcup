@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -75,9 +74,9 @@ class TopicCommentDialog : DialogFragment() {
 //
 //        })
         //닉네임 적는 란 비활성화
-        et_nickname.setText(player.mNickname);
-        et_nickname.isEnabled = false;
-        et_nickname.setTextColor(resources.getColor(R.color.disabled))
+        tv_user_nickname.setText(player.mNickname);
+        tv_user_nickname.isEnabled = false;
+        tv_user_nickname.setTextColor(resources.getColor(R.color.disabled))
 
         mCommentViewModel.mComments.observe(this, androidx.lifecycle.Observer {
             mCommentAdapter.setComments(it);
@@ -89,7 +88,7 @@ class TopicCommentDialog : DialogFragment() {
             val date = Calendar.getInstance().time;
             val locale = requireContext().applicationContext.resources.configuration.locale;
             val comment = Comment(
-                0, et_nickname.text.toString(), player.mEmail, et_content.text.toString(),
+                0, tv_user_nickname.text.toString(), player.mEmail, et_content.text.toString(),
                 SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date), topic.mId, topic.mManagerEmail)
             mCommentViewModel.insertTopicComment(comment);
             //작성 후 덧글창 비우기

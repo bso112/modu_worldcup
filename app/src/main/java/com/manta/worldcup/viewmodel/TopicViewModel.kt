@@ -35,5 +35,20 @@ class TopicViewModel(private val application: Application) : ViewModel() {
         }
     }
 
+    /**
+     * @param like true if like, false if dislike
+     */
+    fun UpdateRecommend(like : Boolean, topicId : Long){
+        viewModelScope.launch {
+            mRepository.updateRecommned(like, topicId)
+        }
+    }
+
+    fun increaseView(topicId : Long){
+        viewModelScope.launch {
+            mRepository.increaseView(topicId);
+        }
+    }
+
 
 }

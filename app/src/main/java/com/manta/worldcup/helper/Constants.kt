@@ -23,6 +23,8 @@ object Constants {
     const val LOG_TAG = "com.manta.worldcup"
 
     const val EXTRA_TOPIC_ID = "com.manta.worldcup.EXTRA_TOPIC_ID"
+    const val EXTRA_NOTIFIED_TOPIC_ID = "com.manta.worldcup.EXTRA_PICTURE_ID"
+    const val EXTRA_NOTIFIED_PICTURE_ID = "com.manta.worldcup.EXTRA_PICTURE_ID"
     const val EXTRA_PICTURE_NAMES = "com.manta.worldcup.EXTRA_PICTURE_NAMES"
     const val EXTRA_SUBMIT_LISTENER = "com.manta.worldcup.EXTRA_SUBMIT_LISTENER"
     const val EXTRA_TOPICMODEL = "com.manta.worldcup.EXTRA_TOPIC"
@@ -35,11 +37,19 @@ object Constants {
     const val PREF_COOKIE = "com.manta.worldcup.PREF_COOKIE"
     const val PREF_FILENAME_TOKEN = "com.manta.worldcup.PREF_FILENAME_TOKEN"
     const val PREF_TOKEN = "com.manta.worldcup.PREF_TOKEN"
+    const val PREF_FILE_NOTIFICATION = "com.manta.worldcup.PREF_FILE_NOTIFICATION"
+    const val PREF_NOTIFIED_TOPIC_ID = "com.manta.worldcup.PREF_NOTIFIED_TOPIC_ID"
+    const val PREF_NOTIFIED_PICTURE_ID = "com.manta.worldcup.PREF_NOTIFIED_PICTURE_ID"
 
     const val NOTIFICATION_CHANNEL_ID = "worldcup"
     const val NOTIFICATION_CHANNEL_NAME = "worldcup"
     const val NOTIFICATION_ID = 2;
     const val NOTIFICATION_ID_SUMMERY = 1;
+
+    /**
+     * 토픽 혹은 사진에 코멘트가 달렸다는 인텐트 액션
+     */
+    const val ACTION_SIGNIN = "ACTION_SIGNIN"
     /**
      * 토픽생성할때 드는 포인트
      */
@@ -105,10 +115,10 @@ object Constants {
         val alertDialog: AlertDialog? = context?.let { context ->
             val builder = AlertDialog.Builder(context)
             builder.apply {
-                setPositiveButton("확인") { dialog, which ->
+                setPositiveButton("확인") { _, _ ->
                     onClickOk()
                 }
-                setNegativeButton("취소") { dialog, which ->
+                setNegativeButton("취소") { _, _ ->
                     if (onClickCancle != null) {
                         onClickCancle()
                     }

@@ -48,7 +48,7 @@
 
 
             <EditText
-                android:id="@+id/et_nickname"
+                android:id="@+id/tv_user_nickname"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_comment_title"
