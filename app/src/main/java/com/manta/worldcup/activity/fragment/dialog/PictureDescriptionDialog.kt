@@ -2,10 +2,12 @@ package com.manta.worldcup.activity.fragment.dialog
 
 
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.manta.worldcup.R
@@ -14,6 +16,7 @@ import com.manta.worldcup.helper.Constants.EXTRA_SUBMIT_LISTENER
 import kotlinx.android.synthetic.main.dialog_picture_desc.*
 import kotlinx.android.synthetic.main.dialog_picture_desc.view.*
 import java.io.Serializable
+
 
 class PictureDescriptionDialog() : DialogFragment() {
 
@@ -51,6 +54,9 @@ class PictureDescriptionDialog() : DialogFragment() {
             if(pictureNames.contains(pictureName))
                 tv_title_warning.visibility = View.VISIBLE;
             else{
+                //키보드 내리기
+                val inputManager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputManager.hideSoftInputFromWindow(view.et_title.windowToken, 0)
                 tv_title_warning.visibility = View.INVISIBLE;
                 onSubmitListener.onSubmit(pictureName);
                 dismiss();

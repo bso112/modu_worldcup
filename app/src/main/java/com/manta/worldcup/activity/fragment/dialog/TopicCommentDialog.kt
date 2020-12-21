@@ -59,20 +59,7 @@ class TopicCommentDialog : DialogFragment() {
 
         rv_comment.adapter = mCommentAdapter;
         rv_comment.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-//        mCommentAdapter.setOnItemClickListener(object : CommentAdapter.OnItemClickListener{
-//            override fun OnItemClick(comment: Comment, isCheckedAsParent: Boolean) {
-//                //선택한 댓글이 부모로 설정되었으면 댓글을 mParentComment에 저장
-//                if(isCheckedAsParent){
-//                    tv_reply_to.text = comment.mWriter;
-//                    tv_reply_to.visibility = View.VISIBLE;
-//                    mParentComment = comment.copy();
-//                }else{
-//                    tv_reply_to.visibility = View.INVISIBLE;
-//                }
-//
-//            }
-//
-//        })
+
         //닉네임 적는 란 비활성화
         tv_user_nickname.setText(player.mNickname);
         tv_user_nickname.isEnabled = false;

@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/black" />
 
-            <TextView
+            <com.manta.worldcup.view.CustomTextOutLineView
                 android:id="@+id/tv_winner_name"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
@@ -43,7 +43,11 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="15dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                app:textStroke="true"
+                app:textStrokeColor="@color/black"
+                app:textStrokeWidth="5"
+                />
 
         </RelativeLayout>
 

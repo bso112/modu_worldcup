@@ -1,9 +1,9 @@
 package com.manta.worldcup.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,7 +15,8 @@ import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.MasterViewModel
 import kotlinx.android.synthetic.main.activity_add_topic.*
-import kotlinx.android.synthetic.main.activity_add_topic.et_title
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddTopicActivity : AppCompatActivity() {
 
@@ -61,10 +62,14 @@ class AddTopicActivity : AppCompatActivity() {
                 //포인트소모
                 mMasterViewModel.addPoint(Constants.POINT_ADD_TOPIC, user.mEmail);
                 //토픽생성
+                val date = Calendar.getInstance().time;
+                val locale = applicationContext.resources.configuration.locale;
                 mMasterViewModel.insertTopic(
-                    Topic(0, et_title.text.toString(), et_content.text.toString(), user.mNickname, 0, user.mEmail),
+                    Topic(0, SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date),et_title.text.toString(), et_content.text.toString(), user.mNickname, 0, user.mEmail),
                     mTopicPictureAdapter.getPictures()
                 )
+
+
                 setResult(RESULT_OK);
                 finish();
 

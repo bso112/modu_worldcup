@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.StatisticActivity
 import com.manta.worldcup.adapter.TopicAdapter
+import com.manta.worldcup.adapter.TopicAdapter4
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
 import com.manta.worldcup.viewmodel.UserViewModel
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_my_topic.*
 class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
 
     private lateinit var mUserViewModel: UserViewModel;
-    private lateinit var mTopicAdapter: TopicAdapter
+    private lateinit var mTopicAdapter: TopicAdapter4;
     private lateinit var mTopicViewModel: TopicViewModel;
     private val mSigninEventReceiver = object : BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -50,7 +51,7 @@ class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
         }).get(UserViewModel::class.java);
 
 
-        mTopicAdapter = TopicAdapter(requireContext());
+        mTopicAdapter = TopicAdapter4(requireContext());
         rv_topic.adapter = mTopicAdapter;
         rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
@@ -59,7 +60,7 @@ class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
         })
 
 
-        mTopicAdapter.setOnItemClickListener(object : TopicAdapter.OnItemClickListener {
+        mTopicAdapter.setOnItemClickListener(object : TopicAdapter4.OnItemClickListener {
             override fun onItemClick(topicJoinUser: TopicJoinUser) {
                 Intent(context, StatisticActivity::class.java).apply {
                     putExtra(Constants.EXTRA_TOPICMODEL, topicJoinUser.getTopic());

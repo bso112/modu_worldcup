@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class TopicJoinUser (
     @SerializedName("id")
     val mId: Long,
+    @SerializedName("date")
+    val mDate : String,
     @SerializedName("title")
     val mTitle: String,
     @SerializedName("description")
@@ -26,5 +28,5 @@ data class TopicJoinUser (
     @SerializedName("view")
     val mView : Int = 0){
 
-    fun getTopic() : Topic = Topic(mId, mTitle, mDescription, mManagerName, mImageLength, mManagerEmail, mLike, mDislike, mView);
+    fun getTopic() : Topic = Topic(mId, mDate, mTitle, mDescription, mManagerName, mImageLength, mManagerEmail, mLike, mDislike, mView);
 }

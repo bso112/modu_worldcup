@@ -6,6 +6,8 @@ import java.io.Serializable
 data class Topic(
     @SerializedName("id")
     val mId: Long,
+    @SerializedName("date")
+    val mDate : String,
     @SerializedName("title")
     val mTitle: String,
     @SerializedName("description")

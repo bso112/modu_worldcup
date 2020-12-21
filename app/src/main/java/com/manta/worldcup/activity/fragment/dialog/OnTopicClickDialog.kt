@@ -47,6 +47,7 @@ class OnTopicClickDialog() : DialogFragment() {
         val user = arguments?.getSerializable(EXTRA_USER) as? User ?: return view;
 
         view.tv_topic_title.text = topicModel.mTitle;
+
         view.tv_topic_description.text = topicModel.mDescription;
 
 
