@@ -11,24 +11,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
-import kotlinx.android.synthetic.main.item_topic.view.*
+import kotlinx.android.synthetic.main.item_topic4.view.*
 import kotlin.collections.ArrayList
 
 /**
- * item_topic2 을 보여주는 리사이클러뷰 어댑터
+ * item_topic4 을 보여주는 리사이클러뷰 어댑터 (노티피케이션 없이)
  * @author 변성욱
  */
-class TopicAdapter2() : RecyclerView.Adapter<TopicAdapter2.TopicViewHolder>() {
+class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
 
     private var mDataset: List<TopicJoinUser> = ArrayList();
     private var mOnItemClickListener: OnItemClickListener? = null;
     private lateinit var mContext : Context;
 
-
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         mContext = recyclerView.context;
     }
+
 
     interface OnItemClickListener {
         fun onItemClick(topicJoinUser: TopicJoinUser);
@@ -56,37 +56,47 @@ class TopicAdapter2() : RecyclerView.Adapter<TopicAdapter2.TopicViewHolder>() {
 
     inner class TopicViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        val mTumbnail: ImageView = view.iv_thumbnail;
+        val mFirstImg: ImageView = view.iv_first;
+        val mSecondImg: ImageView = view.iv_second;
         val mTitle: TextView = view.tv_title;
         val mManagerName: TextView = view.tv_managerName;
+        val mDate: TextView = view.tv_date;
+        val mTier: ImageView = view.iv_tier
 
 
         init {
             view.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION)
+                if (adapterPosition != RecyclerView.NO_POSITION) {
                     mOnItemClickListener?.onItemClick(mDataset.get(adapterPosition));
+
+                }
             }
         }
 
+
         fun setTopic(data: TopicJoinUser) {
 
-            mContext?.let {
-                val urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
-                Constants.GlideWithHeader(urlToPicture, view, mTumbnail, it);
+            var urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
+            mContext.let {
+                Constants.GlideWithHeader(urlToPicture, view, mFirstImg, it);
+                urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/1";
+                Constants.GlideWithHeader(urlToPicture, view, mSecondImg, it);
 
             }
 
             mTitle.text = data.mTitle;
             mManagerName.text = data.mManagerName;
+            mDate.text = data.mDate;
 
             val tierIconID = Constants.getTierIconID(data.mTier);
             if (tierIconID != null)
-                view.iv_tier.setImageResource(tierIconID);
+                mTier.setImageResource(tierIconID);
+
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic2, parent, false);
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic4, parent, false);
         return TopicViewHolder(view);
     }
 
@@ -103,12 +113,12 @@ class TopicAdapter2() : RecyclerView.Adapter<TopicAdapter2.TopicViewHolder>() {
         val result = DiffUtil.calculateDiff(TopicDiffUtilCallback(mDataset, topics));
         mDataset = topics;
         result.dispatchUpdatesTo(this);
+
     }
 
 
     fun setOnItemClickListener(listenr: OnItemClickListener) {
         mOnItemClickListener = listenr;
     }
-
 
 }

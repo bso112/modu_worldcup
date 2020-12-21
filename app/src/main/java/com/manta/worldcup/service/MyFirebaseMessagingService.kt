@@ -15,6 +15,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.MainActivity
+import com.manta.worldcup.activity.fragment.MyTopicFragment
 import com.manta.worldcup.helper.Constants
 
 
@@ -50,8 +51,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notifyNotification(
                 p0.notification?.title,
                 p0.notification?.body,
-               p0.data["topic_id"] ?: "0",
-               p0.data["picture_id"] ?: "0"
+                p0.data["topic_id"] ?: "0",
+                p0.data["picture_id"] ?: "0"
             );
         }
     }
@@ -65,8 +66,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         SaveNotification(notifiedTopicId, notifiedPictureId)
 
         val notificationIntent = Intent(this, MainActivity::class.java).apply {
-//            putExtra(Constants.EXTRA_NOTIFIED_TOPIC_ID, notifiedTopicId)
-//            putExtra(Constants.EXTRA_NOTIFIED_PICTURE_ID, notifiedPictureId)
+            if (notifiedTopicId != "0")
+                putExtra(Constants.EXTRA_NOTIFIED_TOPIC_ID, notifiedTopicId)
+            else if (notifiedPictureId != "0")
+                putExtra(Constants.EXTRA_NOTIFIED_PICTURE_ID, notifiedPictureId)
         }
 
         val pendingIntent = PendingIntent.getActivity(
@@ -101,7 +104,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     //알림을 받은 topicId나 pictureID를 로컬에 저장한다.
-    private fun SaveNotification(notifiedTopicId: String, notifiedPictureId: String){
+    private fun SaveNotification(notifiedTopicId: String, notifiedPictureId: String) {
         if (!notifiedTopicId.equals("0") || !notifiedPictureId.equals("0")) {
             val sharedPref = applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
             val prefEdit = sharedPref.edit();
@@ -122,6 +125,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(notificationManager: NotificationManager) {
         val notificationChannel = NotificationChannel(

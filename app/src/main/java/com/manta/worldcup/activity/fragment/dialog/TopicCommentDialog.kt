@@ -37,7 +37,7 @@ class TopicCommentDialog : DialogFragment() {
 
     fun newInstance(topic: Topic, player: User): TopicCommentDialog {
         val args = Bundle(2);
-        args.putSerializable(Constants.EXTRA_TOPICMODEL, topic);
+        args.putSerializable(Constants.EXTRA_TOPIC, topic);
         args.putSerializable(Constants.EXTRA_USER, player);
         val fragment = TopicCommentDialog();
         fragment.arguments = args;
@@ -54,7 +54,7 @@ class TopicCommentDialog : DialogFragment() {
         //인풋모드 설정 (EditText가 키보드에 가려지지않게)
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        val topic = requireArguments().getSerializable(Constants.EXTRA_TOPICMODEL) as? Topic ?: return;
+        val topic = requireArguments().getSerializable(Constants.EXTRA_TOPIC) as? Topic ?: return;
         val player = requireArguments().getSerializable(Constants.EXTRA_USER) as? User ?: return;
 
         rv_comment.adapter = mCommentAdapter;

@@ -18,7 +18,7 @@ import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.frag_mypicture.*
 
-class MyPictureFragement : Fragment(R.layout.frag_mypicture) {
+class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
     private lateinit var mUserViewModel: UserViewModel;
     private lateinit var mPictureAdapter: MyPictureAdapter;
     private val mSigninEventReceiver = object : BroadcastReceiver(){
@@ -27,8 +27,16 @@ class MyPictureFragement : Fragment(R.layout.frag_mypicture) {
         }
     }
 
-
-
+    /**
+     * @param mNotifiedPictureId : notificationBanner를 클릭했을때 전달받은 pictureId
+     */
+    fun newInstance(mNotifiedPictureId : String?): MyPictureFragement {
+        val args = Bundle(1)
+        args.putString(Constants.EXTRA_NOTIFIED_PICTURE_ID, mNotifiedPictureId)
+        val fragment = MyPictureFragement()
+        fragment.arguments = args
+        return fragment
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mUserViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
@@ -38,7 +46,10 @@ class MyPictureFragement : Fragment(R.layout.frag_mypicture) {
 
         }).get(UserViewModel::class.java);
 
-        mPictureAdapter = MyPictureAdapter(requireActivity().supportFragmentManager)
+        mPictureAdapter = MyPictureAdapter(
+            requireActivity().supportFragmentManager,
+            arguments?.getString(Constants.EXTRA_NOTIFIED_PICTURE_ID))
+
         rv_picture.layoutManager = GridLayoutManager(context, 2)
         rv_picture.adapter = mPictureAdapter;
 

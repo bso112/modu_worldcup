@@ -43,7 +43,7 @@ class StatisticActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistic)
 
-        val topic = intent.getSerializableExtra(Constants.EXTRA_TOPICMODEL) as? Topic ?: return;
+        val topic = intent.getSerializableExtra(Constants.EXTRA_TOPIC) as? Topic ?: return;
         val user = intent.getSerializableExtra(Constants.EXTRA_USER) as? User ?: return;
 
         mMyPictureAdapter = MyPictureAdapter(supportFragmentManager);

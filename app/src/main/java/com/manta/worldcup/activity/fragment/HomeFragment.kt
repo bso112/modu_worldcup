@@ -10,14 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.OnTopicClickDialog
-import com.manta.worldcup.adapter.TopicAdapter2
-import com.manta.worldcup.adapter.TopicAdapter3
+import com.manta.worldcup.adapter.TopicAdapter_Top10
+import com.manta.worldcup.adapter.TopicAdapter_Banner
 import com.manta.worldcup.model.TopicJoinUser
 import com.manta.worldcup.viewmodel.UserViewModel
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.frag_home.*
-import java.util.*
-import java.util.Arrays.copyOf
 import kotlin.collections.ArrayList
 import kotlin.math.min
 
@@ -29,9 +27,9 @@ import kotlin.math.min
 class HomeFragment : Fragment(R.layout.frag_home) {
     private lateinit var mTopicViewModel: TopicViewModel;
     private lateinit var mUserViewModel: UserViewModel;
-    private lateinit var mTopicAdaptorTop10Recommend: TopicAdapter2;
-    private lateinit var mTopicAdaptorTop10View: TopicAdapter2;
-    private lateinit var mTopicAdaptor: TopicAdapter3;
+    private lateinit var mTopicAdaptorTop10Recommend: TopicAdapter_Top10;
+    private lateinit var mTopicAdaptorTop10View: TopicAdapter_Top10;
+    private lateinit var mTopicAdaptor: TopicAdapter_Banner;
 
     private val REQUST_ADD_TOPIC = 0;
 
@@ -42,8 +40,8 @@ class HomeFragment : Fragment(R.layout.frag_home) {
         if (activity == null) return;
         if (context == null) return;
 
-        mTopicAdaptorTop10Recommend = TopicAdapter2();
-        mTopicAdaptorTop10View = TopicAdapter2();
+        mTopicAdaptorTop10Recommend = TopicAdapter_Top10();
+        mTopicAdaptorTop10View = TopicAdapter_Top10();
 
 
         mTopicViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
@@ -79,7 +77,7 @@ class HomeFragment : Fragment(R.layout.frag_home) {
 
 
 
-        mTopicAdaptor = TopicAdapter3();
+        mTopicAdaptor = TopicAdapter_Banner();
 
 
         rv_all_topic.adapter = mTopicAdaptor;
@@ -115,14 +113,14 @@ class HomeFragment : Fragment(R.layout.frag_home) {
         }
 
         //토픽 클릭시 게임 or 선수출진 다이어로그 띄우기
-        mTopicAdaptor.setOnItemClickListener(object : TopicAdapter3.OnItemClickListener {
+        mTopicAdaptor.setOnItemClickListener(object : TopicAdapter_Banner.OnItemClickListener {
             override fun onItemClick(topicJoinUser: TopicJoinUser) {
                 onTopicClick(topicJoinUser)
             }
         })
 
         mTopicAdaptorTop10Recommend.setOnItemClickListener(
-            object : TopicAdapter2.OnItemClickListener {
+            object : TopicAdapter_Top10.OnItemClickListener {
                 override fun onItemClick(topicJoinUser: TopicJoinUser) {
                     onTopicClick(topicJoinUser)
                 }
@@ -130,7 +128,7 @@ class HomeFragment : Fragment(R.layout.frag_home) {
 
 
         mTopicAdaptorTop10View.setOnItemClickListener(
-            object : TopicAdapter2.OnItemClickListener {
+            object : TopicAdapter_Top10.OnItemClickListener {
                 override fun onItemClick(topicJoinUser: TopicJoinUser) {
                     onTopicClick(topicJoinUser)
                 }

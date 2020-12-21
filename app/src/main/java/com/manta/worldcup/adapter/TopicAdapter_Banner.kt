@@ -15,10 +15,10 @@ import kotlinx.android.synthetic.main.item_topic3.view.*
 import kotlin.collections.ArrayList
 
 /**
- * item_topic2 을 보여주는 리사이클러뷰 어댑터
+ * item_topic3 을 보여주는 리사이클러뷰 어댑터
  * @author 변성욱
  */
-class TopicAdapter3() : RecyclerView.Adapter<TopicAdapter3.TopicViewHolder>() {
+class TopicAdapter_Banner() : RecyclerView.Adapter<TopicAdapter_Banner.TopicViewHolder>() {
 
     private var mDataset: List<TopicJoinUser> = ArrayList();
     private var mOnItemClickListener: OnItemClickListener? = null;

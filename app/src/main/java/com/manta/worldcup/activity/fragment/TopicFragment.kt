@@ -13,7 +13,7 @@ import com.manta.worldcup.R
 import com.manta.worldcup.activity.AddTopicActivity
 import com.manta.worldcup.activity.LoginActivity
 import com.manta.worldcup.activity.fragment.dialog.OnTopicClickDialog
-import com.manta.worldcup.adapter.MyTopicAdapter2
+import com.manta.worldcup.adapter.TopicAdpater
 import com.manta.worldcup.helper.AuthSingleton
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
@@ -25,7 +25,7 @@ import kotlin.math.abs
 class TopicFragment : Fragment(R.layout.frag_topic){
     private lateinit var mTopicViewModel: TopicViewModel;
     private lateinit var mUserViewModel: UserViewModel;
-    private lateinit var mMyTopicAdaptor: MyTopicAdapter2;
+    private lateinit var mTopicAdaptor: TopicAdpater;
 
     private val REQUST_ADD_TOPIC = 0;
 
@@ -35,14 +35,14 @@ class TopicFragment : Fragment(R.layout.frag_topic){
         if (activity == null) return;
         if (context == null) return;
 
-        mMyTopicAdaptor = MyTopicAdapter2();
+        mTopicAdaptor = TopicAdpater();
 
         //당겨서 토픽 리프레쉬
         refresh_topic.setOnRefreshListener {
             mTopicViewModel.getAllTopic();
         }
 
-        rv_topic.adapter = mMyTopicAdaptor;
+        rv_topic.adapter = mTopicAdaptor;
         rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         mTopicViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory{
@@ -62,12 +62,12 @@ class TopicFragment : Fragment(R.layout.frag_topic){
 
         mTopicViewModel.mDataset.observe(this, Observer {topics->
             val copyList = ArrayList(topics)
-            mMyTopicAdaptor.setTopics(copyList);
+            mTopicAdaptor.setTopics(copyList);
             refresh_topic.isRefreshing = false;
         })
 
         //토픽 클릭시 게임 or 선수출진 다이어로그 띄우기
-        mMyTopicAdaptor.setOnItemClickListener(object : MyTopicAdapter2.OnItemClickListener {
+        mTopicAdaptor.setOnItemClickListener(object : TopicAdpater.OnItemClickListener {
             override fun onItemClick(topicJoinUser : TopicJoinUser) {
                 if(mUserViewModel.mUser.value == null){
                     Toast.makeText(context, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()

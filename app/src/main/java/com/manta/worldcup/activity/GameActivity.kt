@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.PictureCommentDialog
 import com.manta.worldcup.helper.Constants
-import com.manta.worldcup.helper.Constants.EXTRA_TOPICMODEL
+import com.manta.worldcup.helper.Constants.EXTRA_TOPIC
 import com.manta.worldcup.helper.Constants.EXTRA_USER
 import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.Topic
@@ -41,7 +41,7 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        mTopic = intent.getSerializableExtra(EXTRA_TOPICMODEL) as? Topic ?: return;
+        mTopic = intent.getSerializableExtra(EXTRA_TOPIC) as? Topic ?: return;
         mPlayer = intent.getSerializableExtra(EXTRA_USER) as? User ?: return;
 
         //토픽이 포함하는 사진들을 가져온다.
@@ -99,8 +99,8 @@ class GameActivity : AppCompatActivity() {
             mMasterViewModel.addWinCnt(mPictureModels.first().mId);
 
             Intent(this, GameResultActivity::class.java).apply {
-                putExtra(Constants.EXTRA_TOPICMODEL, mTopic);
-                putExtra(Constants.EXTRA_PICTUREMODEL, mPictureModels.first());
+                putExtra(Constants.EXTRA_TOPIC, mTopic);
+                putExtra(Constants.EXTRA_PICTURE, mPictureModels.first());
                 putExtra(Constants.EXTRA_USER, mPlayer);
                 startActivity(this);
                 finish();

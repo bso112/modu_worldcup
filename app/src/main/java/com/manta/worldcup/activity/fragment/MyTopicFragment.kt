@@ -14,7 +14,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.StatisticActivity
-import com.manta.worldcup.adapter.MyTopicAdapter2
+import com.manta.worldcup.adapter.MyTopicAdapter
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
 import com.manta.worldcup.viewmodel.UserViewModel
@@ -25,12 +25,23 @@ import kotlinx.android.synthetic.main.fragment_my_topic.*
 class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
 
     private lateinit var mUserViewModel: UserViewModel;
-    private lateinit var mMyTopicAdapter: MyTopicAdapter2;
+    private lateinit var mTopicAdapter: MyTopicAdapter;
     private lateinit var mTopicViewModel: TopicViewModel;
     private val mSigninEventReceiver = object : BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
             refresh()
         }
+    }
+
+    /**
+     * @param notifiedTopicId : notificationBanner를 클릭했을때 전달받은 topicId
+     */
+    fun newInstance(notifiedTopicId : String?): MyTopicFragment{
+        val args = Bundle(1)
+        args.putString(Constants.EXTRA_NOTIFIED_TOPIC_ID,notifiedTopicId)
+        val fragment = MyTopicFragment()
+        fragment.arguments = args
+        return fragment
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,19 +61,19 @@ class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
         }).get(UserViewModel::class.java);
 
 
-        mMyTopicAdapter = MyTopicAdapter2();
-        rv_topic.adapter = mMyTopicAdapter;
+        mTopicAdapter = MyTopicAdapter(arguments?.getString(Constants.EXTRA_NOTIFIED_TOPIC_ID));
+        rv_topic.adapter = mTopicAdapter;
         rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
         mTopicViewModel.mDataset.observe(this, Observer { topic ->
-            mMyTopicAdapter.setTopics(topic)
+            mTopicAdapter.setTopics(topic)
         })
 
 
-        mMyTopicAdapter.setOnItemClickListener(object : MyTopicAdapter2.OnItemClickListener {
+        mTopicAdapter.setOnItemClickListener(object : MyTopicAdapter.OnItemClickListener {
             override fun onItemClick(topicJoinUser: TopicJoinUser) {
                 Intent(context, StatisticActivity::class.java).apply {
-                    putExtra(Constants.EXTRA_TOPICMODEL, topicJoinUser.getTopic());
+                    putExtra(Constants.EXTRA_TOPIC, topicJoinUser.getTopic());
                     putExtra(Constants.EXTRA_USER, mUserViewModel.mUser.value);
                     startActivity(this);
                 }
@@ -91,12 +102,6 @@ class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
             mTopicViewModel.getTopics(it)
         };
 
-        //notification이 있는지 확인한다.
-        val pref = requireContext().getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
-        val notifiedTopicID = pref.getStringSet(Constants.PREF_NOTIFIED_TOPIC_ID, HashSet());
-        if (notifiedTopicID!!.isNotEmpty()) {
-            mMyTopicAdapter.setNotification(notifiedTopicID)
-        }
     }
 
 }

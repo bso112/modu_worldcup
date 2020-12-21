@@ -44,8 +44,8 @@ class GameResultActivity : AppCompatActivity() {
         //인풋모드 설정 (EditText가 키보드에 가려지지않게)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        mTopic = (intent.getSerializableExtra(Constants.EXTRA_TOPICMODEL) as? Topic) ?: return;
-        val winner = (intent.getSerializableExtra(Constants.EXTRA_PICTUREMODEL) as? PictureModel) ?: return;
+        mTopic = (intent.getSerializableExtra(Constants.EXTRA_TOPIC) as? Topic) ?: return;
+        val winner = (intent.getSerializableExtra(Constants.EXTRA_PICTURE) as? PictureModel) ?: return;
         val player = (intent.getSerializableExtra(Constants.EXTRA_USER) as? User) ?: return;
 
         tv_winner_name.text = winner.mPictureName;
@@ -58,7 +58,7 @@ class GameResultActivity : AppCompatActivity() {
         //다른 결과보기
         tv_show_picture.setOnClickListener {
             Intent(this, StatisticActivity::class.java).apply {
-                putExtra(Constants.EXTRA_TOPICMODEL, mTopic);
+                putExtra(Constants.EXTRA_TOPIC, mTopic);
                 putExtra(Constants.EXTRA_USER, player);
                 startActivity(this);
 

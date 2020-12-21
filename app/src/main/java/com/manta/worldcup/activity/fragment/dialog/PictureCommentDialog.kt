@@ -37,7 +37,7 @@ class PictureCommentDialog : DialogFragment() {
 
     fun newInstance(picture: PictureModel, player: User): PictureCommentDialog {
         val args = Bundle(2);
-        args.putSerializable(Constants.EXTRA_PICTUREMODEL, picture);
+        args.putSerializable(Constants.EXTRA_PICTURE, picture);
         args.putSerializable(Constants.EXTRA_USER, player);
         val fragment = PictureCommentDialog();
         fragment.arguments = args;
@@ -54,7 +54,7 @@ class PictureCommentDialog : DialogFragment() {
         //인풋모드 설정 (EditText가 키보드에 가려지지않게)
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        val pictureModel = requireArguments().getSerializable(Constants.EXTRA_PICTUREMODEL) as? PictureModel ?: return;
+        val pictureModel = requireArguments().getSerializable(Constants.EXTRA_PICTURE) as? PictureModel ?: return;
         val player = requireArguments().getSerializable(Constants.EXTRA_USER) as? User ?: return;
 
         rv_comment.adapter = mCommentAdapter;

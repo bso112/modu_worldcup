@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -49,18 +48,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //notification 클리어
-        clearNotification();
+        //notificationBar 클리어
+        clearNotificationBar();
 
         //토픽 받아오기
         mTopicViewModel.getAllTopic()
 
+        //사용자가 notificationBar를 클릭해서 앱을 실행했다면 PendingIntent를 통해 데이터를 받을 수 있음.
+        val notifiedTopicId = intent.getStringExtra(Constants.EXTRA_NOTIFIED_TOPIC_ID);
+        val notifiedPictureId = intent.getStringExtra(Constants.EXTRA_NOTIFIED_PICTURE_ID);
 
-        mMainViewPagerAdapter = MainViewPageAdapter(supportFragmentManager, lifecycle);
+        mMainViewPagerAdapter = MainViewPageAdapter(supportFragmentManager, lifecycle, notifiedTopicId, notifiedPictureId);
         vp_mainPager.adapter = mMainViewPagerAdapter;
         vp_mainPager.isUserInputEnabled = false;
-
-
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -80,6 +80,13 @@ class MainActivity : AppCompatActivity() {
             }
             return@setOnNavigationItemSelectedListener true;
         }
+
+        //사용자가 누른 알림이 토픽에 관한거면 MyTopicFragment를, 아니면 MyPictureFragment를 보여줌
+        if(notifiedTopicId != null)
+            vp_mainPager.currentItem = 2
+        else if(notifiedPictureId != null)
+            vp_mainPager.currentItem = 3
+
 
 
         btn_login_logout.setOnClickListener {
@@ -163,7 +170,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun clearNotification() {
+    fun clearNotificationBar() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }

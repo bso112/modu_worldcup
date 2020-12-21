@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".activity.GameResultActivity"
-    android:gravity="center">
+    tools:context=".activity.GameResultActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="15dp">
 
-        <TextView
-            style="@style/TextAppearance.AppCompat.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/win"
-            android:textSize="30sp"
-            />
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:background="@drawable/crown"
+            android:backgroundTint="@color/gold" />
 
         <RelativeLayout
+            android:layout_marginTop="5dp"
             android:layout_width="300dp"
             android:layout_height="300dp">
 
@@ -33,6 +33,7 @@
                 android:id="@+id/iv_winner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_centerInParent="true"
                 android:background="@color/black" />
 
             <com.manta.worldcup.view.CustomTextOutLineView
@@ -46,26 +47,66 @@
                 android:textColor="@color/white"
                 app:textStroke="true"
                 app:textStrokeColor="@color/black"
-                app:textStrokeWidth="5"
-                />
+                app:textStrokeWidth="5" />
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_marginVertical="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center">
 
         <TextView
             android:id="@+id/tv_show_picture"
+            android:layout_marginTop="15dp"
+            style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/show_result_picture"
-            style="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/primary" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="25dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:text="77%"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/of_user"
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="?android:attr/textColorPrimary" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_same_as_you"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:textColor="?android:attr/textColorPrimary" />
+
         </LinearLayout>
+
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:attr/textColorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/how_was_worldcup" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -75,8 +116,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageButton
                     android:id="@+id/btn_like"
@@ -90,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -98,8 +139,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageButton
                     android:id="@+id/btn_dislike"
@@ -113,17 +154,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
         </LinearLayout>
 
 
-
     </LinearLayout>
-
-
 
 
 </LinearLayout>

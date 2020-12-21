@@ -12,7 +12,7 @@ import com.manta.worldcup.R
 import com.manta.worldcup.activity.AddPictureActivity
 import com.manta.worldcup.activity.GameActivity
 import com.manta.worldcup.helper.Constants
-import com.manta.worldcup.helper.Constants.EXTRA_TOPICMODEL
+import com.manta.worldcup.helper.Constants.EXTRA_TOPIC
 import com.manta.worldcup.helper.Constants.EXTRA_TOPIC_ID
 import com.manta.worldcup.helper.Constants.EXTRA_USER
 import com.manta.worldcup.model.Topic
@@ -33,7 +33,7 @@ class OnTopicClickDialog() : DialogFragment() {
 
     fun newInstance(topic : Topic, user : User) : OnTopicClickDialog{
         val args = Bundle(1)
-        args.putSerializable(EXTRA_TOPICMODEL, topic);
+        args.putSerializable(EXTRA_TOPIC, topic);
         args.putSerializable(EXTRA_USER, user);
         val fragment = OnTopicClickDialog()
         fragment.arguments = args
@@ -43,7 +43,7 @@ class OnTopicClickDialog() : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_ontopicclick, container, false);
 
-        val topicModel = arguments?.getSerializable(EXTRA_TOPICMODEL) as? Topic ?: return view;
+        val topicModel = arguments?.getSerializable(EXTRA_TOPIC) as? Topic ?: return view;
         val user = arguments?.getSerializable(EXTRA_USER) as? User ?: return view;
 
         view.tv_topic_title.text = topicModel.mTitle;
@@ -53,7 +53,7 @@ class OnTopicClickDialog() : DialogFragment() {
 
         view.btn_game_start.setOnClickListener {
                 Intent(context, GameActivity::class.java).apply {
-                    putExtra(EXTRA_TOPICMODEL, topicModel)
+                    putExtra(EXTRA_TOPIC, topicModel)
                     putExtra(EXTRA_USER, user)
                     startActivity(this);
                     dismiss()

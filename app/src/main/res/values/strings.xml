@@ -23,4 +23,7 @@
     <string name="signin">로그인</string>
     <string name="show_result_picture">다른 결과 보기</string>
     <string name="show_result_comment">댓글보기</string>
+    <string name="how_was_worldcup">이 월드컵은 어땠나요?</string>
+    <string name="of_user">의 유저가</string>
+    <string name="choose_same_as_you">당신과 같은 선택을 했습니다.</string>
 </resources>
