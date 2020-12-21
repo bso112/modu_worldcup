@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.manta.worldcup">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,8 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Worldcup"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".activity.HomeActivity"></activity>
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
 
         <service
             android:name=".service.MyFirebaseMessagingService"
@@ -22,7 +23,12 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activity.StatisticActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.GameResultActivity" />
@@ -31,13 +37,5 @@
             android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.AddPictureActivity" />
         <activity android:name=".activity.GameActivity" />
-        <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
-
-</manifest>
+        </application>
+    </manifest>

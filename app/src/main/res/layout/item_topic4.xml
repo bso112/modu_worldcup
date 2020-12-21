@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="15dp"
+    android:layout_margin="5dp">
+
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:background="?attr/colorOnPrimary">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -46,22 +57,22 @@
                 android:layout_height="wrap_content"
                 android:gravity="center">
 
-                <ImageView
-                    android:id="@+id/iv_tier"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/suyaless"/>
 
                 <TextView
                     android:id="@+id/tv_managerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
                     android:maxLines="1"
                     android:maxLength="30"
                     android:ellipsize="end"
                     android:text="asdasd"/>
 
+                <ImageView
+                    android:id="@+id/iv_tier"
+                    android:layout_marginLeft="3dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/suyaless"/>
 
                 <TextView
                     android:id="@+id/tv_date"
@@ -136,3 +147,5 @@
     </LinearLayout>
 
 </LinearLayout>
+
+</androidx.cardview.widget.CardView>

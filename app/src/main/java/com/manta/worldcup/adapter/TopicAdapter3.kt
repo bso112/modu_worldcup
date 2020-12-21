@@ -18,11 +18,17 @@ import kotlin.collections.ArrayList
  * item_topic2 을 보여주는 리사이클러뷰 어댑터
  * @author 변성욱
  */
-class TopicAdapter3(private val mContext: Context) : RecyclerView.Adapter<TopicAdapter3.TopicViewHolder>() {
+class TopicAdapter3() : RecyclerView.Adapter<TopicAdapter3.TopicViewHolder>() {
 
     private var mDataset: List<TopicJoinUser> = ArrayList();
     private var mOnItemClickListener: OnItemClickListener? = null;
+    private lateinit var mContext : Context;
 
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        mContext = recyclerView.context;
+    }
 
     interface OnItemClickListener {
         fun onItemClick(topicJoinUser : TopicJoinUser);
@@ -65,8 +71,10 @@ class TopicAdapter3(private val mContext: Context) : RecyclerView.Adapter<TopicA
 
         fun setTopic(data : TopicJoinUser) {
 
-            val urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
-            Constants.GlideWithHeader(urlToPicture, view, mTumbnail, mContext);
+            mContext?.let {
+                val urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
+                Constants.GlideWithHeader(urlToPicture, view, mTumbnail, it);
+            }
 
             mTitle.text = data.mTitle;
             mManagerName.text = data.mManagerName;
@@ -102,5 +110,6 @@ class TopicAdapter3(private val mContext: Context) : RecyclerView.Adapter<TopicA
     fun setOnItemClickListener(listenr: OnItemClickListener) {
         mOnItemClickListener = listenr;
     }
+
 
 }

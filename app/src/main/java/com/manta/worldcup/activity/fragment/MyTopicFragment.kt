@@ -14,8 +14,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.StatisticActivity
-import com.manta.worldcup.adapter.TopicAdapter
-import com.manta.worldcup.adapter.TopicAdapter4
+import com.manta.worldcup.adapter.MyTopicAdapter2
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
 import com.manta.worldcup.viewmodel.UserViewModel
@@ -26,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_my_topic.*
 class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
 
     private lateinit var mUserViewModel: UserViewModel;
-    private lateinit var mTopicAdapter: TopicAdapter4;
+    private lateinit var mMyTopicAdapter: MyTopicAdapter2;
     private lateinit var mTopicViewModel: TopicViewModel;
     private val mSigninEventReceiver = object : BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -51,16 +50,16 @@ class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
         }).get(UserViewModel::class.java);
 
 
-        mTopicAdapter = TopicAdapter4(requireContext());
-        rv_topic.adapter = mTopicAdapter;
+        mMyTopicAdapter = MyTopicAdapter2();
+        rv_topic.adapter = mMyTopicAdapter;
         rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
         mTopicViewModel.mDataset.observe(this, Observer { topic ->
-            mTopicAdapter.setTopics(topic)
+            mMyTopicAdapter.setTopics(topic)
         })
 
 
-        mTopicAdapter.setOnItemClickListener(object : TopicAdapter4.OnItemClickListener {
+        mMyTopicAdapter.setOnItemClickListener(object : MyTopicAdapter2.OnItemClickListener {
             override fun onItemClick(topicJoinUser: TopicJoinUser) {
                 Intent(context, StatisticActivity::class.java).apply {
                     putExtra(Constants.EXTRA_TOPICMODEL, topicJoinUser.getTopic());
@@ -95,8 +94,8 @@ class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
         //notification이 있는지 확인한다.
         val pref = requireContext().getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
         val notifiedTopicID = pref.getStringSet(Constants.PREF_NOTIFIED_TOPIC_ID, HashSet());
-        if (notifiedTopicID != null) {
-            mTopicAdapter.setNotification(notifiedTopicID)
+        if (notifiedTopicID!!.isNotEmpty()) {
+            mMyTopicAdapter.setNotification(notifiedTopicID)
         }
     }
 

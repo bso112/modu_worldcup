@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/login"
+        android:title="@string/signin"
+        android:icon="@drawable/suyaless"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/user_nickname"
+        android:title="임시"
+        android:icon="@drawable/suyaless"
+        app:showAsAction="ifRoom"/>
+
+</menu>

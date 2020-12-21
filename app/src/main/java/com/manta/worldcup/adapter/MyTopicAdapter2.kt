@@ -10,21 +10,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
 import com.manta.worldcup.helper.Constants
-import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.TopicJoinUser
-import com.manta.worldcup.model.User
-import kotlinx.android.synthetic.main.item_topic.view.*
+import kotlinx.android.synthetic.main.item_topic4.view.*
 import kotlin.collections.ArrayList
 
 /**
- * item_topic 을 보여주는 리사이클러뷰 어댑터
+ * item_topic2 을 보여주는 리사이클러뷰 어댑터
  * @author 변성욱
  */
-class TopicAdapter(private val mContext: Context) : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>() {
+class MyTopicAdapter2() : RecyclerView.Adapter<MyTopicAdapter2.TopicViewHolder>() {
 
     private var mDataset: List<TopicJoinUser> = ArrayList();
     private var mOnItemClickListener: OnItemClickListener? = null;
     private var mNotifiedTopicIDs = emptySet<String>()
+    private lateinit var mContext : Context;
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        mContext = recyclerView.context;
+    }
 
 
     interface OnItemClickListener {
@@ -53,48 +57,56 @@ class TopicAdapter(private val mContext: Context) : RecyclerView.Adapter<TopicAd
 
     inner class TopicViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        val mTumbnail: ImageView = view.iv_thumbnail;
+        val mFirstImg: ImageView = view.iv_first;
+        val mSecondImg: ImageView = view.iv_second;
         val mTitle: TextView = view.tv_title;
         val mManagerName: TextView = view.tv_managerName;
-        val mNotifyBadge = view.iv_notification;
+        val mDate: TextView = view.tv_date;
+        val mTier: ImageView = view.iv_tier
+        val mNotifyBadge: ImageView = view.iv_notification
+
 
         init {
             view.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION){
+                if (adapterPosition != RecyclerView.NO_POSITION) {
                     mOnItemClickListener?.onItemClick(mDataset.get(adapterPosition));
                     //노티피케이션이 있으면
                     if (mNotifyBadge.visibility == View.VISIBLE) {
-                        //노피티케이션 확인했으니 삭제.
+                        //노피티케이션 확인했으니 노피티케이션 삭제.
                         val pref = mContext.applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
                         val topicNotifications = pref.getStringSet(Constants.PREF_NOTIFIED_TOPIC_ID, emptySet());
                         topicNotifications?.remove("${mDataset.get(adapterPosition).mId}")
                         pref.edit().putStringSet(Constants.PREF_NOTIFIED_TOPIC_ID, topicNotifications).apply();
                         mNotifyBadge.visibility = View.INVISIBLE
                     }
+
                 }
             }
         }
 
+
         fun setTopic(data: TopicJoinUser) {
 
-            val urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
-            Constants.GlideWithHeader(urlToPicture, view, mTumbnail, mContext);
+            var urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
+            mContext?.let {
+                Constants.GlideWithHeader(urlToPicture, view, mFirstImg, it);
+                urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/1";
+                Constants.GlideWithHeader(urlToPicture, view, mSecondImg, it);
+
+            }
 
             mTitle.text = data.mTitle;
             mManagerName.text = data.mManagerName;
+            mDate.text = data.mDate;
 
             val tierIconID = Constants.getTierIconID(data.mTier);
             if (tierIconID != null)
-                view.iv_tier.setImageResource(tierIconID);
-
-            //덧글달린 토픽표시
-            if (mNotifiedTopicIDs.contains("${data.mId}"))
-                mNotifyBadge.visibility = View.VISIBLE;
+                mTier.setImageResource(tierIconID);
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic, parent, false);
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic4, parent, false);
         return TopicViewHolder(view);
     }
 
@@ -113,10 +125,11 @@ class TopicAdapter(private val mContext: Context) : RecyclerView.Adapter<TopicAd
         result.dispatchUpdatesTo(this);
     }
 
-    fun setNotification(notifiedTopicIDs: Set<String>){
+    fun setNotification(notifiedTopicIDs: Set<String>) {
         mNotifiedTopicIDs = notifiedTopicIDs
         notifyDataSetChanged();
     }
+
 
     fun setOnItemClickListener(listenr: OnItemClickListener) {
         mOnItemClickListener = listenr;

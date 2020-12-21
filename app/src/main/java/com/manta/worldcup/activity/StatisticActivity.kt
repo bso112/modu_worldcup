@@ -60,4 +60,6 @@ class StatisticActivity : AppCompatActivity() {
             TopicCommentDialog().newInstance(topic, user).show(supportFragmentManager, null);
         }
     }
+
+
 }

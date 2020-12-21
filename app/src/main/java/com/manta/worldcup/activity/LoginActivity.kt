@@ -2,6 +2,7 @@ package com.manta.worldcup.activity
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -44,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
         FirebaseApp.initializeApp(this)
 
-
+        sign_in_button.isEnabled = false;
         sign_in_button.setOnClickListener {
             signIn();
         }
@@ -55,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
         //이미 mGoogleSignInClient이 있으면 다시 받는다.
         if (isGoogleSignInInitialized()) {
             mGoogleSignInClient.signOut().addOnSuccessListener {
@@ -65,8 +67,9 @@ class LoginActivity : AppCompatActivity() {
                     .build()
 
                 mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
                 mAuth = FirebaseAuth.getInstance();
+
+                sign_in_button.isEnabled = true;
             }
             //초기화
         } else {
@@ -79,6 +82,8 @@ class LoginActivity : AppCompatActivity() {
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
             mAuth = FirebaseAuth.getInstance();
+
+            sign_in_button.isEnabled = true;
         }
     }
 

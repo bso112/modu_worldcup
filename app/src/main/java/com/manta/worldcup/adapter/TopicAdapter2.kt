@@ -18,14 +18,20 @@ import kotlin.collections.ArrayList
  * item_topic2 을 보여주는 리사이클러뷰 어댑터
  * @author 변성욱
  */
-class TopicAdapter2(private val mContext: Context) : RecyclerView.Adapter<TopicAdapter2.TopicViewHolder>() {
+class TopicAdapter2() : RecyclerView.Adapter<TopicAdapter2.TopicViewHolder>() {
 
     private var mDataset: List<TopicJoinUser> = ArrayList();
     private var mOnItemClickListener: OnItemClickListener? = null;
+    private lateinit var mContext : Context;
 
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        mContext = recyclerView.context;
+    }
 
     interface OnItemClickListener {
-        fun onItemClick(topicJoinUser : TopicJoinUser);
+        fun onItemClick(topicJoinUser: TopicJoinUser);
     }
 
 
@@ -48,7 +54,6 @@ class TopicAdapter2(private val mContext: Context) : RecyclerView.Adapter<TopicA
     }
 
 
-
     inner class TopicViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         val mTumbnail: ImageView = view.iv_thumbnail;
@@ -63,16 +68,19 @@ class TopicAdapter2(private val mContext: Context) : RecyclerView.Adapter<TopicA
             }
         }
 
-        fun setTopic(data : TopicJoinUser) {
+        fun setTopic(data: TopicJoinUser) {
 
-            val urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
-            Constants.GlideWithHeader(urlToPicture, view, mTumbnail, mContext);
+            mContext?.let {
+                val urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
+                Constants.GlideWithHeader(urlToPicture, view, mTumbnail, it);
+
+            }
 
             mTitle.text = data.mTitle;
             mManagerName.text = data.mManagerName;
 
             val tierIconID = Constants.getTierIconID(data.mTier);
-            if(tierIconID != null)
+            if (tierIconID != null)
                 view.iv_tier.setImageResource(tierIconID);
         }
     }
@@ -98,9 +106,9 @@ class TopicAdapter2(private val mContext: Context) : RecyclerView.Adapter<TopicA
     }
 
 
-
     fun setOnItemClickListener(listenr: OnItemClickListener) {
         mOnItemClickListener = listenr;
     }
+
 
 }

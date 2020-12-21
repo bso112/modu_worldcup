@@ -69,12 +69,9 @@ class MyPictureFragement : Fragment(R.layout.frag_mypicture) {
     private fun refresh(){
         //내 사진을 가져온다.
         mUserViewModel.getAllPicture()
-        val pref = requireContext().getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
-        val notifiedTopicID = pref.getStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, HashSet());
-        if (notifiedTopicID != null) {
-            mPictureAdapter.setNotification(notifiedTopicID)
-        }
     }
+
+
 
 
 

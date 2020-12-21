@@ -12,25 +12,18 @@
         >
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
 
-            <TextView
-                android:layout_margin="20dp"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="전체 토픽"
-                android:textColor="?android:attr/textColorPrimary" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_topic"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="?attr/colorSecondary"
+                />
 
         </LinearLayout>
 

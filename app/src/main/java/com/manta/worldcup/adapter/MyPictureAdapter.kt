@@ -24,11 +24,17 @@ import kotlin.math.floor
  * @author 변성욱
  * @param mFragementManager picture에 달린 댓글을 보여줄 fragment를 호스팅하는 액티비티의 fragementManager
  */
-class MyPictureAdapter(val mFragementManager : FragmentManager) : RecyclerView.Adapter<MyPictureAdapter.MyPictureViewHolder>() {
+class MyPictureAdapter(var mFragementManager: FragmentManager?) : RecyclerView.Adapter<MyPictureAdapter.MyPictureViewHolder>() {
 
     private var mDataset: ArrayList<PictureModel> = ArrayList();
-    private var mNotification = emptySet<String>()
-    private var mUser : User? = null;
+    private var mNotification = MutableList(0) { false }
+    private var mUser: User? = null;
+    private lateinit var mContext : Context;
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        mContext = recyclerView.context;
+    }
 
     inner class MyPictureViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val mPictureView: ImageView = view.iv_picture;
@@ -37,23 +43,29 @@ class MyPictureAdapter(val mFragementManager : FragmentManager) : RecyclerView.A
 
         fun setPicture(picture: PictureModel) {
             Glide.with(view.context).load(Constants.BASE_URL + "image/get/${picture.mId}").into(mPictureView);
-            mWinCnt.text = if(picture.WinCnt >= 1000) "${floor(picture.WinCnt / 100.0F) / 10.0F}K" else picture.WinCnt.toString();
+            mWinCnt.text = if (picture.WinCnt >= 1000) "${floor(picture.WinCnt / 100.0F) / 10.0F}K" else picture.WinCnt.toString();
             mPictureView.setOnClickListener {
-                if(mUser != null)
-                    PictureCommentDialog().newInstance(picture, mUser!!).show(mFragementManager, null);
+                if (mUser != null && mFragementManager != null)
+                    PictureCommentDialog().newInstance(picture, mUser!!).show(mFragementManager!!, null);
 
-                if(mNotificationBadge.visibility == View.VISIBLE){
+                if (mNotificationBadge.visibility == View.VISIBLE) {
                     mNotificationBadge.visibility = View.INVISIBLE;
+                    mNotification[adapterPosition] = false;
+
                     //노피티케이션 확인했으니 삭제.
-                    val pref = view.context.applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
+                    val pref = mContext.applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
                     val pictureNotification = pref.getStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, emptySet());
-                    pictureNotification?.remove("${picture.mId}")
+                    pictureNotification?.remove(picture.mId.toString())
                     pref.edit().putStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, pictureNotification).apply();
                 }
+
             }
 
-            if(mNotification.contains(picture.mId.toString()))
+            if (mNotification[adapterPosition])
                 mNotificationBadge.visibility = View.VISIBLE;
+            //이거 안해주면 이 뷰홀더의 mNotificationBadge는 VISIBLE이고, 그대로 재활용됨.
+            else
+                mNotificationBadge.visibility = View.INVISIBLE;
         }
     }
 
@@ -76,7 +88,6 @@ class MyPictureAdapter(val mFragementManager : FragmentManager) : RecyclerView.A
     }
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPictureViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_my_picture, parent, false)
         return MyPictureViewHolder(view);
@@ -90,10 +101,23 @@ class MyPictureAdapter(val mFragementManager : FragmentManager) : RecyclerView.A
         holder.setPicture(mDataset[position]);
     }
 
-    fun setPictures(pictures : ArrayList<PictureModel>){
+    fun setPictures(pictures: ArrayList<PictureModel>) {
         val result = DiffUtil.calculateDiff(PictureDiffUtill(mDataset, pictures))
         mDataset = pictures;
+        mNotification = MutableList(mDataset.size) { false };
         result.dispatchUpdatesTo(this);
+        //알림표시
+        val pref = mContext.applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
+        val notifiedPictureID = pref.getStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, HashSet());
+        if (notifiedPictureID!!.isNotEmpty()) {
+            for (i in 0 until mDataset.size) {
+                if (notifiedPictureID.contains(mDataset[i].mId.toString())) {
+                    mNotification[i] = true;
+                    notifyItemChanged(i);
+                } else
+                    mNotification[i] = false;
+            }
+        }
     }
 
     /**
@@ -101,13 +125,8 @@ class MyPictureAdapter(val mFragementManager : FragmentManager) : RecyclerView.A
      * @author 변성욱
      * @param mUser 현재 접속된 계정의 유저데이터
      */
-    fun setUser(user : User?){
+    fun setUser(user: User?) {
         mUser = user;
-    }
-
-    fun setNotification(notifications : Set<String>){
-        mNotification = notifications;
-        notifyDataSetChanged()
     }
 
 

@@ -42,8 +42,8 @@ class HomeFragment : Fragment(R.layout.frag_home) {
         if (activity == null) return;
         if (context == null) return;
 
-        mTopicAdaptorTop10Recommend = TopicAdapter2(context!!);
-        mTopicAdaptorTop10View = TopicAdapter2(context!!);
+        mTopicAdaptorTop10Recommend = TopicAdapter2();
+        mTopicAdaptorTop10View = TopicAdapter2();
 
 
         mTopicViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
@@ -79,7 +79,7 @@ class HomeFragment : Fragment(R.layout.frag_home) {
 
 
 
-        mTopicAdaptor = TopicAdapter3(context!!);
+        mTopicAdaptor = TopicAdapter3();
 
 
         rv_all_topic.adapter = mTopicAdaptor;
