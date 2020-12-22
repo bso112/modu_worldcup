@@ -26,6 +26,7 @@ object Constants {
     const val EXTRA_NOTIFIED_TOPIC_ID = "com.manta.worldcup.EXTRA_NOTIFIED_TOPIC_ID"
     const val EXTRA_NOTIFIED_PICTURE_ID = "com.manta.worldcup.EXTRA_PICTURE_ID"
     const val EXTRA_PICTURE_NAMES = "com.manta.worldcup.EXTRA_PICTURE_NAMES"
+    const val EXTRA_PICTURE_NAME = "com.manta.worldcup.EXTRA_PICTURE_NAME"
     const val EXTRA_SUBMIT_LISTENER = "com.manta.worldcup.EXTRA_SUBMIT_LISTENER"
     const val EXTRA_TOPIC = "com.manta.worldcup.EXTRA_TOPIC"
     const val EXTRA_PICTURE = "com.manta.worldcup.EXTRA_PICTURE"

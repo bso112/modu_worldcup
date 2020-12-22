@@ -18,6 +18,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
+/**
+ * 토픽에 사진을 추가시 추가된 사진을 보여주는 어댑터이다.
+ */
 class TopicPictureAdapter(private val fragmentManager: FragmentManager) : RecyclerView.Adapter<TopicPictureAdapter.ImageViewHolder>() {
 
     private val mDataset: ArrayList<Picture> = ArrayList();
@@ -51,17 +54,20 @@ class TopicPictureAdapter(private val fragmentManager: FragmentManager) : Recycl
                 val pictureNames = ArrayList(mPictureNames);
                 //현재 추가된 이름들도 중복확인리스트에 포함한다.
                 for (picture in mDataset) pictureNames.add(picture.pictureModel.mPictureName);
-                PictureDescriptionDialog().newInstance(pictureNames, object : PictureDescriptionDialog.OnSubmitListener {
-                    //결과받아 표시하기
+                PictureDescriptionDialog().newInstance(
+                    pictureNames,
+                    mDataset[adapterPosition].pictureModel.mPictureName,
+                    object : PictureDescriptionDialog.OnSubmitListener {
+                    //이름이 정해진 사진을 표시하기
                     override fun onSubmit(pictureName: String) {
                         mDataset[adapterPosition].pictureModel.mPictureName = pictureName;
                         mCheckedView.visibility = View.VISIBLE;
                         mIsPictureNamed[adapterPosition] = true;
                     }
                 }).show(fragmentManager, null);
-
-
             }
+
+
         }
     }
 

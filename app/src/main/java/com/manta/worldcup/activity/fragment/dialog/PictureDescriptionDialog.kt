@@ -11,13 +11,19 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.manta.worldcup.R
+import com.manta.worldcup.helper.Constants
+import com.manta.worldcup.helper.Constants.EXTRA_PICTURE_NAME
 import com.manta.worldcup.helper.Constants.EXTRA_PICTURE_NAMES
 import com.manta.worldcup.helper.Constants.EXTRA_SUBMIT_LISTENER
 import kotlinx.android.synthetic.main.dialog_picture_desc.*
 import kotlinx.android.synthetic.main.dialog_picture_desc.view.*
 import java.io.Serializable
 
-
+/**
+ * 토픽을 만들때나 토픽에 사진을 추가할때 사진을 누르면
+ * 사진의 이름을 정할 수 있다. 그때 띄워주는 다이어로그다.
+ * @author 변성욱
+ */
 class PictureDescriptionDialog() : DialogFragment() {
 
 
@@ -26,9 +32,12 @@ class PictureDescriptionDialog() : DialogFragment() {
     }
 
 
-    fun newInstance(pictureNames : ArrayList<String>, onSubmitListener : OnSubmitListener):PictureDescriptionDialog {
-        val args = Bundle(2)
+    fun newInstance(pictureNames : ArrayList<String>,
+                    currentPictureName : String,
+                    onSubmitListener : OnSubmitListener):PictureDescriptionDialog {
+        val args = Bundle(3)
         args.putStringArrayList(EXTRA_PICTURE_NAMES, pictureNames);
+        args.putString(Constants.EXTRA_PICTURE_NAME, currentPictureName)
         args.putSerializable(EXTRA_SUBMIT_LISTENER, onSubmitListener);
         val fragment = PictureDescriptionDialog()
         fragment.arguments = args
@@ -40,9 +49,13 @@ class PictureDescriptionDialog() : DialogFragment() {
 
         val onSubmitListener = arguments?.getSerializable(EXTRA_SUBMIT_LISTENER) as? OnSubmitListener ?: return view;
         val pictureNames = arguments?.getStringArrayList(EXTRA_PICTURE_NAMES) ?: return view;
+        val currentPictureName = arguments?.getString(EXTRA_PICTURE_NAME) ?: return view;
 
+        view.et_title.setText(currentPictureName);
+
+        //중복검사
         view.et_title.addTextChangedListener {
-            if(pictureNames.contains(view.et_title.text.toString()))
+            if(view.et_title.text.toString() != "" && pictureNames.contains(view.et_title.text.toString()))
                 tv_title_warning.visibility = View.VISIBLE;
             else{
                 tv_title_warning.visibility = View.INVISIBLE;
