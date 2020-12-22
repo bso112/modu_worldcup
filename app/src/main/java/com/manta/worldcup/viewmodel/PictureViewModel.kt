@@ -16,30 +16,12 @@ import okhttp3.RequestBody
 import java.lang.Exception
 
 
-class MasterViewModel(private val application: Application) : ViewModel() {
+class PictureViewModel(private val application: Application) : ViewModel() {
 
     private val mRepository: Repository = Repository(application);
 
-    val mTopics: MutableLiveData<List<Topic>> = MutableLiveData();
     val mPictures: MutableLiveData<List<PictureModel>> = MutableLiveData();
 
-//    fun getAllTopics() {
-//        viewModelScope.launch {
-//            val response = mRepository.getAllTopic()
-//            if (response.isSuccessful)
-//                mTopics.value = response.body(); //옵저버에게 알림
-//
-//        }
-//    }
-//
-//    fun getTopics(userEmail : String){
-//        viewModelScope.launch{
-//            val response = mRepository.getAllTopic()
-//            if(response.isSuccessful){
-//                mTopics.value = response.body();
-//            }
-//        }
-//    }
 
     fun getPictures(topicId: Long) {
         viewModelScope.launch {
@@ -50,10 +32,14 @@ class MasterViewModel(private val application: Application) : ViewModel() {
         }
     }
 
+    /**
+     * 토픽에 사진을 추가한다.
+     */
     fun insertPictureToTopic(pictures: List<Picture>, topicId: Long) {
         viewModelScope.launch {
             val bodyParts: ArrayList<MultipartBody.Part> = ArrayList();
             for (picture in pictures) {
+                picture.mBitmap ?: continue
                 val bitmapData = BitmapHelper.bitmapToByteArray(picture.mBitmap);
                 val reqBody = RequestBody.create("image/webp".toMediaTypeOrNull(), bitmapData);
                 val bodyPart = MultipartBody.Part.createFormData("image", "tmp", reqBody);
@@ -77,6 +63,7 @@ class MasterViewModel(private val application: Application) : ViewModel() {
             //비트맵을 byteArray로 bodyPart에 쓰기.
             val bodyParts: ArrayList<MultipartBody.Part> = ArrayList();
             for (picture in pictures) {
+                picture.mBitmap ?: continue
                 val bitmapData = BitmapHelper.bitmapToByteArray(picture.mBitmap);
                 val reqBody = RequestBody.create("image/webp".toMediaTypeOrNull(), bitmapData);
                 //filename null주면 서버에서 못받음.
@@ -104,6 +91,13 @@ class MasterViewModel(private val application: Application) : ViewModel() {
     fun addWinCnt(pictureID : Long){
         viewModelScope.launch {
             mRepository.addwinCnt(pictureID);
+        }
+    }
+
+
+    fun deletePictures(pictureIDs : List<PictureModel>){
+        viewModelScope.launch {
+            mRepository.deletePictures(pictureIDs)
         }
     }
 

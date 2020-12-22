@@ -13,20 +13,20 @@ import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
-import com.manta.worldcup.viewmodel.MasterViewModel
+import com.manta.worldcup.viewmodel.PictureViewModel
 import kotlinx.android.synthetic.main.activity_add_topic.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTopicActivity : AppCompatActivity() {
 
-    private val mMasterViewModel: MasterViewModel by lazy {
+    private val mPictureViewModel: PictureViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MasterViewModel(application) as T;
+                return PictureViewModel(application) as T;
             }
 
-        }).get(MasterViewModel::class.java);
+        }).get(PictureViewModel::class.java);
     }
     private lateinit var mTopicPictureAdapter: TopicPictureAdapter;
 
@@ -60,11 +60,11 @@ class AddTopicActivity : AppCompatActivity() {
             else{
                 //제출
                 //포인트소모
-                mMasterViewModel.addPoint(Constants.POINT_ADD_TOPIC, user.mEmail);
+                mPictureViewModel.addPoint(Constants.POINT_ADD_TOPIC, user.mEmail);
                 //토픽생성
                 val date = Calendar.getInstance().time;
                 val locale = applicationContext.resources.configuration.locale;
-                mMasterViewModel.insertTopic(
+                mPictureViewModel.insertTopic(
                     Topic(0, SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date),et_title.text.toString(), et_content.text.toString(), user.mNickname, 0, user.mEmail),
                     mTopicPictureAdapter.getPictures()
                 )
@@ -84,7 +84,7 @@ class AddTopicActivity : AppCompatActivity() {
         if (resultCode == RESULT_OK && requestCode == REQUEST_PICK_FROM_ALBUM) {
             val bitmapList = BitmapHelper.getBitmapFromIntent(data, contentResolver, Intent.ACTION_GET_CONTENT);
             for (bitmap in bitmapList)
-                mTopicPictureAdapter.addBitmap(bitmap, user.mEmail);
+                mTopicPictureAdapter.addPicture(bitmap, user.mEmail);
 
         }
     }

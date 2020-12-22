@@ -51,4 +51,17 @@ class TopicViewModel(private val application: Application) : ViewModel() {
     }
 
 
+    fun updateTopic(topic : Topic){
+        viewModelScope.launch {
+            mRepository.updateTopic(topic)
+        }
+    }
+
+    fun deleteTopic(topicID : Long){
+        viewModelScope.launch {
+            mRepository.deleteTopic(topicID);
+        }
+    }
+
+
 }

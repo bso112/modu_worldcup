@@ -4,11 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
+import com.manta.worldcup.activity.fragment.dialog.MyTopicOptionSheet
+import com.manta.worldcup.activity.fragment.dialog.TopicOptionSheet
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
 import kotlinx.android.synthetic.main.item_topic4.view.*
@@ -23,6 +27,7 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
     private var mDataset: List<TopicJoinUser> = ArrayList();
     private var mOnItemClickListener: OnItemClickListener? = null;
     private lateinit var mContext : Context;
+
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -62,6 +67,7 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
         val mManagerName: TextView = view.tv_managerName;
         val mDate: TextView = view.tv_date;
         val mTier: ImageView = view.iv_tier
+        val mOptionBtn : ImageButton = view.btn_more
 
 
         init {
@@ -70,6 +76,10 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
                     mOnItemClickListener?.onItemClick(mDataset.get(adapterPosition));
 
                 }
+            }
+
+            mOptionBtn.setOnClickListener {
+                TopicOptionSheet().show((mContext as AppCompatActivity).supportFragmentManager, null);
             }
         }
 

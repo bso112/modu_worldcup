@@ -32,6 +32,7 @@ object Constants {
     const val EXTRA_USER_EMAIL =  "com.manta.worldcup.PREF_USER_EMAIL"
     const val EXTRA_USER_NICKNAME =  "com.manta.worldcup.EXTRA_USER_NICKNAME"
     const val EXTRA_USER =  "com.manta.worldcup.EXTRA_USER"
+    const val EXTRA_TOPIC_JOIN_USER = "com.manta.worldcup.EXTRA_TOPIC_JOIN_USER"
 
     const val PREF_FILENAME_COOKIE = "com.manta.worldcup.PREF_FILENAME_COOKIE"
     const val PREF_COOKIE = "com.manta.worldcup.PREF_COOKIE"

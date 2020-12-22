@@ -12,6 +12,13 @@ interface TopicAPI {
     @POST("topic/new")
     suspend fun insertTopic(@Part("topic") topic : Topic, @Part("pictures") pictures : List<PictureModel>, @Part image :  List<MultipartBody.Part>)  : Response<String>
 
+    @FormUrlEncoded
+    @POST("topic/delete")
+    suspend fun deleteTopic(@Field("topic_id") topicId : Long) : Response<Int>
+
+    @POST("topic/update")
+    suspend fun updateTopic(@Body topic : Topic) : Response<Int>
+
     @GET("topicJoinUser/get_all")
     suspend fun getAllTopicJoinUser() : Response<ArrayList<TopicJoinUser>>
 
@@ -38,6 +45,9 @@ interface TopicAPI {
 
     @GET("pictures/get_all/{owner_email}")
     suspend fun getPictures(@Path("owner_email") ownerEmail : String) : Response<List<PictureModel>>
+
+    @POST("pictures/delete")
+    suspend fun deletePictures(@Body pictures : List<PictureModel>) : Response<Int>
 
     @GET("comment/topic/get_all/{topic_id}")
     suspend fun getTopicComments(@Path("topic_id") topicId : Long) : Response<ArrayList<Comment>>

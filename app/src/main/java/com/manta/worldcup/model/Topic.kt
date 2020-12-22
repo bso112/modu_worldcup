@@ -9,13 +9,13 @@ data class Topic(
     @SerializedName("date")
     val mDate : String,
     @SerializedName("title")
-    val mTitle: String,
+    var mTitle: String,
     @SerializedName("description")
-    val mDescription : String,
+    var mDescription : String,
     @SerializedName("manager")
     val mManagerName: String,
     @SerializedName("image_length")
-    val mImageLength : Int,
+    var mImageLength : Int,
     @SerializedName("manager_email")
     val mManagerEmail : String,
     @SerializedName("like")

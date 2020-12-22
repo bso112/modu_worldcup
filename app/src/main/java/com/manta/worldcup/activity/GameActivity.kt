@@ -13,7 +13,7 @@ import com.manta.worldcup.helper.Constants.EXTRA_USER
 import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
-import com.manta.worldcup.viewmodel.MasterViewModel
+import com.manta.worldcup.viewmodel.PictureViewModel
 import kotlinx.android.synthetic.main.activity_game.*
 import java.lang.Math.pow
 import kotlin.collections.ArrayList
@@ -28,13 +28,13 @@ class GameActivity : AppCompatActivity() {
     //토픽에 있는 사진의 총 갯수
     private var mPictureSum = 0;
 
-    private val mMasterViewModel: MasterViewModel by lazy {
+    private val mPictureViewModel: PictureViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MasterViewModel(application) as T;
+                return PictureViewModel(application) as T;
             }
 
-        }).get(MasterViewModel::class.java);
+        }).get(PictureViewModel::class.java);
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +45,9 @@ class GameActivity : AppCompatActivity() {
         mPlayer = intent.getSerializableExtra(EXTRA_USER) as? User ?: return;
 
         //토픽이 포함하는 사진들을 가져온다.
-        mMasterViewModel.getPictures(mTopic.mId);
+        mPictureViewModel.getPictures(mTopic.mId);
         //서버에서 받아온 사진 데이터를 copy해서 어댑터에 넣는다.
-        mMasterViewModel.mPictures.observe(this, androidx.lifecycle.Observer {
+        mPictureViewModel.mPictures.observe(this, androidx.lifecycle.Observer {
             mPictureModels = ArrayList(it);
             mPictureSum = mPictureModels.size;
             mPictureModels.shuffle();
@@ -91,12 +91,12 @@ class GameActivity : AppCompatActivity() {
             //플레이어가 토픽 주최자면 포인트는 얻지 못한다.
             if (mPlayer.mEmail != mPictureModels.first().mOwnerEmail) {
                 //토픽 주최자에게 포인트 플러스
-                mMasterViewModel.addPoint(Constants.POINT_END_GAME, mTopic.mManagerEmail);
+                mPictureViewModel.addPoint(Constants.POINT_END_GAME, mTopic.mManagerEmail);
                 //이긴 사진의 주인에게 포인트 플러스
-                mMasterViewModel.addPoint(Constants.POINT_WIN_PICTURE, mPictureModels.first().mOwnerEmail);
+                mPictureViewModel.addPoint(Constants.POINT_WIN_PICTURE, mPictureModels.first().mOwnerEmail);
             }
             //사진의 winCnt 증가
-            mMasterViewModel.addWinCnt(mPictureModels.first().mId);
+            mPictureViewModel.addWinCnt(mPictureModels.first().mId);
 
             Intent(this, GameResultActivity::class.java).apply {
                 putExtra(Constants.EXTRA_TOPIC, mTopic);

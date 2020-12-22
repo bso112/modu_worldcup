@@ -15,6 +15,7 @@
         android:theme="@style/Theme.Worldcup"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".activity.UpdateTopicActivity"></activity>
 
         <service
             android:name=".service.MyFirebaseMessagingService"
@@ -23,9 +24,11 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -37,5 +40,6 @@
             android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.AddPictureActivity" />
         <activity android:name=".activity.GameActivity" />
-        </application>
-    </manifest>
+    </application>
+
+</manifest>

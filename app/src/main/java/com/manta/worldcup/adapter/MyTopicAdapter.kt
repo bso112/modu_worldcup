@@ -1,15 +1,20 @@
 package com.manta.worldcup.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
+import com.manta.worldcup.activity.fragment.dialog.MyTopicOptionSheet
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
 import kotlinx.android.synthetic.main.item_topic4.view.*
@@ -69,7 +74,7 @@ class MyTopicAdapter(private val mNotifiedTopicId : String? = null) : RecyclerVi
         val mDate: TextView = view.tv_date;
         val mTier: ImageView = view.iv_tier
         val mNotificationBadge: ImageView = view.iv_notification
-
+        val mOptionBtn : ImageButton = view.btn_more
 
         init {
             view.setOnClickListener {
@@ -86,6 +91,11 @@ class MyTopicAdapter(private val mNotifiedTopicId : String? = null) : RecyclerVi
                     }
 
                 }
+            }
+
+            //수정, 삭제 옵션 다이어로그 띄우기
+            mOptionBtn.setOnClickListener {
+                MyTopicOptionSheet().newInstance(mDataset.get(adapterPosition)).show((mContext as AppCompatActivity).supportFragmentManager, null);
             }
         }
 

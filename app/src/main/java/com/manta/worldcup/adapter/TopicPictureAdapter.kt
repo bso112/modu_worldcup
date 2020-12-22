@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.PictureDescriptionDialog
+import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Picture
 import com.manta.worldcup.model.PictureModel
 import kotlinx.android.synthetic.main.item_picture.view.*
@@ -17,7 +18,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
-class TopicPictureAdapter(private val fragmentManager : FragmentManager) : RecyclerView.Adapter<TopicPictureAdapter.ImageViewHolder>() {
+class TopicPictureAdapter(private val fragmentManager: FragmentManager) : RecyclerView.Adapter<TopicPictureAdapter.ImageViewHolder>() {
 
     private val mDataset: ArrayList<Picture> = ArrayList();
 
@@ -31,14 +32,15 @@ class TopicPictureAdapter(private val fragmentManager : FragmentManager) : Recyc
     inner class ImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val mPictureView: ImageView = view.iv_picture;
         val mCancelBtn: ImageButton = view.btn_cancel;
+
         //이미지 제목이 입력되었다는 표시
-        val mCheckedView : ImageView = view.iv_checked;
+        val mCheckedView: ImageView = view.iv_checked;
 
         init {
             //엑스클릭하면 항목지우기
             mCancelBtn.setOnClickListener {
                 //removeImage(adapterPosition); 하고나면 adapterPosition 바뀌어버려서 먼저해야함.
-                if(adapterPosition < mIsPictureNamed.size)
+                if (adapterPosition < mIsPictureNamed.size)
                     mIsPictureNamed.removeAt(adapterPosition);
                 removeImage(adapterPosition);
             }
@@ -75,7 +77,14 @@ class TopicPictureAdapter(private val fragmentManager : FragmentManager) : Recyc
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.mPictureView.setImageBitmap(mDataset[position].mBitmap);
+        //서버로부터 이미지 요청
+        if (mDataset[position].mBitmap == null) {
+            val url = Constants.BASE_URL + "image/get/${mDataset[position].pictureModel.mId}/";
+            Constants.GlideWithHeader(url, holder.mPictureView, holder.mPictureView, holder.mPictureView.context)
+        }
+        //비트맵 셋팅
+        else
+            holder.mPictureView.setImageBitmap(mDataset[position].mBitmap);
     }
 
     fun removeImage(position: Int) {
@@ -85,20 +94,36 @@ class TopicPictureAdapter(private val fragmentManager : FragmentManager) : Recyc
         notifyItemRemoved(position)
     }
 
-
-    fun addBitmap(bitmap: Bitmap, ownerEmail : String) {
-        mDataset.add(Picture(PictureModel(0, 0, "", ownerEmail), bitmap));
+    /**
+     *  갤러리에서 사진을 추가한 경우 (토픽 추가)
+     *  @param bitmap 사진에 넣을 비트맵
+     *  @param ownerEmail 사진을 가진 유저의 이메일
+     */
+    fun addPicture(bitmap: Bitmap, ownerEmail: String) {
+        mDataset.add(Picture(PictureModel(0, 0, "", "", 0, ownerEmail), bitmap));
         mIsPictureNamed.add(false);
         notifyItemInserted(mDataset.size - 1);
+    }
+
+    /**
+     *  기존에 토픽에 등록된 서버에서 사진을 받아오는 경우(토픽 업데이트)
+     */
+    fun setPictures(pictureModels : List<PictureModel>) {
+        mDataset.clear();
+        for(pictureModel in pictureModels){
+            mDataset.add(Picture(pictureModel, null));
+            mIsPictureNamed.add(true)
+            notifyItemInserted(mDataset.size - 1);
+        }
     }
 
     fun getPictures() = ArrayList(mDataset);
 
     /**
      * by 변성욱
-     * 중복확인에 사용할 사진이름들을 설정한다.
+     * 기존 토픽에 사진을 추가할경우, 중복확인에 사용할 사진이름들을 설정한다.
      */
-    fun setPictureNames(pictureNames : HashSet<String>){
+    fun setPictureNames(pictureNames: HashSet<String>) {
         mPictureNames = pictureNames;
     }
 
@@ -106,9 +131,9 @@ class TopicPictureAdapter(private val fragmentManager : FragmentManager) : Recyc
      * by 변성욱
      * 모든 사진의 이름이 지어졌는가?
      */
-    fun isPicturesReadyToSubmit() : Boolean{
-        for(isNamed in mIsPictureNamed){
-            if(!isNamed) return false;
+    fun isPicturesReadyToSubmit(): Boolean {
+        for (isNamed in mIsPictureNamed) {
+            if (!isNamed) return false;
         }
         return true;
     }

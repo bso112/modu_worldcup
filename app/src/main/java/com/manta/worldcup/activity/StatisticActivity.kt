@@ -13,7 +13,7 @@ import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.CommentViewModel
-import com.manta.worldcup.viewmodel.MasterViewModel
+import com.manta.worldcup.viewmodel.PictureViewModel
 import kotlinx.android.synthetic.main.activity_statistic.*
 import kotlinx.android.synthetic.main.activity_statistic.rv_picture
 
@@ -21,13 +21,13 @@ class StatisticActivity : AppCompatActivity() {
 
     private lateinit var mMyPictureAdapter : MyPictureAdapter;
    // private val mCommentAdapter = CommentAdapter();
-    private val mMasterViewModel: MasterViewModel by lazy {
+    private val mMasterViewModel: PictureViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MasterViewModel(application) as T;
+                return PictureViewModel(application) as T;
             }
 
-        }).get(MasterViewModel::class.java);
+        }).get(PictureViewModel::class.java);
     }
 
     private val mCommentViewModel : CommentViewModel by lazy{

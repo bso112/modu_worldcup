@@ -1,6 +1,7 @@
 package com.manta.worldcup.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class TopicJoinUser (
     @SerializedName("id")
@@ -26,7 +27,8 @@ data class TopicJoinUser (
     @SerializedName("dislike")
     val mDislike : Int = 0,
     @SerializedName("view")
-    val mView : Int = 0){
+    val mView : Int = 0) : Serializable{
 
     fun getTopic() : Topic = Topic(mId, mDate, mTitle, mDescription, mManagerName, mImageLength, mManagerEmail, mLike, mDislike, mView);
+    fun getUser() : User = User(mManagerEmail, mManagerName, mTier, mCurrPoint)
 }
