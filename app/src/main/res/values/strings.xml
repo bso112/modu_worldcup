@@ -26,4 +26,6 @@
     <string name="how_was_worldcup">이 월드컵은 어땠나요?</string>
     <string name="of_user">의 유저가</string>
     <string name="choose_same_as_you">당신과 같은 선택을 했습니다.</string>
+    <string name="tooltip_topic_income">월드컵을 완료한 유저의 수 x</string>
+    <string name="tooltip_picture_income">우승횟수 x</string>
 </resources>

@@ -1,12 +1,13 @@
 package com.manta.worldcup.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.TypedValue
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.TopicCommentDialog
 import com.manta.worldcup.adapter.MyPictureAdapter
 import com.manta.worldcup.helper.Constants
@@ -14,8 +15,10 @@ import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.CommentViewModel
 import com.manta.worldcup.viewmodel.PictureViewModel
+import com.skydoves.balloon.*
 import kotlinx.android.synthetic.main.activity_statistic.*
-import kotlinx.android.synthetic.main.activity_statistic.rv_picture
+import com.manta.worldcup.R
+
 
 class StatisticActivity : AppCompatActivity() {
 
@@ -59,6 +62,31 @@ class StatisticActivity : AppCompatActivity() {
         tv_show_comment.setOnClickListener {
             TopicCommentDialog().newInstance(topic, user).show(supportFragmentManager, null);
         }
+
+        tv_earn.text = (topic.mView * Constants.POINT_CLEAR_GAME).toString();
+
+
+
+
+        btn_info.setOnClickListener {
+            val balloon: Balloon = Balloon.Builder(this)
+                .setArrowSize(10)
+                .setArrowOrientation(ArrowOrientation.BOTTOM)
+                .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+                .setPadding(6)
+                .setArrowPosition(0.5f)
+                .setCornerRadius(10f)
+                .setBackgroundColorResource(R.color.yellow)
+                .setText(resources.getString(R.string.tooltip_topic_income) + " " + Constants.POINT_CLEAR_GAME)
+                .setBalloonAnimation(BalloonAnimation.FADE)
+                .build()
+
+            balloon.show(btn_info)
+        }
+
+
+        tv_like.text = topic.mLike.toString()
+        tv_dislike.text = topic.mDislike.toString()
     }
 
 

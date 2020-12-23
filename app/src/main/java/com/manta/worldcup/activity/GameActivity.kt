@@ -141,7 +141,7 @@ class GameActivity : AppCompatActivity() {
             //플레이어가 토픽 주최자면 포인트는 얻지 못한다.
             if (mPlayer.mEmail != mPictureModels.first().mOwnerEmail) {
                 //토픽 주최자에게 포인트 플러스
-                mPictureViewModel.addPoint(Constants.POINT_END_GAME, mTopic.mManagerEmail);
+                mPictureViewModel.addPoint(Constants.POINT_CLEAR_GAME, mTopic.mManagerEmail);
                 //이긴 사진의 주인에게 포인트 플러스
                 mPictureViewModel.addPoint(Constants.POINT_WIN_PICTURE, mPictureModels.first().mOwnerEmail);
             }

@@ -19,6 +19,10 @@ interface TopicAPI {
     @POST("topic/update")
     suspend fun updateTopic(@Body topic : Topic) : Response<Int>
 
+    @GET("topic/get_name/{topic_id}")
+    suspend fun getTopicName(@Path("topic_id") topicID : Long) : Response<String>
+
+
     @GET("topicJoinUser/get_all")
     suspend fun getAllTopicJoinUser() : Response<ArrayList<TopicJoinUser>>
 

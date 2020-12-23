@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -21,45 +22,31 @@ import kotlin.collections.ArrayList
 import kotlin.math.floor
 
 /**
- * 내가 올린 사진(item_my_picture)을 보여주는 어댑터
+ * 타인이 올린 사진을 나타내는 어댑터
  * @author 변성욱
- * @param mFragementManager picture에 달린 댓글을 보여줄 fragment를 호스팅하는 액티비티의 fragementManager
  */
-class MyPictureAdapter(private var mFragementManager: FragmentManager?,
-                       private val mNotifiedPictureId : String? = null) : RecyclerView.Adapter<MyPictureAdapter.MyPictureViewHolder>() {
+class PictureAdapter() : RecyclerView.Adapter<PictureAdapter.MyPictureViewHolder>() {
 
     private var mDataset: ArrayList<PictureModel> = ArrayList();
     private var mNotification = MutableList(0) { false }
     private var mUser: User? = null;
     private lateinit var mContext : Context;
-    //mNotifiedTopicId 에 해당하는 뷰의 애니메이션이 처음 실행되는 상태인가?
-    private var mIsFirstAnimation : Boolean = true;
+    private lateinit var mFragementManager : FragmentManager;
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         mContext = recyclerView.context;
+        mFragementManager =  (mContext as AppCompatActivity).supportFragmentManager;
     }
 
     inner class MyPictureViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val mPictureView: ImageView = view.iv_picture;
         val mWinCnt: TextView = view.tv_winCnt;
-        val mNotificationBadge = view.iv_notification;
 
         init {
             mPictureView.setOnClickListener {
-                if (mUser != null && mFragementManager != null)
-                    PictureCommentDialog().newInstance(mDataset[adapterPosition], mUser!!).show(mFragementManager!!, null);
-
-                if (mNotificationBadge.visibility == View.VISIBLE) {
-                    mNotificationBadge.visibility = View.INVISIBLE;
-                    mNotification[adapterPosition] = false;
-
-                    //노피티케이션 확인했으니 삭제.
-                    val pref = mContext.applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
-                    val pictureNotification = pref.getStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, emptySet());
-                    pictureNotification?.remove(mDataset[adapterPosition].mId.toString())
-                    pref.edit().putStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, pictureNotification).apply();
-                }
+                if (mUser != null)
+                    PictureCommentDialog().newInstance(mDataset[adapterPosition], mUser!!).show(mFragementManager, null);
 
             }
         }
@@ -67,21 +54,6 @@ class MyPictureAdapter(private var mFragementManager: FragmentManager?,
         fun setPicture(picture: PictureModel) {
             Glide.with(view.context).load(Constants.BASE_URL + "image/get/${picture.mId}").into(mPictureView);
             mWinCnt.text = if (picture.WinCnt >= 1000) "${floor(picture.WinCnt / 100.0F) / 10.0F}K" else picture.WinCnt.toString();
-
-            //노티피케이션 확인
-            if (mNotification[adapterPosition])
-                mNotificationBadge.visibility = View.VISIBLE;
-            //이거 안해주면 이 뷰홀더의 mNotificationBadge는 VISIBLE이고, 그대로 재활용됨.
-            else
-                mNotificationBadge.visibility = View.INVISIBLE;
-
-            if(mNotifiedPictureId != null && mNotifiedPictureId == picture.mId.toString() && mIsFirstAnimation){
-                view.requestFocus()
-                val anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_shake)
-                view.startAnimation(anim)
-                mIsFirstAnimation = false;
-            }
-
         }
     }
 

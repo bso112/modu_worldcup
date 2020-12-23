@@ -9,6 +9,7 @@ import com.manta.worldcup.api.repository.Repository
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.TopicJoinUser
 import com.manta.worldcup.model.User
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.coroutines.launch
 
 class TopicViewModel(private val application: Application) : ViewModel() {
@@ -20,47 +21,56 @@ class TopicViewModel(private val application: Application) : ViewModel() {
     fun getAllTopic() {
         viewModelScope.launch {
             val res = mRepository.getAllTopicJoinUser();
-            if(res.isSuccessful){
+            if (res.isSuccessful) {
                 mDataset.value = res.body();
             }
         }
     }
 
-    fun getTopics(userEmail : String){
-        viewModelScope.launch{
+    fun getTopics(userEmail: String) {
+        viewModelScope.launch {
             val response = mRepository.getTopicJoinUsers(userEmail)
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 mDataset.value = response.body();
             }
         }
     }
 
+
     /**
      * @param like true if like, false if dislike
      */
-    fun UpdateRecommend(like : Boolean, topicId : Long){
+    fun UpdateRecommend(like: Boolean, topicId: Long) {
         viewModelScope.launch {
             mRepository.updateRecommned(like, topicId)
         }
     }
 
-    fun increaseView(topicId : Long){
+    fun increaseView(topicId: Long) {
         viewModelScope.launch {
             mRepository.increaseView(topicId);
         }
     }
 
 
-    fun updateTopic(topic : Topic){
+    fun updateTopic(topic: Topic) {
         viewModelScope.launch {
             mRepository.updateTopic(topic)
         }
     }
 
-    fun deleteTopic(topicID : Long){
+    fun deleteTopic(topicID: Long) {
         viewModelScope.launch {
             mRepository.deleteTopic(topicID);
         }
+    }
+
+    suspend fun getTopicName(topicID: Long): String {
+        val result = mRepository.getTopicName(topicID);
+        if (result.isSuccessful)
+            return result.body() ?: "";
+        else
+            return "";
     }
 
 

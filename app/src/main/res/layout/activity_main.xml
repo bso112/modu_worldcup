@@ -26,7 +26,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:background="@drawable/ic_baseline_grade_24"
-                android:backgroundTint="@color/yellow" />
+              />
 
             <TextView
                 android:id="@+id/tv_point"

@@ -1,5 +1,6 @@
 package com.manta.worldcup.activity
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,11 @@ import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.activity_game_result.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.math.round
 
 class GameResultActivity : AppCompatActivity() {
 
@@ -25,14 +31,14 @@ class GameResultActivity : AppCompatActivity() {
             }
         }).get(TopicViewModel::class.java);
     }
-    
+
     /**
-     * 토픽에 좋아요를 눌렀는가? 
+     * 토픽에 좋아요를 눌렀는가?
      * null     : 아무것도 선택하지 않은 상태
      * true     : 종아요를 누른상태
      * false    : 싫어요를 누른상태
      */
-    private var mIsLike : Boolean? = null;
+    private var mIsLike: Boolean? = null;
     private lateinit var mTopic: Topic;
 
 
@@ -76,7 +82,7 @@ class GameResultActivity : AppCompatActivity() {
         val oldLike = mTopic.mLike;
         val oldDislike = mTopic.mDislike;
 
-        var typedValue : TypedValue = TypedValue();
+        var typedValue: TypedValue = TypedValue();
         theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
         val primaryColor = typedValue.data;
 
@@ -107,14 +113,17 @@ class GameResultActivity : AppCompatActivity() {
             uncheckLikeButton(oldLike);
 
         }
+
+        tv_percent.text = round(winner.WinCnt.toFloat() / mTopic.mView.toFloat() * 100).toString() + "%";
+
     }
 
-    private fun uncheckLikeButton(oldLike : Int){
+    private fun uncheckLikeButton(oldLike: Int) {
         btn_like.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.disabled));
         tv_like.text = oldLike.toString();
     }
 
-    private fun unCheckDislikeButton(oldDislike : Int){
+    private fun unCheckDislikeButton(oldDislike: Int) {
         btn_dislike.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.disabled));
         tv_dislike.text = oldDislike.toString();
     }

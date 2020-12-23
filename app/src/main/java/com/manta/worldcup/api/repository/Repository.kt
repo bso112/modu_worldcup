@@ -19,12 +19,13 @@ class Repository(application: Application) {
 
     suspend fun insertTopic(topic: Topic, pictures: List<PictureModel>, image: List<MultipartBody.Part>) = topicAPI.insertTopic(topic, pictures, image);
 
-    suspend fun deleteTopic(topicID : Long) = topicAPI.deleteTopic(topicID);
+    suspend fun deleteTopic(topicID: Long) = topicAPI.deleteTopic(topicID);
 
-    suspend fun updateTopic(topic : Topic) = topicAPI.updateTopic(topic);
+    suspend fun updateTopic(topic: Topic) = topicAPI.updateTopic(topic);
 
+    suspend fun getTopicName(topicID: Long) = topicAPI.getTopicName(topicID);
 
-    suspend fun deletePictures(pictureIDs : List<PictureModel>) = topicAPI.deletePictures(pictureIDs);
+    suspend fun deletePictures(pictureIDs: List<PictureModel>) = topicAPI.deletePictures(pictureIDs);
 
     suspend fun getAllPictures(ownerEmail: String) = topicAPI.getPictures(ownerEmail);
 
@@ -60,4 +61,6 @@ class Repository(application: Application) {
     suspend fun increaseView(topicId: Long) = topicAPI.increaseView(topicId);
 
     suspend fun updateUserNickname(nickname: String, email: String) = userAPI.updateUserNickname(nickname, email)
+
+
 }

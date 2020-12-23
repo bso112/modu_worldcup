@@ -65,7 +65,7 @@ object Constants {
     /**
      * 토픽의 참여자가 게임을 완료했을때 토픽 주최자가 받는 포인트
      */
-    const val POINT_END_GAME = 5
+    const val POINT_CLEAR_GAME = 5
 
 
     /**
