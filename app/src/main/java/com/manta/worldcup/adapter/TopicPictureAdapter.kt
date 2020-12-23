@@ -67,6 +67,10 @@ class TopicPictureAdapter(private val fragmentManager: FragmentManager) : Recycl
                 }).show(fragmentManager, null);
             }
 
+            //이미 이름이 있는 사진이면 체크표시
+            if(mDataset[adapterPosition].pictureModel.mPictureName != "")
+                mCheckedView.visibility = View.VISIBLE;
+
 
         }
     }

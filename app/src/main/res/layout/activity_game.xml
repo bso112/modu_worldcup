@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +9,7 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/ll_game_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -24,6 +25,7 @@
             android:background="@color/black_alpha"/>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_A"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
@@ -61,18 +63,18 @@
                     style="@style/TextAppearance.AppCompat.Large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
                     android:textColor="@color/white"
                     android:textSize="30sp"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    app:textStroke="true"
-                    app:textStrokeColor="@color/black"
-                    app:textStrokeWidth="5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.88" />
+                    app:layout_constraintVertical_bias="0.88"
+                    app:textStroke="true"
+                    app:textStrokeColor="@color/black"
+                    app:textStrokeWidth="5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -80,6 +82,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_B"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
@@ -138,6 +141,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_vs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

@@ -1,8 +1,15 @@
 package com.manta.worldcup.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
+import android.util.DisplayMetrics
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.TranslateAnimation
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.manta.worldcup.R
@@ -16,17 +23,20 @@ import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.PictureViewModel
 import kotlinx.android.synthetic.main.activity_game.*
 import java.lang.Math.pow
-import kotlin.collections.ArrayList
 import kotlin.math.ceil
 import kotlin.math.log2
+
 
 class GameActivity : AppCompatActivity() {
 
     private lateinit var mPictureModels: ArrayList<PictureModel>;
     private lateinit var mTopic: Topic;
     private lateinit var mPlayer: User;
+
     //토픽에 있는 사진의 총 갯수
     private var mPictureSum = 0;
+
+    private var mMaxDuration = 0L;
 
     private val mPictureViewModel: PictureViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -35,6 +45,14 @@ class GameActivity : AppCompatActivity() {
             }
 
         }).get(PictureViewModel::class.java);
+    }
+
+    private val mOutUpwardAnim: Animation by lazy {
+        AnimationUtils.loadAnimation(this, R.anim.anim_out_upward_screen)
+    }
+
+    private val mOutDownwardAnim: Animation by lazy {
+        AnimationUtils.loadAnimation(this, R.anim.anim_out_downward_screen)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,8 +72,8 @@ class GameActivity : AppCompatActivity() {
             showImage();
         })
 
-        iv_A.setOnClickListener { choose(true); showImage(); }
-        iv_B.setOnClickListener { choose(false); showImage(); }
+        iv_A.setOnClickListener { choose(true);  }
+        iv_B.setOnClickListener { choose(false);  }
 
         btn_comment_A.setOnClickListener {
             if (mPictureModels.isNotEmpty())
@@ -65,10 +83,28 @@ class GameActivity : AppCompatActivity() {
             if (mPictureModels.size >= 2)
                 PictureCommentDialog().newInstance(mPictureModels[1], mPlayer).show(supportFragmentManager, null);
         }
-
-
     }
 
+
+    private fun moveViewToScreenCenter(view: View) {
+        val root = findViewById<View>(R.id.root) as ConstraintLayout
+        val dm = DisplayMetrics()
+        this.windowManager.defaultDisplay.getMetrics(dm)
+        val statusBarOffset = dm.heightPixels - root.measuredHeight
+        val originalPos = IntArray(2)
+        view.getLocationOnScreen(originalPos)
+        val yDest = dm.heightPixels / 2 - view.measuredHeight / 2 + statusBarOffset
+        val anim = TranslateAnimation(0F, 0F, 0F, (yDest - originalPos[1]).toFloat())
+        anim.duration = (resources.getInteger(R.integer.game_anim_duration) / 1.5).toLong()
+        //애니메이션이 끝난 후에도 자리를 유지한다.
+        anim.fillAfter = true;
+        view.startAnimation(anim)
+        //모든 다른 애니메이션이 끝나면 제자리로 돌아간다.
+        android.os.Handler(Looper.getMainLooper()).postDelayed(Runnable {
+            anim.cancel()
+            onAnimationEnd()
+        }, resources.getInteger(R.integer.game_anim_duration).toLong())
+    }
 
     /**
      * by 변성욱
@@ -81,8 +117,22 @@ class GameActivity : AppCompatActivity() {
             return;
 
         //고르지 않은것을 지운다.
-        if (isA) mPictureModels.removeAt(1); else mPictureModels.removeAt(0);
+        if (isA) {
+            mPictureModels.removeAt(1)
+            moveViewToScreenCenter(cv_A)
+            cv_B.startAnimation(mOutDownwardAnim)
+            tv_vs.startAnimation(mOutDownwardAnim)
+        } else {
+            mPictureModels.removeAt(0)
+            moveViewToScreenCenter(cv_B)
+            cv_A.startAnimation(mOutUpwardAnim)
+            tv_vs.startAnimation(mOutUpwardAnim)
+        }
 
+
+    }
+
+    private fun onAnimationEnd() {
         //결과를 셔플
         mPictureModels.shuffle();
 
@@ -107,9 +157,12 @@ class GameActivity : AppCompatActivity() {
                 return;
             }
         }
+
+        showImage();
     }
 
-    fun showImage() {
+
+    private fun showImage() {
         if (mPictureModels.size < 2) return;
         val round = pow(2.0, ceil(log2(mPictureModels.size.toDouble()))).toInt();
         var title = "";
