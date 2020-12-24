@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
-import kotlinx.android.synthetic.main.item_topic.view.*
+import kotlinx.android.synthetic.main.item_topic2.view.*
 import kotlin.collections.ArrayList
 
 /**

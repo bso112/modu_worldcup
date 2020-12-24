@@ -13,6 +13,9 @@ import kotlinx.android.synthetic.main.dialog_change_nickname.*
 import kotlinx.android.synthetic.main.dialog_change_nickname.view.*
 import java.io.Serializable
 
+/**
+ * 유저의 이름을 바꾸기위해 띄워주는 다이어로그다.
+ */
 class ChangeNicknameDialog() : DialogFragment() {
 
 

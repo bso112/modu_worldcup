@@ -1,6 +1,5 @@
 package com.manta.worldcup.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
-import com.manta.worldcup.activity.fragment.dialog.MyTopicOptionSheet
+import com.manta.worldcup.activity.fragment.dialog.MyTopicOptionDialog
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
 import kotlinx.android.synthetic.main.item_topic4.view.*
@@ -25,15 +23,15 @@ import kotlin.collections.ArrayList
  * @author 변성욱
  * @param notifiedTopicId notificationBar에 담긴 pending intent로 전달된 notifiedTopicId
  */
-class MyTopicAdapter(private val mNotifiedTopicId : String? = null) : RecyclerView.Adapter<MyTopicAdapter.TopicViewHolder>() {
+class MyTopicAdapter(private val mNotifiedTopicId: String? = null) : RecyclerView.Adapter<MyTopicAdapter.TopicViewHolder>() {
 
     private var mDataset: List<TopicJoinUser> = ArrayList();
     private var mOnItemClickListener: OnItemClickListener? = null;
     private var mNotification = MutableList(0) { false }
-    private lateinit var mContext : Context;
+    private lateinit var mContext: Context;
 
     //mNotifiedTopicId 에 해당하는 뷰의 애니메이션이 처음 실행되는 상태인가?
-    private var mIsFirstAnimation : Boolean = true;
+    private var mIsFirstAnimation: Boolean = true;
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -74,7 +72,7 @@ class MyTopicAdapter(private val mNotifiedTopicId : String? = null) : RecyclerVi
         val mDate: TextView = view.tv_date;
         val mTier: ImageView = view.iv_tier
         val mNotificationBadge: ImageView = view.iv_notification
-        val mOptionBtn : ImageButton = view.btn_more
+        val mOptionBtn: ImageButton = view.btn_more
 
         init {
             view.setOnClickListener {
@@ -95,20 +93,23 @@ class MyTopicAdapter(private val mNotifiedTopicId : String? = null) : RecyclerVi
 
             //수정, 삭제 옵션 다이어로그 띄우기
             mOptionBtn.setOnClickListener {
-                MyTopicOptionSheet().newInstance(mDataset.get(adapterPosition)).show((mContext as AppCompatActivity).supportFragmentManager, null);
+                MyTopicOptionDialog().newInstance(mDataset.get(adapterPosition)).show((mContext as AppCompatActivity).supportFragmentManager, null);
             }
         }
 
 
         fun setTopic(data: TopicJoinUser) {
 
-            var urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
             mContext.let {
-                Constants.GlideWithHeader(urlToPicture, view, mFirstImg, it);
+                //이미지가 서버에 없더라도 기기에 캐싱되어서 화면에 보여지기 때문에 imageLength로 판단해줘야함.
+                val isUseCache = data.mImageLength > 2
+                var urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
+                Constants.GlideWithHeader(urlToPicture, view, mFirstImg, it, isUseCache);
                 urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/1";
-                Constants.GlideWithHeader(urlToPicture, view, mSecondImg, it);
+                Constants.GlideWithHeader(urlToPicture, view, mSecondImg, it, isUseCache);
 
             }
+
 
             mTitle.text = data.mTitle;
             mManagerName.text = data.mManagerName;
@@ -118,14 +119,14 @@ class MyTopicAdapter(private val mNotifiedTopicId : String? = null) : RecyclerVi
             if (tierIconID != null)
                 mTier.setImageResource(tierIconID);
 
-            if (mNotification[adapterPosition]){
+            if (mNotification[adapterPosition]) {
                 mNotificationBadge.visibility = View.VISIBLE;
             }
             //이거 안해주면 이 뷰홀더의 mNotificationBadge는 VISIBLE이고, 그대로 재활용됨.
             else
                 mNotificationBadge.visibility = View.INVISIBLE;
 
-            if(mNotifiedTopicId != null && mNotifiedTopicId == data.mId.toString() && mIsFirstAnimation){
+            if (mNotifiedTopicId != null && mNotifiedTopicId == data.mId.toString() && mIsFirstAnimation) {
                 view.requestFocus()
                 val anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_shake)
                 view.startAnimation(anim)

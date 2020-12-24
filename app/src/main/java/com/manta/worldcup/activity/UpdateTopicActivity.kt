@@ -23,7 +23,13 @@ import kotlinx.android.synthetic.main.activity_update_topic.btn_submit
 import kotlinx.android.synthetic.main.activity_update_topic.et_content
 import kotlinx.android.synthetic.main.activity_update_topic.et_title
 import kotlinx.android.synthetic.main.activity_update_topic.rv_picture
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+/**
+ * 월드컵을 수정하기 위한 액티비티.
+ */
 class UpdateTopicActivity : AppCompatActivity() {
 
     private val mPictureViewModel: PictureViewModel by lazy {
@@ -111,8 +117,10 @@ class UpdateTopicActivity : AppCompatActivity() {
                         picturesToInsert.add(current)
                 }
 
-                //삭제된 사진 삭제
-                mPictureViewModel.deletePictures(picturesToDelete);
+                CoroutineScope(Dispatchers.IO).launch {
+                    //삭제된 사진 삭제
+                    mPictureViewModel.deletePictures(picturesToDelete);
+                }
 
                 //새로운 사진 추가
                 mPictureViewModel.insertPictureToTopic(picturesToInsert, topic.mId);

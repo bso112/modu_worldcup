@@ -33,11 +33,11 @@ class PictureDescriptionDialog() : DialogFragment() {
 
 
     fun newInstance(pictureNames : ArrayList<String>,
-                    currentPictureName : String,
+                    currentPictureName : String?,
                     onSubmitListener : OnSubmitListener):PictureDescriptionDialog {
         val args = Bundle(3)
         args.putStringArrayList(EXTRA_PICTURE_NAMES, pictureNames);
-        args.putString(Constants.EXTRA_PICTURE_NAME, currentPictureName)
+        args.putString(EXTRA_PICTURE_NAME, currentPictureName)
         args.putSerializable(EXTRA_SUBMIT_LISTENER, onSubmitListener);
         val fragment = PictureDescriptionDialog()
         fragment.arguments = args
@@ -49,13 +49,13 @@ class PictureDescriptionDialog() : DialogFragment() {
 
         val onSubmitListener = arguments?.getSerializable(EXTRA_SUBMIT_LISTENER) as? OnSubmitListener ?: return view;
         val pictureNames = arguments?.getStringArrayList(EXTRA_PICTURE_NAMES) ?: return view;
-        val currentPictureName = arguments?.getString(EXTRA_PICTURE_NAME) ?: return view;
+        val currentPictureName = arguments?.getString(EXTRA_PICTURE_NAME) ?: "";
 
         view.et_title.setText(currentPictureName);
 
         //중복검사
         view.et_title.addTextChangedListener {
-            if(view.et_title.text.toString() != "" && pictureNames.contains(view.et_title.text.toString()))
+            if(IsNameDuplicated(pictureNames, currentPictureName))
                 tv_title_warning.visibility = View.VISIBLE;
             else{
                 tv_title_warning.visibility = View.INVISIBLE;
@@ -64,7 +64,7 @@ class PictureDescriptionDialog() : DialogFragment() {
 
         view.btn_submit.setOnClickListener {
             val pictureName = view.et_title.text.toString()
-            if(pictureNames.contains(pictureName))
+            if(IsNameDuplicated(pictureNames, currentPictureName))
                 tv_title_warning.visibility = View.VISIBLE;
             else{
                 //키보드 내리기
@@ -78,6 +78,11 @@ class PictureDescriptionDialog() : DialogFragment() {
 
 
         return view;
+    }
+
+    private fun IsNameDuplicated(pictureNames : ArrayList<String>, currentPictureName: String?) : Boolean{
+        val pictureName = et_title.text.toString()
+        return pictureName != "" && pictureNames.contains(pictureName) && pictureName != currentPictureName
     }
 
 }

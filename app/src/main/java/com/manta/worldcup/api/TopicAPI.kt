@@ -53,6 +53,10 @@ interface TopicAPI {
     @POST("pictures/delete")
     suspend fun deletePictures(@Body pictures : List<PictureModel>) : Response<Int>
 
+    @FormUrlEncoded
+    @POST("picture/rename")
+    suspend fun updatePictureName(@Field("picture_id") pictureID : Long, @Field("name") name : String)
+
     @GET("comment/topic/get_all/{topic_id}")
     suspend fun getTopicComments(@Path("topic_id") topicId : Long) : Response<ArrayList<Comment>>
 

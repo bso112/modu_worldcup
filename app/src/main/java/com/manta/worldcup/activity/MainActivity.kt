@@ -120,13 +120,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        //모든 토픽을 받아온다. 이 토픽은 HomeFragment가 참조한다.
-        mTopicViewModel.getAllTopic()
         //로그인 상태에따라 로그인, 로그아웃표시
         mUserViewModel.CheckUserSignIn({
+            //로그인한 상태이고, 로그인 정보가 변경되었을때만 불림 (최초)
             SignIn(it)
             //로그인한 시점에 받아온 유저정보를 바탕으로 뷰를 갱신해야하기 때문에 이벤트를 브로드캐스트한다.
-            LocalBroadcastManager.getInstance(this).sendBroadcast(Intent().apply { action = Constants.ACTION_SIGNIN })
+            LocalBroadcastManager.getInstance(this).sendBroadcast(Intent().apply { action = Constants.ACTION_NEED_REFRESH })
         }, {
             //로그아웃 되었을때
             SignOut()

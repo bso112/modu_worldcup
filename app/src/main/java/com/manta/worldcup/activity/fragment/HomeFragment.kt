@@ -21,8 +21,7 @@ import kotlin.math.min
 
 
 /**
- * by 변성욱
- * 전체 토픽을 보여주는 프래그먼트
+ * 홈화면
  */
 class HomeFragment : Fragment(R.layout.frag_home) {
     private lateinit var mTopicViewModel: TopicViewModel;

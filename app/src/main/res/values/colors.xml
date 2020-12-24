@@ -13,6 +13,7 @@
     <color name="transparent">#00000000</color>
     <color name="disabled">#9E9E9E</color>
     <color name="black_alpha">#CC000000</color>
+    <color name="selected">#673AB7</color>
     <color name="red">#FF0000</color>
     <color name="yellow">#ffff00</color>
     <color name="gold">#FFD700</color>

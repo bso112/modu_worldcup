@@ -11,8 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
-import com.manta.worldcup.activity.fragment.dialog.MyTopicOptionSheet
-import com.manta.worldcup.activity.fragment.dialog.TopicOptionSheet
+import com.manta.worldcup.activity.fragment.dialog.TopicOptionDialog
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
 import kotlinx.android.synthetic.main.item_topic4.view.*
@@ -26,7 +25,7 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
 
     private var mDataset: List<TopicJoinUser> = ArrayList();
     private var mOnItemClickListener: OnItemClickListener? = null;
-    private lateinit var mContext : Context;
+    private lateinit var mContext: Context;
 
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -67,7 +66,7 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
         val mManagerName: TextView = view.tv_managerName;
         val mDate: TextView = view.tv_date;
         val mTier: ImageView = view.iv_tier
-        val mOptionBtn : ImageButton = view.btn_more
+        val mOptionBtn: ImageButton = view.btn_more
 
 
         init {
@@ -79,19 +78,20 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
             }
 
             mOptionBtn.setOnClickListener {
-                TopicOptionSheet().show((mContext as AppCompatActivity).supportFragmentManager, null);
+                TopicOptionDialog().show((mContext as AppCompatActivity).supportFragmentManager, null);
             }
         }
 
 
         fun setTopic(data: TopicJoinUser) {
 
-            var urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
             mContext.let {
-                Constants.GlideWithHeader(urlToPicture, view, mFirstImg, it);
+                //이미지가 서버에 없더라도 기기에 캐싱되어서 화면에 보여지기 때문에 imageLength로 판단해줘야함.
+                val isUseCache = data.mImageLength > 2
+                var urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
+                Constants.GlideWithHeader(urlToPicture, view, mFirstImg, it, isUseCache);
                 urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/1";
-                Constants.GlideWithHeader(urlToPicture, view, mSecondImg, it);
-
+                Constants.GlideWithHeader(urlToPicture, view, mSecondImg, it, isUseCache);
             }
 
             mTitle.text = data.mTitle;

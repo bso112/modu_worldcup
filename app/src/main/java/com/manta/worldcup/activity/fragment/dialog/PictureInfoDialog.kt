@@ -21,7 +21,6 @@ import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
-import kotlinx.android.synthetic.main.activity_statistic.*
 import kotlinx.android.synthetic.main.dialog_picture_info.*
 import kotlinx.android.synthetic.main.dialog_picture_info.btn_info
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +30,10 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PictureCommentDialog : DialogFragment() {
+/**
+ * 다른 유저가 내가 올린 사진을 클릭했을때, 사진정보를 보여주는 다이어로그다.
+ */
+class PictureInfoDialog : DialogFragment() {
 
     private val mCommentViewModel: CommentViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -59,11 +61,11 @@ class PictureCommentDialog : DialogFragment() {
      * @param picture 다이어로그에 띄울 사진의 정보
      * @param user  현재 로그인한 유저
      */
-    fun newInstance(picture: PictureModel, user: User): PictureCommentDialog {
+    fun newInstance(picture: PictureModel, user: User): PictureInfoDialog {
         val args = Bundle(2);
-        args.putSerializable(Constants.EXTRA_PICTURE, picture);
+        args.putSerializable(Constants.EXTRA_PICTURE_MODEL, picture);
         args.putSerializable(Constants.EXTRA_USER, user);
-        val fragment = PictureCommentDialog();
+        val fragment = PictureInfoDialog();
         fragment.arguments = args;
         return fragment;
     }
@@ -78,7 +80,7 @@ class PictureCommentDialog : DialogFragment() {
         //인풋모드 설정 (EditText가 키보드에 가려지지않게)
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        val pictureModel = requireArguments().getSerializable(Constants.EXTRA_PICTURE) as? PictureModel ?: return;
+        val pictureModel = requireArguments().getSerializable(Constants.EXTRA_PICTURE_MODEL) as? PictureModel ?: return;
         val user = requireArguments().getSerializable(Constants.EXTRA_USER) as? User ?: return;
 
         rv_comment.adapter = mCommentAdapter;
@@ -145,6 +147,7 @@ class PictureCommentDialog : DialogFragment() {
                 .setArrowPosition(0.5f)
                 .setCornerRadius(10f)
                 .setBackgroundColorResource(R.color.yellow)
+                .setTextColorResource(R.color.black)
                 .setText(resources.getString(R.string.tooltip_picture_income) + " " + Constants.POINT_WIN_PICTURE)
                 .setBalloonAnimation(BalloonAnimation.FADE)
                 .build()

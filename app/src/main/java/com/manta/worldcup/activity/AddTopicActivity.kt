@@ -18,6 +18,9 @@ import kotlinx.android.synthetic.main.activity_add_topic.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * 토픽 추가가 가능한 액티비티
+ */
 class AddTopicActivity : AppCompatActivity() {
 
     private val mPictureViewModel: PictureViewModel by lazy {

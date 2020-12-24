@@ -3,59 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="20dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="10dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="10dp">
+    <TextView
+        android:id="@+id/btn_subscribe"
+        android:layout_margin="20dp"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subscribe"
+        android:textColor="?android:attr/textColorPrimary" />
 
-            <ImageButton
-                android:id="@+id/btn_cancel"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_baseline_close_24" />
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="옵션"
-                android:textColor="?android:attr/textColorPrimary" />
-
-        </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="10dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/btn_subscribe"
-            android:layout_marginTop="20dp"
-            style="@style/TextAppearance.AppCompat.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="구독하기"
-            android:textColor="?android:attr/textColorPrimary" />
-
-        <TextView
-            android:id="@+id/btn_report"
-            android:layout_marginTop="20dp"
-            style="@style/TextAppearance.AppCompat.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="신고하기"
-            android:textColor="?android:attr/textColorPrimary" />
-
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/btn_report"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="40dp"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/report"
+        android:textColor="?android:attr/textColorPrimary" />
 
 
 

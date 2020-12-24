@@ -1,4 +1,3 @@
-
 package com.manta.worldcup.viewmodel
 
 import android.app.Application
@@ -27,12 +26,16 @@ class UserViewModel(private val application: Application) : ViewModel() {
         }
     }
 
+    /**
+     * 유저가 로그인했는지 확인한다.
+     * @param onSignIn 로그인한 상태이고, 로그인 정보가 달라졌을때만 불린다.
+     */
     fun CheckUserSignIn(onSignIn: (user: User) -> Unit, onSignOut: ((user: User) -> Unit)? = null) {
         AuthSingleton.getInstance(application).CheckUserSignIn({
             if (mUser.value != it) {
                 mUser.value = it;
+                onSignIn(it);
             }
-            onSignIn(it);
         }, {
             mUser.value = null;
             if (onSignOut != null) onSignOut(it)
@@ -45,11 +48,11 @@ class UserViewModel(private val application: Application) : ViewModel() {
         }
     }
 
-     fun updateUserNickname(nickname : String, onSucess : ()->Unit){
+    fun updateUserNickname(nickname: String, onSucess: () -> Unit) {
         viewModelScope.launch {
             mUser.value?.mEmail?.let {
                 val response = mRepository.updateUserNickname(nickname, it)
-                if(response.isSuccessful)
+                if (response.isSuccessful)
                     onSucess();
             };
         }

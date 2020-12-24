@@ -20,6 +20,9 @@ import kotlinx.android.synthetic.main.dialog_comment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * 토픽에 코멘트를 달 수 있게 띄우는 다이어로그다.
+ */
 class TopicCommentDialog : DialogFragment() {
 
     private val mCommentViewModel: CommentViewModel by lazy {

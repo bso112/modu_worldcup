@@ -1,6 +1,9 @@
 package com.manta.worldcup.activity.fragment
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -8,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.AddTopicActivity
@@ -22,12 +26,22 @@ import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.frag_topic.*
 import kotlin.math.abs
 
+/**
+ * 다른 사람의 토픽을 볼 수 있는 프래그먼트
+ */
 class TopicFragment : Fragment(R.layout.frag_topic){
     private lateinit var mTopicViewModel: TopicViewModel;
     private lateinit var mUserViewModel: UserViewModel;
     private lateinit var mTopicAdaptor: TopicAdpater;
 
     private val REQUST_ADD_TOPIC = 0;
+
+    private val mRefreshReceiver = object : BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            refresh()
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,7 +87,9 @@ class TopicFragment : Fragment(R.layout.frag_topic){
                     Toast.makeText(context, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
                     return;
                 }
-                fragmentManager?.let { OnTopicClickDialog().newInstance(topicJoinUser.getTopic(), mUserViewModel.mUser.value!!).show(it, null) };
+                 OnTopicClickDialog()
+                     .newInstance(topicJoinUser.getTopic(), mUserViewModel.mUser.value!!)
+                     .show(requireFragmentManager(), null) ;
             }
         })
 
@@ -99,7 +115,22 @@ class TopicFragment : Fragment(R.layout.frag_topic){
                     }
                 })
         }
+
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(mRefreshReceiver, IntentFilter(Constants.ACTION_NEED_REFRESH))
+
     }
+
+    private fun refresh(){
+        mTopicViewModel.getAllTopic()
+    }
+
+    override fun onDestroy() {
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(mRefreshReceiver);
+        super.onDestroy()
+
+    }
+
 
 
 

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.manta.worldcup.R
-import com.manta.worldcup.activity.fragment.dialog.PictureCommentDialog
+import com.manta.worldcup.activity.fragment.dialog.MyPictureInfoDialog
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.User
@@ -25,15 +25,34 @@ import kotlin.math.floor
  * @author 변성욱
  * @param mFragementManager picture에 달린 댓글을 보여줄 fragment를 호스팅하는 액티비티의 fragementManager
  */
-class MyPictureAdapter(private var mFragementManager: FragmentManager?,
-                       private val mNotifiedPictureId : String? = null) : RecyclerView.Adapter<MyPictureAdapter.MyPictureViewHolder>() {
+class MyPictureAdapter(
+    private var mFragementManager: FragmentManager?,
+    private val mNotifiedPictureId: String? = null
+) : RecyclerView.Adapter<MyPictureAdapter.MyPictureViewHolder>() {
 
     private var mDataset: ArrayList<PictureModel> = ArrayList();
+
+    //사진의 노티피케이션 정보를 담은 리스트
     private var mNotification = MutableList(0) { false }
+
+    //사진의 선택정보를 담은 리스트
+    private var mSelected = MutableList(0) { false }
+
+    //삭제할 사진을 선택하는 모드인가?
+    private var mIsSelectMode = false;
+
+    //현재 로그인한 유저
     private var mUser: User? = null;
-    private lateinit var mContext : Context;
+    private lateinit var mContext: Context;
+
     //mNotifiedTopicId 에 해당하는 뷰의 애니메이션이 처음 실행되는 상태인가?
-    private var mIsFirstAnimation : Boolean = true;
+    private var mIsFirstAnimation: Boolean = true;
+
+    private var mOnItemLongClick: OnItemLongClickListener? = null
+
+    interface OnItemLongClickListener {
+        fun onItemLongClick();
+    }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -44,11 +63,28 @@ class MyPictureAdapter(private var mFragementManager: FragmentManager?,
         val mPictureView: ImageView = view.iv_picture;
         val mWinCnt: TextView = view.tv_winCnt;
         val mNotificationBadge = view.iv_notification;
+        val mCheckedMark: ImageView = view.iv_checked;
 
         init {
-            mPictureView.setOnClickListener {
+            view.setOnClickListener {
+                //사진을 선택하는 모드면 사진 선택만함.
+                if (mIsSelectMode) {
+                    mSelected[adapterPosition] = !mSelected[adapterPosition];
+                    notifyItemChanged(adapterPosition);
+                    return@setOnClickListener
+                }
+
                 if (mUser != null && mFragementManager != null)
-                    PictureCommentDialog().newInstance(mDataset[adapterPosition], mUser!!).show(mFragementManager!!, null);
+                    MyPictureInfoDialog()
+                        .newInstance(
+                        mDataset[adapterPosition],
+                        mUser!!,
+                        object : MyPictureInfoDialog.OnPictureNameChangeListener {
+                            override fun onPictureNameChange(pictureName: String) {
+                                mDataset[adapterPosition].mPictureName = pictureName;
+                            }
+                        })
+                        .show(mFragementManager!!, null);
 
                 if (mNotificationBadge.visibility == View.VISIBLE) {
                     mNotificationBadge.visibility = View.INVISIBLE;
@@ -60,8 +96,18 @@ class MyPictureAdapter(private var mFragementManager: FragmentManager?,
                     pictureNotification?.remove(mDataset[adapterPosition].mId.toString())
                     pref.edit().putStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, pictureNotification).apply();
                 }
-
             }
+
+            view.setOnLongClickListener {
+                mSelected[adapterPosition] = true;
+                notifyItemChanged(adapterPosition);
+                if (!mIsSelectMode) {
+                    mIsSelectMode = true;
+                    mOnItemLongClick?.onItemLongClick();
+                }
+                true;
+            }
+
         }
 
         fun setPicture(picture: PictureModel) {
@@ -75,12 +121,17 @@ class MyPictureAdapter(private var mFragementManager: FragmentManager?,
             else
                 mNotificationBadge.visibility = View.INVISIBLE;
 
-            if(mNotifiedPictureId != null && mNotifiedPictureId == picture.mId.toString() && mIsFirstAnimation){
+            if (mNotifiedPictureId != null && mNotifiedPictureId == picture.mId.toString() && mIsFirstAnimation) {
                 view.requestFocus()
                 val anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_shake)
                 view.startAnimation(anim)
                 mIsFirstAnimation = false;
             }
+
+            if (mSelected[adapterPosition]) {
+                mCheckedMark.visibility = View.VISIBLE;
+            } else
+                mCheckedMark.visibility = View.INVISIBLE;
 
         }
     }
@@ -121,6 +172,7 @@ class MyPictureAdapter(private var mFragementManager: FragmentManager?,
         val result = DiffUtil.calculateDiff(PictureDiffUtill(mDataset, pictures))
         mDataset = pictures;
         mNotification = MutableList(mDataset.size) { false };
+        mSelected = MutableList(mDataset.size) { false };
         result.dispatchUpdatesTo(this);
         //알림표시
         val pref = mContext.applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
@@ -145,5 +197,46 @@ class MyPictureAdapter(private var mFragementManager: FragmentManager?,
         mUser = user;
     }
 
+    fun isSelectMode() = mIsSelectMode;
+
+    fun selectAll() {
+        mSelected.fill(true)
+        notifyDataSetChanged()
+    }
+
+    fun getSelection(): MutableList<PictureModel> {
+        val selected = mutableListOf<PictureModel>()
+        for (i in mDataset.indices) {
+            if (mSelected[i]) {
+                selected.add(mDataset[i])
+            }
+        }
+        return selected;
+    }
+
+    fun endSelectMode() {
+        mIsSelectMode = false;
+        mSelected.fill(false)
+        notifyDataSetChanged()
+    }
+
+    fun setOnLongClickListener(listener: OnItemLongClickListener) {
+        mOnItemLongClick = listener;
+    }
+
+    fun notifyItemDeleted(pictureModels: List<PictureModel>) {
+        for (picture in pictureModels) {
+            val iter = mDataset.listIterator();
+            while (iter.hasNext()) {
+                val index = iter.nextIndex();
+                val next = iter.next()
+                if (picture.mId == next.mId) {
+                    iter.remove();
+                    notifyItemRemoved(index);
+                }
+            }
+        }
+
+    }
 
 }

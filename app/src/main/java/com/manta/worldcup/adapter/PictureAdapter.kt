@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.manta.worldcup.R
-import com.manta.worldcup.activity.fragment.dialog.PictureCommentDialog
+import com.manta.worldcup.activity.fragment.dialog.PictureInfoDialog
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.User
@@ -46,7 +45,7 @@ class PictureAdapter() : RecyclerView.Adapter<PictureAdapter.MyPictureViewHolder
         init {
             mPictureView.setOnClickListener {
                 if (mUser != null)
-                    PictureCommentDialog().newInstance(mDataset[adapterPosition], mUser!!).show(mFragementManager, null);
+                    PictureInfoDialog().newInstance(mDataset[adapterPosition], mUser!!).show(mFragementManager, null);
 
             }
         }

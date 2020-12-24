@@ -95,12 +95,15 @@ class PictureViewModel(private val application: Application) : ViewModel() {
     }
 
 
-    fun deletePictures(pictureIDs : List<PictureModel>){
+    suspend fun deletePictures(pictureIDs : List<PictureModel>) = mRepository.deletePictures(pictureIDs)
+
+
+
+    fun updatePictureName(pictureID : Long, name : String){
         viewModelScope.launch {
-            mRepository.deletePictures(pictureIDs)
+            mRepository.updatePictureName(pictureID, name)
         }
     }
-
 
 
 

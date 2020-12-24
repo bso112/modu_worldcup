@@ -7,6 +7,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.manta.worldcup.R
@@ -29,12 +30,13 @@ object Constants {
     const val EXTRA_PICTURE_NAME = "com.manta.worldcup.EXTRA_PICTURE_NAME"
     const val EXTRA_SUBMIT_LISTENER = "com.manta.worldcup.EXTRA_SUBMIT_LISTENER"
     const val EXTRA_TOPIC = "com.manta.worldcup.EXTRA_TOPIC"
-    const val EXTRA_PICTURE = "com.manta.worldcup.EXTRA_PICTURE"
+    const val EXTRA_PICTURE_MODEL = "com.manta.worldcup.EXTRA_PICTURE"
     const val EXTRA_USER_EMAIL =  "com.manta.worldcup.PREF_USER_EMAIL"
     const val EXTRA_USER_NICKNAME =  "com.manta.worldcup.EXTRA_USER_NICKNAME"
     const val EXTRA_USER =  "com.manta.worldcup.EXTRA_USER"
     const val EXTRA_TOPIC_JOIN_USER = "com.manta.worldcup.EXTRA_TOPIC_JOIN_USER"
-
+    const val EXTRA_MYPICTURE_OPTION_CLICK_LISTENER = "com.manta.worldcup.EXTRA_MYPICTURE_OPTION_CLICK_LISTENER"
+    const val EXTRA_PICTURE_NAME_CHANGE_LISTENER = "com.manta.worldcup.EXTRA_PICTURE_NAME_CHANGE_LISTENER"
     const val PREF_FILENAME_COOKIE = "com.manta.worldcup.PREF_FILENAME_COOKIE"
     const val PREF_COOKIE = "com.manta.worldcup.PREF_COOKIE"
     const val PREF_FILENAME_TOKEN = "com.manta.worldcup.PREF_FILENAME_TOKEN"
@@ -49,9 +51,10 @@ object Constants {
     const val NOTIFICATION_ID_SUMMERY = 1;
 
     /**
-     * 토픽 혹은 사진에 코멘트가 달렸다는 인텐트 액션
+     * 로그인을 하거나, 토픽이나 픽쳐가 삭제되었거나 추가되는 등의 이벤트가 발생할 경우
+     * 화면을 리프레시할 필요가 있다. 그것을 위한 액션
      */
-    const val ACTION_SIGNIN = "ACTION_SIGNIN"
+    const val ACTION_NEED_REFRESH = "ACTION_NEED_REFRESH"
     /**
      * 토픽생성할때 드는 포인트
      */
@@ -74,8 +77,9 @@ object Constants {
      * @param view Activity나 Fragment를 찾을 뷰
      * @param imgeView 이미지를 셋팅할 뷰
      * @param context SharedPreferences를 가져올 컨텍스트
+     * @param isUseCache 캐시를 사용하는가?
      */
-    fun GlideWithHeader(url: String, view: View, imgeView: ImageView, context: Context) {
+    fun GlideWithHeader(url: String, view: View, imgeView: ImageView, context: Context, isUseCache : Boolean = true) {
         val prefCookies = context.getSharedPreferences(Constants.PREF_FILENAME_COOKIE, Context.MODE_PRIVATE)
         val cookies = prefCookies.getStringSet(Constants.PREF_COOKIE, HashSet())
         val builder = LazyHeaders.Builder();
@@ -88,9 +92,20 @@ object Constants {
         val token = prefToken.getString(Constants.PREF_TOKEN, "")
         if (token != null && token != "")
             builder.addHeader("Token", token);
-
-        Glide.with(view).load(GlideUrl(url, builder.build())).into(imgeView);
+        if(isUseCache)
+            Glide.with(view).load(GlideUrl(url, builder.build())).into(imgeView);
+        else{
+            Glide
+                .with(view)
+                .load(GlideUrl(url, builder.build()))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(imgeView);
+        }
     }
+
+
+
 
     fun GlideWithHeader(url: String, fragmentActivity: Activity, imgeView: ImageView, context: Context) {
         val pref = context.getSharedPreferences(Constants.PREF_FILENAME_COOKIE, Context.MODE_PRIVATE)

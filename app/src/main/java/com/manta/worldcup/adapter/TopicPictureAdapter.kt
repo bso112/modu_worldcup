@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.DiffUtil.DiffResult.NO_POSITION
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.PictureDescriptionDialog
@@ -58,20 +59,29 @@ class TopicPictureAdapter(private val fragmentManager: FragmentManager) : Recycl
                     pictureNames,
                     mDataset[adapterPosition].pictureModel.mPictureName,
                     object : PictureDescriptionDialog.OnSubmitListener {
-                    //이름이 정해진 사진을 표시하기
-                    override fun onSubmit(pictureName: String) {
-                        mDataset[adapterPosition].pictureModel.mPictureName = pictureName;
-                        mCheckedView.visibility = View.VISIBLE;
-                        mIsPictureNamed[adapterPosition] = true;
-                    }
-                }).show(fragmentManager, null);
+                        //이름이 정해진 사진을 표시하기
+                        override fun onSubmit(pictureName: String) {
+                            mDataset[adapterPosition].pictureModel.mPictureName = pictureName;
+                            mCheckedView.visibility = View.VISIBLE;
+                            mIsPictureNamed[adapterPosition] = true;
+                        }
+                    }).show(fragmentManager, null);
             }
+        }
 
+        fun setPicture(picture : Picture) {
             //이미 이름이 있는 사진이면 체크표시
-            if(mDataset[adapterPosition].pictureModel.mPictureName != "")
+            if (picture.pictureModel.mPictureName != "")
                 mCheckedView.visibility = View.VISIBLE;
 
-
+            //서버로부터 이미지 요청
+            if (picture.mBitmap == null) {
+                val url = Constants.BASE_URL + "image/get/${picture.pictureModel.mId}/";
+                Constants.GlideWithHeader(url, mPictureView, mPictureView, mPictureView.context)
+            }
+            //비트맵 셋팅
+            else
+                mPictureView.setImageBitmap(picture.mBitmap);
         }
     }
 
@@ -87,14 +97,7 @@ class TopicPictureAdapter(private val fragmentManager: FragmentManager) : Recycl
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        //서버로부터 이미지 요청
-        if (mDataset[position].mBitmap == null) {
-            val url = Constants.BASE_URL + "image/get/${mDataset[position].pictureModel.mId}/";
-            Constants.GlideWithHeader(url, holder.mPictureView, holder.mPictureView, holder.mPictureView.context)
-        }
-        //비트맵 셋팅
-        else
-            holder.mPictureView.setImageBitmap(mDataset[position].mBitmap);
+        holder.setPicture(mDataset[position])
     }
 
     fun removeImage(position: Int) {
@@ -118,9 +121,9 @@ class TopicPictureAdapter(private val fragmentManager: FragmentManager) : Recycl
     /**
      *  기존에 토픽에 등록된 서버에서 사진을 받아오는 경우(토픽 업데이트)
      */
-    fun setPictures(pictureModels : List<PictureModel>) {
+    fun setPictures(pictureModels: List<PictureModel>) {
         mDataset.clear();
-        for(pictureModel in pictureModels){
+        for (pictureModel in pictureModels) {
             mDataset.add(Picture(pictureModel, null));
             mIsPictureNamed.add(true)
             notifyItemInserted(mDataset.size - 1);

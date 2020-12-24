@@ -62,5 +62,5 @@ class Repository(application: Application) {
 
     suspend fun updateUserNickname(nickname: String, email: String) = userAPI.updateUserNickname(nickname, email)
 
-
+    suspend fun updatePictureName(pictureID : Long, name : String) = topicAPI.updatePictureName(pictureID, name)
 }

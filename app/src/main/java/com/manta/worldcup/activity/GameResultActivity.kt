@@ -1,6 +1,5 @@
 package com.manta.worldcup.activity
 
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +15,11 @@ import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.activity_game_result.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.math.round
 
+/**
+ * 웝드컵 게임의 플레이 결과를 보여주는 액티비티
+ */
 class GameResultActivity : AppCompatActivity() {
 
     private val mTopicViewModel: TopicViewModel by lazy {
@@ -51,7 +49,7 @@ class GameResultActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         mTopic = (intent.getSerializableExtra(Constants.EXTRA_TOPIC) as? Topic) ?: return;
-        val winner = (intent.getSerializableExtra(Constants.EXTRA_PICTURE) as? PictureModel) ?: return;
+        val winner = (intent.getSerializableExtra(Constants.EXTRA_PICTURE_MODEL) as? PictureModel) ?: return;
         val player = (intent.getSerializableExtra(Constants.EXTRA_USER) as? User) ?: return;
 
         tv_winner_name.text = winner.mPictureName;
@@ -71,11 +69,8 @@ class GameResultActivity : AppCompatActivity() {
             }
         }
 
-        // 조회수 증가
-        mTopicViewModel.increaseView(mTopic.mId);
 
         //좋아요 싫어요
-
         tv_like.text = mTopic.mLike.toString();
         tv_dislike.text = mTopic.mDislike.toString();
 
@@ -114,7 +109,9 @@ class GameResultActivity : AppCompatActivity() {
 
         }
 
-        tv_percent.text = round(winner.WinCnt.toFloat() / mTopic.mView.toFloat() * 100).toString() + "%";
+        //0으로 나누기 방지
+        val percent = if(mTopic.mView == 0) 0F else round(winner.WinCnt.toFloat() / mTopic.mView.toFloat() * 100)
+        tv_percent.text = percent.toString() + "%";
 
     }
 

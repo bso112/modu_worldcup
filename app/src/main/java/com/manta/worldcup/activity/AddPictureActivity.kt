@@ -20,6 +20,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * 사진 추가가 가능한 액티비티
+ */
 class AddPictureActivity : AppCompatActivity() {
     lateinit var mTopicPictureAdapter: TopicPictureAdapter;
     val REQUEST_PICK_FROM_ALBUM = 0;

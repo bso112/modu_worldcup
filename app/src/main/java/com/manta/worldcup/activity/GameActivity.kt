@@ -13,7 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.manta.worldcup.R
-import com.manta.worldcup.activity.fragment.dialog.PictureCommentDialog
+import com.manta.worldcup.activity.fragment.dialog.PictureInfoDialog
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.helper.Constants.EXTRA_TOPIC
 import com.manta.worldcup.helper.Constants.EXTRA_USER
@@ -21,12 +21,15 @@ import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.PictureViewModel
+import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.activity_game.*
 import java.lang.Math.pow
 import kotlin.math.ceil
 import kotlin.math.log2
 
-
+/**
+ * 실제로 월드컵을 진행하는 액티비티
+ */
 class GameActivity : AppCompatActivity() {
 
     private lateinit var mPictureModels: ArrayList<PictureModel>;
@@ -36,7 +39,6 @@ class GameActivity : AppCompatActivity() {
     //토픽에 있는 사진의 총 갯수
     private var mPictureSum = 0;
 
-    private var mMaxDuration = 0L;
 
     private val mPictureViewModel: PictureViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -46,6 +48,15 @@ class GameActivity : AppCompatActivity() {
 
         }).get(PictureViewModel::class.java);
     }
+
+    private val mTopicViewModel: TopicViewModel by lazy {
+        ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return TopicViewModel(application) as T;
+            }
+        }).get(TopicViewModel::class.java);
+    }
+
 
     private val mOutUpwardAnim: Animation by lazy {
         AnimationUtils.loadAnimation(this, R.anim.anim_out_upward_screen)
@@ -77,11 +88,11 @@ class GameActivity : AppCompatActivity() {
 
         btn_comment_A.setOnClickListener {
             if (mPictureModels.isNotEmpty())
-                PictureCommentDialog().newInstance(mPictureModels[0], mPlayer).show(supportFragmentManager, null);
+                PictureInfoDialog().newInstance(mPictureModels[0], mPlayer).show(supportFragmentManager, null);
         }
         btn_comment_B.setOnClickListener {
             if (mPictureModels.size >= 2)
-                PictureCommentDialog().newInstance(mPictureModels[1], mPlayer).show(supportFragmentManager, null);
+                PictureInfoDialog().newInstance(mPictureModels[1], mPlayer).show(supportFragmentManager, null);
         }
     }
 
@@ -138,19 +149,23 @@ class GameActivity : AppCompatActivity() {
 
         //사진이 하나만 남으면 우승결정됨
         if (mPictureModels.size < 2) {
-            //플레이어가 토픽 주최자면 포인트는 얻지 못한다.
-            if (mPlayer.mEmail != mPictureModels.first().mOwnerEmail) {
+            //내가 내 사진을 우승시키면 포인트를 얻지 못한다.
+            //플레이어가 토픽 주최자면 포인트는 얻지 못한다. (스스로만든 월드컵을 플레이해서는 포인트 획득못함)
+            if (mPlayer.mEmail != mPictureModels.first().mOwnerEmail && mPlayer.mEmail != mTopic.mManagerEmail) {
                 //토픽 주최자에게 포인트 플러스
                 mPictureViewModel.addPoint(Constants.POINT_CLEAR_GAME, mTopic.mManagerEmail);
                 //이긴 사진의 주인에게 포인트 플러스
                 mPictureViewModel.addPoint(Constants.POINT_WIN_PICTURE, mPictureModels.first().mOwnerEmail);
+                //토픽의 view 증가
+                mTopicViewModel.increaseView(mTopic.mId);
+                //이긴 사진의 winCnt 증가
+                mPictureViewModel.addWinCnt(mPictureModels.first().mId);
+
             }
-            //사진의 winCnt 증가
-            mPictureViewModel.addWinCnt(mPictureModels.first().mId);
 
             Intent(this, GameResultActivity::class.java).apply {
                 putExtra(Constants.EXTRA_TOPIC, mTopic);
-                putExtra(Constants.EXTRA_PICTURE, mPictureModels.first());
+                putExtra(Constants.EXTRA_PICTURE_MODEL, mPictureModels.first());
                 putExtra(Constants.EXTRA_USER, mPlayer);
                 startActivity(this);
                 finish();

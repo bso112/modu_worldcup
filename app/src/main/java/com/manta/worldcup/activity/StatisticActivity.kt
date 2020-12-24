@@ -19,7 +19,9 @@ import com.skydoves.balloon.*
 import kotlinx.android.synthetic.main.activity_statistic.*
 import com.manta.worldcup.R
 
-
+/**
+ * 월드컵의 결과를 통계적으로 보여주는 액티비티
+ */
 class StatisticActivity : AppCompatActivity() {
 
     private lateinit var mMyPictureAdapter : MyPictureAdapter;
@@ -77,6 +79,7 @@ class StatisticActivity : AppCompatActivity() {
                 .setArrowPosition(0.5f)
                 .setCornerRadius(10f)
                 .setBackgroundColorResource(R.color.yellow)
+                .setTextColorResource(R.color.black)
                 .setText(resources.getString(R.string.tooltip_topic_income) + " " + Constants.POINT_CLEAR_GAME)
                 .setBalloonAnimation(BalloonAnimation.FADE)
                 .build()

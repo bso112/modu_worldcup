@@ -21,13 +21,15 @@ import com.manta.worldcup.viewmodel.UserViewModel
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.fragment_my_topic.*
 
-
+/**
+ * 내 토픽을 볼 수 있는 프래그먼트
+ */
 class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
 
     private lateinit var mUserViewModel: UserViewModel;
     private lateinit var mTopicAdapter: MyTopicAdapter;
     private lateinit var mTopicViewModel: TopicViewModel;
-    private val mSigninEventReceiver = object : BroadcastReceiver(){
+    private val mRefreshReceiver = object : BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
             refresh()
         }
@@ -82,17 +84,13 @@ class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
         })
 
         LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(mSigninEventReceiver, IntentFilter(Constants.ACTION_SIGNIN))
+            .registerReceiver(mRefreshReceiver, IntentFilter(Constants.ACTION_NEED_REFRESH))
 
-    }
-
-    override fun onResume() {
-        super.onResume()
         refresh()
     }
 
     override fun onDestroy() {
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(mSigninEventReceiver);
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(mRefreshReceiver);
         super.onDestroy()
 
     }
