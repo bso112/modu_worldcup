@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -155,6 +156,12 @@ object Constants {
             0 -> R.drawable.ic_tier0_24
             else -> null;
         }
+    }
+
+    fun resolveAttribute(context : Context, attrId : Int) : Int{
+        val typedValue = TypedValue();
+        context.theme.resolveAttribute(attrId, typedValue, true);
+        return typedValue.data;
     }
 
 

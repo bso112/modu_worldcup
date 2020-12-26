@@ -44,7 +44,7 @@ class Repository(application: Context) {
 
     suspend fun insertPictureComment(comment: Comment) = commentAPI.insertPictureComment(comment);
 
-    suspend fun addRecommend(commentID : Long) = commentAPI.addRecommend(commentID)
+    suspend fun updateRecommend(commentID : Long, isLike : Boolean) = commentAPI.updateRecommend(commentID, isLike)
 
     suspend fun sendIdToken(token: String) = authAPI.sendIdToken(token);
 

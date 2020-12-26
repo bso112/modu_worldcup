@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
+import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Comment
 import com.manta.worldcup.model.User
 import com.skydoves.balloon.ArrowConstraints
@@ -29,7 +30,8 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
     private var mDataset: List<Comment> = ArrayList();
 
     //현재 추천버튼을 누른 댓글을 표시하기 위한 정보
-    private var mIsRecommended = emptyArray<Boolean>()
+    private var mIsLike = emptyArray<Boolean>()
+    private var mIsdisLike = emptyArray<Boolean>()
     private var mOnProfileClickListener: OnItemClickListener? = null;
     private var mOnRecommendBtnClickListener: OnRecommendBtnClickListener? = null;
     private var mOnCommentChangeListener: OnCommentChangeListener? = null;
@@ -48,7 +50,8 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
     }
 
     interface OnRecommendBtnClickListener {
-        fun onRecommend(commentID: Long)
+        fun onLike(commentID: Long)
+        fun onDislike(commentID: Long)
     }
 
     interface OnCommentChangeListener {
@@ -63,7 +66,8 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         val mProfile = view.iv_profile;
         val mContent = view.tv_content;
         val mDate = view.tv_date;
-        val mRecommendBtn = view.btn_like;
+        val mLikeBtn = view.btn_like;
+        val mDislikeBtn = view.btn_dislike;
         val mtvRecommend = view.tv_Recommend;
         val mtvReplyMark = view.tv_reply_mark;
         val mMoreBtn = view.btn_more;
@@ -74,18 +78,35 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
             mNickname.setOnClickListener {
                 mOnProfileClickListener?.onItemClick(mDataset[adapterPosition]);
             }
-            mProfile.setOnClickListener{
+            mProfile.setOnClickListener {
                 mOnProfileClickListener?.onItemClick(mDataset[adapterPosition]);
             }
 
 
-            mRecommendBtn.setOnClickListener {
-                if (!mIsRecommended[adapterPosition]) {
-                    mOnRecommendBtnClickListener?.onRecommend(mDataset[adapterPosition].mId)
+            mLikeBtn.setOnClickListener {
+                mIsLike[adapterPosition] = !mIsLike[adapterPosition]
+                if (mIsLike[adapterPosition]){
+                    mIsdisLike[adapterPosition] = false;
                     mDataset[adapterPosition].mRecommend++;
-                    mIsRecommended[adapterPosition] = true;
-                    notifyItemChanged(adapterPosition)
+                    mOnRecommendBtnClickListener?.onLike(mDataset[adapterPosition].mId)
                 }
+                else if(!mIsLike[adapterPosition] && mDataset[adapterPosition].mRecommend > 0){
+                    mDataset[adapterPosition].mRecommend--;
+                    mOnRecommendBtnClickListener?.onDislike(mDataset[adapterPosition].mId)
+                }
+                notifyItemChanged(adapterPosition)
+            }
+            mDislikeBtn.setOnClickListener {
+                mIsdisLike[adapterPosition] = !mIsdisLike[adapterPosition];
+                if(mIsdisLike[adapterPosition] && mDataset[adapterPosition].mRecommend > 0){
+                    mIsLike[adapterPosition] = false;
+                    mDataset[adapterPosition].mRecommend--;
+                    mOnRecommendBtnClickListener?.onDislike(mDataset[adapterPosition].mId)
+                }else if(!mIsdisLike[adapterPosition]){
+                    mDataset[adapterPosition].mRecommend++;
+                    mOnRecommendBtnClickListener?.onLike(mDataset[adapterPosition].mId)
+                }
+                notifyItemChanged(adapterPosition)
             }
 
             mMoreBtn.setOnClickListener {
@@ -154,12 +175,19 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
             else
                 mtvReplyMark.visibility = View.GONE
 
-            if (mIsRecommended[adapterPosition]) {
-                val typedValue = TypedValue();
-                view.context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
-                val primaryColor = typedValue.data;
-                mRecommendBtn.backgroundTintList = ColorStateList.valueOf(primaryColor)
-            }
+
+            if (mIsLike[adapterPosition]) {
+                mLikeBtn.backgroundTintList =
+                ColorStateList.valueOf(Constants.resolveAttribute(view.context, R.attr.colorPrimary))
+            }else
+                mLikeBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, R.color.disabled))
+
+            if(mIsdisLike[adapterPosition]){
+                mDislikeBtn.backgroundTintList =
+                    ColorStateList.valueOf(Constants.resolveAttribute(view.context, R.attr.colorPrimary))
+            }else
+                mDislikeBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, R.color.disabled))
+
 
         }
     }
@@ -206,7 +234,8 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         val nomalized = nomalizeComments(comments) ?: return
         val result = DiffUtil.calculateDiff(CommentDiffUtilCallback(mDataset, nomalized))
         mDataset = nomalized;
-        mIsRecommended = Array(mDataset.size) { false }
+        mIsLike = Array(mDataset.size) { false }
+        mIsdisLike = Array(mDataset.size) { false }
         result.dispatchUpdatesTo(this)
     }
 
@@ -280,4 +309,6 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         }
         return parent.mId;
     }
+
+
 }

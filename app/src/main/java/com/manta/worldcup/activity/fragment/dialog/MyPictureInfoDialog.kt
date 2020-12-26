@@ -1,21 +1,16 @@
 package com.manta.worldcup.activity.fragment.dialog
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.adapter.CommentAdapter
@@ -140,11 +135,6 @@ class MyPictureInfoDialog : DialogFragment() {
             }
         })
 
-        mCommentAdapter.setOnRecommendBtnClickListener(object : CommentAdapter.OnRecommendBtnClickListener {
-            override fun onRecommend(commentID: Long) {
-                mCommentViewModel.addRecommend(commentID)
-            }
-        })
 
         mCommentAdapter.setOnCommentChangeListener(object : CommentAdapter.OnCommentChangeListener{
             override fun onCommentDelete(comment: Comment) {
@@ -165,6 +155,18 @@ class MyPictureInfoDialog : DialogFragment() {
             mCommentAdapter.setComments(it);
         })
         mCommentViewModel.getPictureComment(pictureModel.mId);
+
+        mCommentAdapter.setOnRecommendBtnClickListener(object : CommentAdapter.OnRecommendBtnClickListener{
+            override fun onLike(commentID: Long) {
+                mCommentViewModel.updateRecommend(commentID, true)
+            }
+
+            override fun onDislike(commentID: Long) {
+                mCommentViewModel.updateRecommend(commentID, false)
+
+            }
+
+        })
 
         //댓글 제출
         btn_send.setOnClickListener {
@@ -194,7 +196,7 @@ class MyPictureInfoDialog : DialogFragment() {
 
             //키보드 내리기
             val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.hideSoftInputFromWindow(view.et_title.windowToken, 0)
+            inputManager.hideSoftInputFromWindow(et_comment.windowToken, 0)
         }
 
 
@@ -268,5 +270,10 @@ class MyPictureInfoDialog : DialogFragment() {
         //리플라이 대상 초기화
         mCommentReplyTo = null;
         cv_reply.visibility = View.GONE;
+    }
+
+    override fun onDestroy() {
+
+        super.onDestroy()
     }
 }

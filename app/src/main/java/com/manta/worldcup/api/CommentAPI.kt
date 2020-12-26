@@ -27,7 +27,7 @@ interface CommentAPI {
 
     @FormUrlEncoded
     @POST("comment/picture/recommend")
-    suspend fun addRecommend(@Field("comment_id") commentID : Long)
+    suspend fun updateRecommend(@Field("comment_id") commentID : Long, @Field("is_like") isLike : Boolean)
 
     @POST("comment/picture/delete")
     suspend fun deletePictureComment(@Body comment : Comment) : Response<List<Comment>>

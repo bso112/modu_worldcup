@@ -21,8 +21,6 @@ import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
-import kotlinx.android.synthetic.main.dialog_mypicture_info.*
-import kotlinx.android.synthetic.main.dialog_picture_info.*
 import kotlinx.android.synthetic.main.dialog_picture_info.btn_info
 import kotlinx.android.synthetic.main.dialog_picture_info.btn_reply_cancel
 import kotlinx.android.synthetic.main.dialog_picture_info.btn_send
@@ -116,13 +114,6 @@ class PictureInfoDialog : DialogFragment() {
                 tv_reply_to.text = comment.mWriter;
             }
         })
-
-        mCommentAdapter.setOnRecommendBtnClickListener(object : CommentAdapter.OnRecommendBtnClickListener {
-            override fun onRecommend(commentID: Long) {
-                mCommentViewModel.addRecommend(commentID)
-            }
-        })
-
 
         mCommentViewModel.mComments.observe(this, androidx.lifecycle.Observer {
            mCommentAdapter.setComments(it);
