@@ -1,5 +1,6 @@
 package com.manta.worldcup.api
 
+import com.manta.worldcup.adapter.RECOMMEND
 import com.manta.worldcup.model.Comment
 import retrofit2.Response
 import retrofit2.http.*
@@ -26,8 +27,10 @@ interface CommentAPI {
     suspend fun insertPictureComment(@Body comment : Comment) : Response<ArrayList<Comment>>
 
     @FormUrlEncoded
-    @POST("comment/picture/recommend")
-    suspend fun updateRecommend(@Field("comment_id") commentID : Long, @Field("is_like") isLike : Boolean)
+    @POST("comment/picture/update_recommend")
+    suspend fun updateRecommend(@Field("comment_id") commentID : Long,
+                                @Field("good") good: Int,
+                                @Field("bad") bad : Int)
 
     @POST("comment/picture/delete")
     suspend fun deletePictureComment(@Body comment : Comment) : Response<List<Comment>>

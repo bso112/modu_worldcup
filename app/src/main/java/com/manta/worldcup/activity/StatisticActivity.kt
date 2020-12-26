@@ -86,7 +86,7 @@ class StatisticActivity : AppCompatActivity() {
         }
 
 
-        tv_Recommend.text = topic.mLike.toString()
+        tv_like.text = topic.mLike.toString()
         tv_dislike.text = topic.mDislike.toString()
     }
 

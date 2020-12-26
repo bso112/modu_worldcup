@@ -31,8 +31,10 @@ data class Comment (
      */
     @SerializedName("parent_id")
     val mParentID : Long? = null,
-    @SerializedName("recommend")
-    var mRecommend : Int = 0
+    @SerializedName("good")
+    var mGood : Int = 0,
+    @SerializedName("bad")
+    var mBad : Int = 0
 
 )
 

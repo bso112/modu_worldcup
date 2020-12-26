@@ -59,9 +59,9 @@ class CommentViewModel(application: Context) : ViewModel() {
         }
     }
 
-    fun updateRecommend(commendID : Long, isLike : Boolean){
+    fun updateRecommend(commendID : Long, good : Int, bad : Int){
         viewModelScope.launch {
-            repository.updateRecommend(commendID, isLike);
+            repository.updateRecommend(commendID, good, bad);
         }
     }
 

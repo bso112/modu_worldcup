@@ -71,7 +71,7 @@ class GameResultActivity : AppCompatActivity() {
 
 
         //좋아요 싫어요
-        tv_Recommend.text = mTopic.mLike.toString();
+        tv_like.text = mTopic.mLike.toString();
         tv_dislike.text = mTopic.mDislike.toString();
 
         val oldLike = mTopic.mLike;
@@ -82,13 +82,13 @@ class GameResultActivity : AppCompatActivity() {
         val primaryColor = typedValue.data;
 
         btn_like.setOnClickListener {
-            if (tv_Recommend.text != oldLike.toString()) {
+            if (tv_like.text != oldLike.toString()) {
                 uncheckLikeButton(oldLike);
                 mIsLike = null
             } else {
                 //check like button
                 btn_like.backgroundTintList = ColorStateList.valueOf(primaryColor);
-                tv_Recommend.text = (oldLike + 1).toString();
+                tv_like.text = (oldLike + 1).toString();
                 mIsLike = true;
             }
             unCheckDislikeButton(oldDislike)
@@ -117,7 +117,7 @@ class GameResultActivity : AppCompatActivity() {
 
     private fun uncheckLikeButton(oldLike: Int) {
         btn_like.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.disabled));
-        tv_Recommend.text = oldLike.toString();
+        tv_like.text = oldLike.toString();
     }
 
     private fun unCheckDislikeButton(oldDislike: Int) {

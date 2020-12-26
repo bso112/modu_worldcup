@@ -37,7 +37,6 @@ import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_income
 import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_picture_name
 import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_reply_to
 import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_winCnt
-import kotlinx.android.synthetic.main.dialog_picture_desc.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -157,14 +156,10 @@ class MyPictureInfoDialog : DialogFragment() {
         mCommentViewModel.getPictureComment(pictureModel.mId);
 
         mCommentAdapter.setOnRecommendBtnClickListener(object : CommentAdapter.OnRecommendBtnClickListener{
-            override fun onLike(commentID: Long) {
-                mCommentViewModel.updateRecommend(commentID, true)
+            override fun onRecommendChanged(commentID: Long, good: Int, bad: Int) {
+                mCommentViewModel.updateRecommend(commentID, good, bad)
             }
 
-            override fun onDislike(commentID: Long) {
-                mCommentViewModel.updateRecommend(commentID, false)
-
-            }
 
         })
 

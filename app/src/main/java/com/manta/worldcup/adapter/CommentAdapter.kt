@@ -22,6 +22,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.min
 
+
+enum class RECOMMEND { LIKE, DISLIKE, EMPTY }
+
 /**
  * @param mUser : 현재 로그인한 유저
  */
@@ -30,15 +33,12 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
     private var mDataset: List<Comment> = ArrayList();
 
     //현재 추천버튼을 누른 댓글을 표시하기 위한 정보
-    private var mIsLike = emptyArray<Boolean>()
-    private var mIsdisLike = emptyArray<Boolean>()
+    private var mRecommend = emptyArray<RECOMMEND>()
     private var mOnProfileClickListener: OnItemClickListener? = null;
     private var mOnRecommendBtnClickListener: OnRecommendBtnClickListener? = null;
     private var mOnCommentChangeListener: OnCommentChangeListener? = null;
     private lateinit var mContext: Context;
 
-    private val TYPE_COMMENT = 0
-    private val TYPE_COMMENT_MODIFY = 1
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -50,8 +50,7 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
     }
 
     interface OnRecommendBtnClickListener {
-        fun onLike(commentID: Long)
-        fun onDislike(commentID: Long)
+        fun onRecommendChanged(commentID: Long, good: Int, bad: Int)
     }
 
     interface OnCommentChangeListener {
@@ -68,7 +67,8 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         val mDate = view.tv_date;
         val mLikeBtn = view.btn_like;
         val mDislikeBtn = view.btn_dislike;
-        val mtvRecommend = view.tv_Recommend;
+        val mtvLike = view.tv_like;
+        val mtvDislike = view.tv_dislike;
         val mtvReplyMark = view.tv_reply_mark;
         val mMoreBtn = view.btn_more;
         val mModifyBtn = view.btn_modify
@@ -82,30 +82,27 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
                 mOnProfileClickListener?.onItemClick(mDataset[adapterPosition]);
             }
 
-
+            //추천, 비추천
             mLikeBtn.setOnClickListener {
-                mIsLike[adapterPosition] = !mIsLike[adapterPosition]
-                if (mIsLike[adapterPosition]){
-                    mIsdisLike[adapterPosition] = false;
-                    mDataset[adapterPosition].mRecommend++;
-                    mOnRecommendBtnClickListener?.onLike(mDataset[adapterPosition].mId)
+                if (mRecommend[adapterPosition] == RECOMMEND.LIKE)
+                    mRecommend[adapterPosition] = RECOMMEND.EMPTY
+                else {
+                    mRecommend[adapterPosition] = RECOMMEND.LIKE
+                    val comment = mDataset[adapterPosition]
+                    mOnRecommendBtnClickListener?.onRecommendChanged(comment.mId, comment.mGood + 1, comment.mBad)
                 }
-                else if(!mIsLike[adapterPosition] && mDataset[adapterPosition].mRecommend > 0){
-                    mDataset[adapterPosition].mRecommend--;
-                    mOnRecommendBtnClickListener?.onDislike(mDataset[adapterPosition].mId)
-                }
+
                 notifyItemChanged(adapterPosition)
             }
             mDislikeBtn.setOnClickListener {
-                mIsdisLike[adapterPosition] = !mIsdisLike[adapterPosition];
-                if(mIsdisLike[adapterPosition] && mDataset[adapterPosition].mRecommend > 0){
-                    mIsLike[adapterPosition] = false;
-                    mDataset[adapterPosition].mRecommend--;
-                    mOnRecommendBtnClickListener?.onDislike(mDataset[adapterPosition].mId)
-                }else if(!mIsdisLike[adapterPosition]){
-                    mDataset[adapterPosition].mRecommend++;
-                    mOnRecommendBtnClickListener?.onLike(mDataset[adapterPosition].mId)
+                if (mRecommend[adapterPosition] == RECOMMEND.DISLIKE)
+                    mRecommend[adapterPosition] = RECOMMEND.EMPTY
+                else {
+                    mRecommend[adapterPosition] = RECOMMEND.DISLIKE
+                    val comment = mDataset[adapterPosition]
+                    mOnRecommendBtnClickListener?.onRecommendChanged(comment.mId, comment.mGood, comment.mBad + 1)
                 }
+
                 notifyItemChanged(adapterPosition)
             }
 
@@ -167,26 +164,33 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
             mNickname.text = comment.mWriter;
             mContent.setText(comment.mContents);
             mDate.text = comment.mDate
-            mtvRecommend.text = comment.mRecommend.toString();
+            mtvLike.text = comment.mGood.toString();
+            mtvDislike.text = comment.mBad.toString();
+
+            //추천, 비추천 표시
+            val primaryColorState = ColorStateList.valueOf(Constants.resolveAttribute(view.context, R.attr.colorPrimary))
+            val disabledColorState = ColorStateList.valueOf(ContextCompat.getColor(view.context, R.color.disabled))
+            mLikeBtn.backgroundTintList = disabledColorState
+            mDislikeBtn.backgroundTintList = disabledColorState
+            when (mRecommend[adapterPosition]) {
+                RECOMMEND.LIKE -> {
+                    mLikeBtn.backgroundTintList = primaryColorState;
+                    mtvLike.text = (comment.mGood + 1).toString();
+                }
+                RECOMMEND.DISLIKE -> {
+                    mDislikeBtn.backgroundTintList = primaryColorState;
+                    mtvDislike.text = (comment.mBad + 1).toString();
+
+
+                }
+            }
+
 
             //대댓글인지 표시
             if (comment.mParentID != null)
                 mtvReplyMark.visibility = View.VISIBLE
             else
                 mtvReplyMark.visibility = View.GONE
-
-
-            if (mIsLike[adapterPosition]) {
-                mLikeBtn.backgroundTintList =
-                ColorStateList.valueOf(Constants.resolveAttribute(view.context, R.attr.colorPrimary))
-            }else
-                mLikeBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, R.color.disabled))
-
-            if(mIsdisLike[adapterPosition]){
-                mDislikeBtn.backgroundTintList =
-                    ColorStateList.valueOf(Constants.resolveAttribute(view.context, R.attr.colorPrimary))
-            }else
-                mDislikeBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, R.color.disabled))
 
 
         }
@@ -234,8 +238,8 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         val nomalized = nomalizeComments(comments) ?: return
         val result = DiffUtil.calculateDiff(CommentDiffUtilCallback(mDataset, nomalized))
         mDataset = nomalized;
-        mIsLike = Array(mDataset.size) { false }
-        mIsdisLike = Array(mDataset.size) { false }
+        mRecommend = Array(mDataset.size) { RECOMMEND.EMPTY }
+
         result.dispatchUpdatesTo(this)
     }
 
@@ -259,8 +263,8 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         var bestCommentIndex = 0
         for (index in 0 until result.size) {
             if (result[index].mParentID != null) continue;
-            if (maxRecommend < result[index].mRecommend) {
-                maxRecommend = result[index].mRecommend
+            if (maxRecommend < result[index].mGood) {
+                maxRecommend = result[index].mGood
                 bestCommentIndex = index;
             }
         }
