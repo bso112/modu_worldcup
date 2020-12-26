@@ -1,6 +1,5 @@
 package com.manta.worldcup.api.repository
 
-import android.app.Application
 import android.content.Context
 import com.manta.worldcup.api.RetrofitInstance
 import com.manta.worldcup.model.Comment
@@ -66,4 +65,8 @@ class Repository(application: Context) {
     suspend fun updateUserNickname(nickname: String, email: String) = userAPI.updateUserNickname(nickname, email)
 
     suspend fun updatePictureName(pictureID : Long, name : String) = topicAPI.updatePictureName(pictureID, name)
+
+    suspend fun deleteComment(comment : Comment) = commentAPI.deletePictureComment(comment)
+
+    suspend fun updateComment(comment : Comment) = commentAPI.updatePictureComment(comment)
 }

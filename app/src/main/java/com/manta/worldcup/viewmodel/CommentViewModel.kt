@@ -16,7 +16,7 @@ import retrofit2.Response
 class CommentViewModel(application: Context) : ViewModel() {
 
     private val repository: Repository = Repository(application);
-    val mComments: MutableLiveData<ArrayList<Comment>> = MutableLiveData();
+    val mComments: MutableLiveData<List<Comment>> = MutableLiveData();
 
     fun getTopicComments(topicId: Long){
         viewModelScope.launch {
@@ -66,6 +66,25 @@ class CommentViewModel(application: Context) : ViewModel() {
     fun addRecommend(commendID : Long){
         viewModelScope.launch {
             repository.addRecommend(commendID);
+        }
+    }
+
+    fun deleteComment(comment : Comment){
+        viewModelScope.launch {
+            val response = repository.deleteComment(comment)
+            if(response.isSuccessful){
+                mComments.value = response.body()
+            }
+        }
+    }
+
+
+    fun updateComment(comment : Comment){
+        viewModelScope.launch {
+            val response = repository.updateComment(comment)
+            if(response.isSuccessful){
+                mComments.value = response.body()
+            }
         }
     }
 

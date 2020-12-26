@@ -26,6 +26,13 @@ interface CommentAPI {
     suspend fun insertPictureComment(@Body comment : Comment) : Response<ArrayList<Comment>>
 
     @FormUrlEncoded
-    @POST("picture/comment/recommend")
+    @POST("comment/picture/recommend")
     suspend fun addRecommend(@Field("comment_id") commentID : Long)
+
+    @POST("comment/picture/delete")
+    suspend fun deletePictureComment(@Body comment : Comment) : Response<List<Comment>>
+
+
+    @POST("comment/picture/update")
+    suspend fun updatePictureComment(@Body comment : Comment) : Response<List<Comment>>
 }

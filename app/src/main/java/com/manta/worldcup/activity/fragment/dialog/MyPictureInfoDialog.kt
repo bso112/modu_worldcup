@@ -1,12 +1,17 @@
 package com.manta.worldcup.activity.fragment.dialog
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -37,6 +42,7 @@ import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_income
 import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_picture_name
 import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_reply_to
 import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_winCnt
+import kotlinx.android.synthetic.main.dialog_picture_desc.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -76,15 +82,15 @@ class MyPictureInfoDialog : DialogFragment() {
     }
 
 
-    interface OnPictureNameChangeListener : Serializable{
-        fun onPictureNameChange(pictureName : String);
+    interface OnPictureNameChangeListener : Serializable {
+        fun onPictureNameChange(pictureName: String);
     }
 
     private var mTopicImageNames = mutableSetOf<String>()
 
-    private val mCommentAdapter = CommentAdapter();
+    private lateinit var mCommentAdapter : CommentAdapter;
 
-    private var mCommentReplyTo : Long? = null
+    private var mCommentReplyTo: Long? = null
 
     /**
      * 현재 유저가 지정한 부모댓글
@@ -118,12 +124,12 @@ class MyPictureInfoDialog : DialogFragment() {
         val pictureModel = requireArguments().getSerializable(Constants.EXTRA_PICTURE_MODEL) as? PictureModel ?: return;
         val user = requireArguments().getSerializable(Constants.EXTRA_USER) as? User ?: return;
 
+        mCommentAdapter = CommentAdapter(user)
         rv_comment.adapter = mCommentAdapter;
         rv_comment.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
 
-        btn_reply_cancel.setOnClickListener {
-            mCommentReplyTo = null;
-            cv_reply.visibility = View.GONE;
+        cv_reply.setOnClickListener {
+            hideReplyCard()
         }
 
         mCommentAdapter.setOnItemClickListener(object : CommentAdapter.OnItemClickListener {
@@ -134,9 +140,23 @@ class MyPictureInfoDialog : DialogFragment() {
             }
         })
 
-        mCommentAdapter.setOnRecommendBtnClickListener(object : CommentAdapter.OnRecommendBtnClickListener{
-            override fun onRecommend(commentID : Long) {
+        mCommentAdapter.setOnRecommendBtnClickListener(object : CommentAdapter.OnRecommendBtnClickListener {
+            override fun onRecommend(commentID: Long) {
                 mCommentViewModel.addRecommend(commentID)
+            }
+        })
+
+        mCommentAdapter.setOnCommentChangeListener(object : CommentAdapter.OnCommentChangeListener{
+            override fun onCommentDelete(comment: Comment) {
+                mCommentViewModel.deleteComment(comment)
+            }
+
+            override fun onMoreButtonClick() {
+                hideReplyCard()
+            }
+
+            override fun onCommentUpdate(comment: Comment) {
+                mCommentViewModel.updateComment(comment);
             }
         })
 
@@ -152,7 +172,7 @@ class MyPictureInfoDialog : DialogFragment() {
             val locale = requireContext().applicationContext.resources.configuration.locale;
 
             //루트 댓글을 찾는다.
-            if(mCommentReplyTo != null){
+            if (mCommentReplyTo != null) {
                 mCommentReplyTo = mCommentAdapter.getRootCommentID(mCommentReplyTo!!);
             }
 
@@ -164,15 +184,17 @@ class MyPictureInfoDialog : DialogFragment() {
                 SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date),
                 pictureModel.mId,
                 pictureModel.mOwnerEmail,
-                mParentID =  mCommentReplyTo
+                mParentID = mCommentReplyTo
             )
             mCommentViewModel.insertPictureComment(comment);
             //작성 후 덧글창 비우기
             et_comment.setText("");
             //리플라이 대상 초기화
-            mCommentReplyTo = null;
-            cv_reply.visibility = View.GONE;
+            hideReplyCard()
 
+            //키보드 내리기
+            val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(view.et_title.windowToken, 0)
         }
 
 
@@ -223,14 +245,14 @@ class MyPictureInfoDialog : DialogFragment() {
 
         //사진 이름 바꾸기
         btn_change_picture_name.setOnClickListener {
-            if(mTopicImageNames.isEmpty()){
+            if (mTopicImageNames.isEmpty()) {
                 Toast.makeText(context, resources.getString(R.string.warn_error), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            PictureDescriptionDialog().newInstance(ArrayList(mTopicImageNames), pictureModel.mPictureName ,object : PictureDescriptionDialog.OnSubmitListener {
+            PictureDescriptionDialog().newInstance(ArrayList(mTopicImageNames), pictureModel.mPictureName, object : PictureDescriptionDialog.OnSubmitListener {
                 override fun onSubmit(pictureName: String) {
-                    if(pictureName != pictureModel.mPictureName){
+                    if (pictureName != pictureModel.mPictureName) {
                         tv_picture_name.text = pictureName;
                         mPictureViewModel.updatePictureName(pictureModel.mId, pictureName)
                         val onPictureNameChange = arguments?.getSerializable(Constants.EXTRA_PICTURE_NAME_CHANGE_LISTENER) as? OnPictureNameChangeListener
@@ -242,4 +264,9 @@ class MyPictureInfoDialog : DialogFragment() {
     }
 
 
+    private fun hideReplyCard(){
+        //리플라이 대상 초기화
+        mCommentReplyTo = null;
+        cv_reply.visibility = View.GONE;
+    }
 }

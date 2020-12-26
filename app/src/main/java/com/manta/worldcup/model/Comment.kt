@@ -13,7 +13,7 @@ data class Comment (
     @SerializedName("writer_email")
     val mWriterEmail : String,
     @SerializedName("content")
-    val mContents : String,
+    var mContents : String,
     @SerializedName("date")
     val mDate : String,
     /**

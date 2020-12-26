@@ -62,7 +62,7 @@ class PictureInfoDialog : DialogFragment() {
         }).get(TopicViewModel::class.java)
     }
 
-    private val mCommentAdapter = CommentAdapter();
+    private lateinit var mCommentAdapter : CommentAdapter;
 
     /**
      * 현재 답장을 달 댓글의 ID
@@ -102,6 +102,8 @@ class PictureInfoDialog : DialogFragment() {
 
         rv_comment.adapter = mCommentAdapter;
         rv_comment.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+
+        mCommentAdapter = CommentAdapter(user)
 
         btn_reply_cancel.setOnClickListener {
             mCommentReplyTo = null;

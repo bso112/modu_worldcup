@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/comment_border"
     android:orientation="horizontal"
     android:padding="7dp">
@@ -28,8 +28,8 @@
             android:id="@+id/ll_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -37,17 +37,16 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/suyaless"
-                app:civ_border_width="1dp"
                 app:civ_border_color="?attr/colorPrimary"
-                />
+                app:civ_border_width="1dp" />
 
 
             <TextView
                 android:id="@+id/tv_user_nickname"
-                android:layout_marginStart="5dp"
                 style="@style/TextAppearance.AppCompat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:layout_marginEnd="10dp"
                 android:maxLines="1"
                 android:text="asdasdasdasdasda" />
@@ -63,7 +62,7 @@
 
         </LinearLayout>
 
-        <TextView
+        <EditText
             android:id="@+id/tv_content"
             style="@style/TextAppearance.AppCompat"
             android:layout_width="match_parent"
@@ -71,13 +70,32 @@
             android:layout_marginHorizontal="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/transparent"
+            android:enabled="false"
             android:text="asdasdaasdadsdasddaasdadsdasdadaasdadsdasdadaasdadsdasdadaasdadsdasdaasdasdasdsd" />
+
+
+        <TextView
+            android:id="@+id/btn_modify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="?attr/colorPrimary"
+            android:gravity="center"
+            android:paddingHorizontal="7dp"
+            android:paddingVertical="5dp"
+            android:text="수정완료"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="10dp"
-            android:layout_marginStart="10dp"
             android:gravity="center_vertical">
 
             <ImageButton
@@ -87,20 +105,19 @@
                 android:background="@drawable/ic_baseline_thumb_up_alt_24" />
 
             <TextView
-                android:layout_marginStart="5dp"
                 android:id="@+id/tv_Recommend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:text="0"
                 android:textColor="?android:attr/textColorPrimary" />
 
             <ImageButton
                 android:id="@+id/btn_dislike"
-                android:layout_marginStart="15dp"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginStart="15dp"
                 android:background="@drawable/ic_baseline_thumb_down_alt_24" />
-
 
 
         </LinearLayout>
@@ -112,6 +129,7 @@
         android:id="@+id/btn_more"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/ic_baseline_more_vert_24" />
 
 

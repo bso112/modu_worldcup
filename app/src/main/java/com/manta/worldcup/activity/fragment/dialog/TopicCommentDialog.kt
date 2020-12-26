@@ -32,7 +32,7 @@ class TopicCommentDialog : DialogFragment() {
         }).get(CommentViewModel::class.java);
     }
 
-    private val mCommentAdapter = CommentAdapter();
+    private lateinit var mCommentAdapter : CommentAdapter
     /**
      * 현재 유저가 지정한 부모댓글
      */
@@ -63,6 +63,7 @@ class TopicCommentDialog : DialogFragment() {
         rv_comment.adapter = mCommentAdapter;
         rv_comment.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
 
+        mCommentAdapter = CommentAdapter(player)
         //닉네임 적는 란 비활성화
         tv_user_nickname.setText(player.mNickname);
         tv_user_nickname.isEnabled = false;
