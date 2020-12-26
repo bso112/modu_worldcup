@@ -1,14 +1,11 @@
 package com.manta.worldcup.activity
 
 import android.os.Bundle
-import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.manta.worldcup.activity.fragment.dialog.TopicCommentDialog
 import com.manta.worldcup.adapter.MyPictureAdapter
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Topic
@@ -18,6 +15,7 @@ import com.manta.worldcup.viewmodel.PictureViewModel
 import com.skydoves.balloon.*
 import kotlinx.android.synthetic.main.activity_statistic.*
 import com.manta.worldcup.R
+import com.manta.worldcup.activity.fragment.dialog.TopicCommentDialog
 
 /**
  * 월드컵의 결과를 통계적으로 보여주는 액티비티
@@ -88,7 +86,7 @@ class StatisticActivity : AppCompatActivity() {
         }
 
 
-        tv_like.text = topic.mLike.toString()
+        tv_Recommend.text = topic.mLike.toString()
         tv_dislike.text = topic.mDislike.toString()
     }
 

@@ -34,4 +34,6 @@
     <string name="delete">삭제</string>
     <string name="subscribe">구독하기</string>
     <string name="report">신고하기</string>
+    <string name="best_comment">베스트 댓글</string>
+    <string name="picture_from">From</string>
 </resources>

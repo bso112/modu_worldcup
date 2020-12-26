@@ -54,5 +54,8 @@ class RetrofitInstance(context: Context) {
         retrofit.create(UserAPI::class.java)
     }
 
+    val commentAPI : CommentAPI by lazy{
+        retrofit.create(CommentAPI::class.java)
+    }
 
 }

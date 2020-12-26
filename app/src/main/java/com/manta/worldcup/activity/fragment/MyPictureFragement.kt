@@ -164,5 +164,10 @@ class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
         mUserViewModel.getAllPicture()
     }
 
+    override fun onPause() {
+        super.onPause()
+    }
+
+
 
 }

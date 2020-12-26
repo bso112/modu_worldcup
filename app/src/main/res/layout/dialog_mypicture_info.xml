@@ -69,14 +69,14 @@
                 style="@style/TextAppearance.AppCompat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="From" />
+                android:text="@string/picture_from" />
 
             <TextView
                 android:id="@+id/tv_from"
                 style="@style/TextAppearance.AppCompat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="\t최강 공주 월드컵" />
 
 
@@ -91,7 +91,7 @@
                 style="@style/TextAppearance.AppCompat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="\t0회" />
 
             <LinearLayout>
@@ -118,15 +118,14 @@
                     style="@style/TextAppearance.AppCompat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="\t0" />
 
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginStart="3dp"
-                    android:background="@drawable/ic_baseline_grade_24"
-                    />
+                    android:background="@drawable/ic_baseline_grade_24" />
 
 
             </LinearLayout>
@@ -138,7 +137,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="5dp">
@@ -159,22 +157,50 @@
 
         </LinearLayout>
 
-
-        <TextView
-            style="@style/TextAppearance.AppCompat"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_reply"
+            android:visibility="gone"
+            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:text="베스트 댓글" />
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="?attr/colorPrimary"
+            app:cardCornerRadius="15dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_reply_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="블랙만타에게"
+                    android:textColor="?attr/colorOnPrimary"/>
+
+                <ImageButton
+                    android:id="@+id/btn_reply_cancel"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:backgroundTint="?attr/colorOnPrimary"
+                    android:background="@drawable/ic_baseline_close_24" />
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:padding="15dp" />
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="10dp"
+            android:clipToPadding="false" />
 
 
     </LinearLayout>

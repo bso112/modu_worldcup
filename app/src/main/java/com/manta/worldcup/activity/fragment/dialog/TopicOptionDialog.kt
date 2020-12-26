@@ -19,9 +19,7 @@ class TopicOptionDialog: BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_cancel.setOnClickListener {
-            dismiss()
-        }
+
         btn_subscribe.setOnClickListener {
 
         }

@@ -23,7 +23,7 @@ data class Comment (
      * picture의 코멘트면 picture의 id
      */
     @SerializedName("content_id")
-    val mContentID : Long,
+    val mAttachedContentID : Long,
     @SerializedName("content_owner_email")
     val mContentOwnerEamil : String,
     /**
@@ -31,11 +31,8 @@ data class Comment (
      */
     @SerializedName("parent_id")
     val mParentID : Long? = null,
-    /**
-     * 댓글을 달때 지정한 수신인(유저)의 ID를 말한다.
-     */
-    @SerializedName("reply_to")
-    val mReplyTo : String? = null
+    @SerializedName("recommend")
+    var mRecommend : Int = 0
 
 )
 

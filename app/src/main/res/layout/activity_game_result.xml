@@ -127,7 +127,7 @@
                     android:background="@drawable/ic_baseline_thumb_up_alt_24" />
 
                 <TextView
-                    android:id="@+id/tv_like"
+                    android:id="@+id/tv_Recommend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"

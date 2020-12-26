@@ -26,6 +26,17 @@ import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import kotlinx.android.synthetic.main.dialog_mypicture_info.*
+import kotlinx.android.synthetic.main.dialog_mypicture_info.btn_info
+import kotlinx.android.synthetic.main.dialog_mypicture_info.btn_send
+import kotlinx.android.synthetic.main.dialog_mypicture_info.cv_reply
+import kotlinx.android.synthetic.main.dialog_mypicture_info.et_comment
+import kotlinx.android.synthetic.main.dialog_mypicture_info.iv_picture
+import kotlinx.android.synthetic.main.dialog_mypicture_info.rv_comment
+import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_from
+import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_income
+import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_picture_name
+import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_reply_to
+import kotlinx.android.synthetic.main.dialog_mypicture_info.tv_winCnt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,6 +44,7 @@ import kotlinx.coroutines.withContext
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 내가 내가 올린 사진을 클릭했을때 사진 정보를 보여주는 다이어로그다.
@@ -72,6 +84,8 @@ class MyPictureInfoDialog : DialogFragment() {
 
     private val mCommentAdapter = CommentAdapter();
 
+    private var mCommentReplyTo : Long? = null
+
     /**
      * 현재 유저가 지정한 부모댓글
      */
@@ -106,16 +120,23 @@ class MyPictureInfoDialog : DialogFragment() {
 
         rv_comment.adapter = mCommentAdapter;
         rv_comment.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+
+        btn_reply_cancel.setOnClickListener {
+            mCommentReplyTo = null;
+            cv_reply.visibility = View.GONE;
+        }
+
         mCommentAdapter.setOnItemClickListener(object : CommentAdapter.OnItemClickListener {
-            override fun OnItemClick(comment: Comment, isCheckedAsParent: Boolean) {
-//                //선택한 댓글이 부모로 설정되었으면 부모로 저장
-//                if(isCheckedAsParent){
-//                    tv_reply_to.text = comment.mWriter;
-//                    tv_reply_to.visibility = View.VISIBLE;
-//                    mParentComment = comment.copy();
-//                }else{
-//                    tv_reply_to.visibility = View.INVISIBLE;
-//                }
+            override fun onItemClick(comment: Comment) {
+                mCommentReplyTo = comment.mId;
+                cv_reply.visibility = View.VISIBLE
+                tv_reply_to.text = comment.mWriter;
+            }
+        })
+
+        mCommentAdapter.setOnRecommendBtnClickListener(object : CommentAdapter.OnRecommendBtnClickListener{
+            override fun onRecommend(commentID : Long) {
+                mCommentViewModel.addRecommend(commentID)
             }
         })
 
@@ -129,13 +150,29 @@ class MyPictureInfoDialog : DialogFragment() {
         btn_send.setOnClickListener {
             val date = Calendar.getInstance().time;
             val locale = requireContext().applicationContext.resources.configuration.locale;
+
+            //루트 댓글을 찾는다.
+            if(mCommentReplyTo != null){
+                mCommentReplyTo = mCommentAdapter.getRootCommentID(mCommentReplyTo!!);
+            }
+
             val comment = Comment(
-                0, user.mNickname, user.mEmail, et_comment.text.toString(),
-                SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date), pictureModel.mId, pictureModel.mOwnerEmail
+                0,
+                user.mNickname,
+                user.mEmail,
+                et_comment.text.toString(),
+                SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date),
+                pictureModel.mId,
+                pictureModel.mOwnerEmail,
+                mParentID =  mCommentReplyTo
             )
             mCommentViewModel.insertPictureComment(comment);
             //작성 후 덧글창 비우기
             et_comment.setText("");
+            //리플라이 대상 초기화
+            mCommentReplyTo = null;
+            cv_reply.visibility = View.GONE;
+
         }
 
 

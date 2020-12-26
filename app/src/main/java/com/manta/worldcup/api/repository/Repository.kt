@@ -1,17 +1,19 @@
 package com.manta.worldcup.api.repository
 
 import android.app.Application
+import android.content.Context
 import com.manta.worldcup.api.RetrofitInstance
 import com.manta.worldcup.model.Comment
 import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.Topic
 import okhttp3.MultipartBody
 
-class Repository(application: Application) {
+class Repository(application: Context) {
 
     private val topicAPI = RetrofitInstance(application).topicAPI;
     private val authAPI = RetrofitInstance(application).authAPI;
     private val userAPI = RetrofitInstance(application).userAPI;
+    private val commentAPI = RetrofitInstance(application).commentAPI;
 
     suspend fun getAllTopicJoinUser() = topicAPI.getAllTopicJoinUser();
 
@@ -35,14 +37,15 @@ class Repository(application: Application) {
 
     suspend fun getPictures(topic_id: Long) = topicAPI.getPictures(topic_id);
 
-    suspend fun getTopicComment(topic_id: Long) = topicAPI.getTopicComments(topic_id);
+    suspend fun getTopicComment(topic_id: Long) = commentAPI.getTopicComments(topic_id);
 
-    suspend fun getPictureComment(picture_id: Long) = topicAPI.getPictureComments(picture_id);
+    suspend fun getPictureComment(picture_id: Long) = commentAPI.getPictureComments(picture_id);
 
-    suspend fun insertTopicComment(comment: Comment) = topicAPI.insertTopicComment(comment);
+    suspend fun insertTopicComment(comment: Comment) = commentAPI.insertTopicComment(comment);
 
-    suspend fun insertPictureComment(comment: Comment) = topicAPI.insertPictureComment(comment);
+    suspend fun insertPictureComment(comment: Comment) = commentAPI.insertPictureComment(comment);
 
+    suspend fun addRecommend(commentID : Long) = commentAPI.addRecommend(commentID)
 
     suspend fun sendIdToken(token: String) = authAPI.sendIdToken(token);
 

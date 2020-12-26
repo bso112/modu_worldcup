@@ -2,39 +2,117 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/comment_border"
-    android:padding="10dp"
-    >
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="7dp">
 
     <TextView
-        android:id="@+id/tv_user_nickname"
+        android:id="@+id/tv_reply_mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:text="asdasdasd"
-        />
+        android:layout_marginRight="3dp"
+        android:text="L"
+        android:textColor="?attr/colorAccent"
+        android:visibility="gone" />
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/suyaless"
+                app:civ_border_width="1dp"
+                app:civ_border_color="?attr/colorPrimary"
+                />
+
+
+            <TextView
+                android:id="@+id/tv_user_nickname"
+                android:layout_marginStart="5dp"
+                style="@style/TextAppearance.AppCompat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:maxLines="1"
+                android:text="asdasdasdasdasda" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                style="@style/TextAppearance.AppCompat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="asdasdasd" />
+
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_date"
+            android:id="@+id/tv_content"
+            style="@style/TextAppearance.AppCompat"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:text="asdasdaasdadsdasddaasdadsdasdadaasdadsdasdadaasdadsdasdadaasdadsdasdaasdasdasdsd" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="asdasdasd"/>
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btn_like"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_baseline_thumb_up_alt_24" />
+
+            <TextView
+                android:layout_marginStart="5dp"
+                android:id="@+id/tv_Recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <ImageButton
+                android:id="@+id/btn_dislike"
+                android:layout_marginStart="15dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_baseline_thumb_down_alt_24" />
+
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="asdasdasd"
-        />
+    <ImageButton
+        android:id="@+id/btn_more"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ic_baseline_more_vert_24" />
+
 
 </LinearLayout>

@@ -56,8 +56,10 @@ class MyPictureAdapter(
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
+
         mContext = recyclerView.context;
     }
+
 
     inner class MyPictureViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val mPictureView: ImageView = view.iv_picture;
