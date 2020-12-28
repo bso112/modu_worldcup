@@ -13,15 +13,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.adapter.CommentAdapter
+import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Comment
+import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.CommentViewModel
-import kotlinx.android.synthetic.main.dialog_comment.*
-import kotlinx.android.synthetic.main.dialog_comment.cv_reply
-import kotlinx.android.synthetic.main.dialog_comment.rv_comment
-import kotlinx.android.synthetic.main.dialog_comment.tv_reply_to
+import com.manta.worldcup.viewmodel.UserViewModel
+import com.skydoves.balloon.ArrowConstraints
+import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import kotlinx.android.synthetic.main.dialog_topic_comment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,7 +41,15 @@ class TopicCommentDialog : DialogFragment() {
         }).get(CommentViewModel::class.java);
     }
 
-    private lateinit var mCommentAdapter : CommentAdapter
+    private val mUserViewModel: UserViewModel by lazy {
+        ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return UserViewModel(requireActivity().application) as T; }
+        }).get(UserViewModel::class.java);
+    }
+
+    private lateinit var mCommentAdapter: CommentAdapter
+
     /**
      * 현재 유저가 지정한 부모댓글
      */
@@ -45,18 +57,21 @@ class TopicCommentDialog : DialogFragment() {
 
     private var mCommentReplyTo: Long? = null
 
-
-    fun newInstance(topic: Topic, player: User): TopicCommentDialog {
+    /**
+     * @param topic : 댓글을 쓸 토픽의 정보
+     * @param user : 댓글을 쓰는 유저의 정보
+     */
+    fun newInstance(topic: Topic, user: User): TopicCommentDialog {
         val args = Bundle(2);
         args.putSerializable(Constants.EXTRA_TOPIC, topic);
-        args.putSerializable(Constants.EXTRA_USER, player);
+        args.putSerializable(Constants.EXTRA_USER, user);
         val fragment = TopicCommentDialog();
         fragment.arguments = args;
         return fragment;
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_comment, container, false);
+        return inflater.inflate(R.layout.dialog_topic_comment, container, false);
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -148,6 +163,44 @@ class TopicCommentDialog : DialogFragment() {
             inputManager.hideSoftInputFromWindow(et_comment.windowToken, 0)
         }
 
+
+        tv_title.text = topic.mTitle
+        tv_managerName.text = topic.mManagerName
+
+
+        val url = Constants.BASE_URL + "image/get/${topic.mId}/0"
+        Constants.GlideWithHeader(url, iv_picture, iv_picture, requireContext(), true)
+        //토픽 주인의 티어가 어딘지 가져오기
+        mUserViewModel.getUser(topic.mManagerEmail);
+        mUserViewModel.mUser.observe(this, androidx.lifecycle.Observer {
+            it?.let{iv_tier.setImageResource(it.mTier)}
+        })
+
+
+
+        tv_income.text = (topic.mView * Constants.POINT_CLEAR_GAME).toString();
+
+
+        btn_info.setOnClickListener {
+            val balloon: Balloon = Balloon.Builder(requireContext())
+                .setArrowSize(10)
+                .setArrowOrientation(ArrowOrientation.BOTTOM)
+                .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+                .setPadding(6)
+                .setArrowPosition(0.5f)
+                .setCornerRadius(10f)
+                .setBackgroundColorResource(R.color.yellow)
+                .setTextColorResource(R.color.black)
+                .setText(resources.getString(R.string.tooltip_topic_income) + " " + Constants.POINT_CLEAR_GAME)
+                .setBalloonAnimation(BalloonAnimation.FADE)
+                .build()
+
+            balloon.show(btn_info)
+        }
+
+
+        tv_like.text = topic.mLike.toString()
+        tv_dislike.text = topic.mDislike.toString()
     }
 
     private fun hideReplyCard() {

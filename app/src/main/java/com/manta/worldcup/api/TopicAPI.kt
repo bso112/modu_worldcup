@@ -33,8 +33,7 @@ interface TopicAPI {
     suspend fun getTopicJoinUsers(@Path("manager_email")email : String) : Response<List<TopicJoinUser>>
 
     @GET("user/get/{email}")
-    suspend fun getUser(@Path("email") email : String) : Response<ArrayList<User>>
-
+    suspend fun getUser(@Path("email") email : String) : Response<User>
 
     @Multipart
     @POST("picture/new")

@@ -46,6 +46,7 @@ class StatisticPictureAdpater(
 
     inner class MyPictureViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val mPictureView: ImageView = view.iv_picture;
+        val mPictureName : TextView = view.tv_picture_name
         val mWinCnt: TextView = view.tv_winCnt;
         val mWinPercent : TextView = view.tv_percent;
         val mRanking : TextView = view.tv_ranking;
@@ -60,6 +61,8 @@ class StatisticPictureAdpater(
                 mCrown.visibility = View.VISIBLE;
             else
                 mCrown.visibility = View.GONE;
+
+            mPictureName.text = picture.mPictureName
         }
 
         private fun getWinPercent(picture : PictureModel) : Int{

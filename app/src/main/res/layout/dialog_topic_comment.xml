@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:maxHeight="600dp">
 
+
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -25,101 +26,131 @@
 
 
             <com.manta.worldcup.view.CustomTextOutLineView
-                android:id="@+id/tv_picture_name"
+                android:id="@+id/tv_title"
+                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textAlignment="center"
-                android:text="스야리스공주"
+                android:text="asdasd"
                 android:textColor="@color/white"
-                android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.93"
+                app:layout_constraintVertical_bias="0.877"
                 app:textStroke="true"
                 app:textStrokeColor="@color/black"
                 app:textStrokeWidth="5" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                app:layout_constraintVertical_bias="0.2">
+
+
+            <com.manta.worldcup.view.CustomTextOutLineView
+                android:id="@+id/tv_managerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                app:textStroke="true"
+                app:textStrokeColor="@color/black"
+                app:textStrokeWidth="5"
+                android:text="관리자"
+                android:textSize="12dp" />
+
+
+            <ImageView
+                android:id="@+id/iv_tier"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_tier0_24" />
+
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <GridLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:columnCount="2"
-            android:rowCount="3">
+            android:layout_marginTop="5dp">
+
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_baseline_thumb_up_alt_24"
+                android:backgroundTint="?attr/colorPrimary"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="0"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/ic_baseline_thumb_down_alt_24"
+                android:backgroundTint="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/tv_dislike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="0"
+                android:textColor="?android:attr/textColorPrimary" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp">
 
             <TextView
                 style="@style/TextAppearance.AppCompat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="From" />
+                android:text="수익" />
+
+            <ImageButton
+                android:id="@+id/btn_info"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/ic_baseline_info_24" />
 
             <TextView
-                android:id="@+id/tv_from"
+                android:id="@+id/tv_income"
                 style="@style/TextAppearance.AppCompat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="\t최강 공주 월드컵" />
+                android:text="\t0" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="3dp"
+                android:background="@drawable/ic_baseline_grade_24" />
 
 
-            <TextView
-                style="@style/TextAppearance.AppCompat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="우승횟수" />
-
-            <TextView
-                android:id="@+id/tv_winCnt"
-                style="@style/TextAppearance.AppCompat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="\t0회" />
-
-            <LinearLayout>
-
-                <TextView
-                    style="@style/TextAppearance.AppCompat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="수익" />
-
-                <ImageButton
-                    android:id="@+id/btn_info"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/ic_baseline_info_24" />
-
-            </LinearLayout>
-
-            <LinearLayout android:gravity="center">
-
-                <TextView
-                    android:id="@+id/tv_income"
-                    style="@style/TextAppearance.AppCompat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text="\t0" />
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginStart="3dp"
-                    android:background="@drawable/ic_baseline_grade_24" />
-
-
-            </LinearLayout>
-
-
-        </GridLayout>
+        </LinearLayout>
 
 
         <LinearLayout
@@ -147,34 +178,34 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_reply"
-            android:visibility="gone"
-            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="?attr/colorPrimary"
+            android:visibility="gone"
             app:cardCornerRadius="15dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="5dp">
 
                 <TextView
                     android:id="@+id/tv_reply_to"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
                     android:text="블랙만타에게"
-                    android:textColor="?attr/colorOnPrimary"/>
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textSize="12sp" />
 
                 <ImageButton
                     android:id="@+id/btn_reply_cancel"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:backgroundTint="?attr/colorOnPrimary"
-                    android:background="@drawable/ic_baseline_close_24" />
+                    android:background="@drawable/ic_baseline_close_24"
+                    android:backgroundTint="?attr/colorOnPrimary" />
 
 
             </LinearLayout>
@@ -186,9 +217,9 @@
             android:id="@+id/rv_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
+            android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="10dp"
-            android:layout_marginHorizontal="5dp"/>
+            android:clipToPadding="false" />
 
 
     </LinearLayout>

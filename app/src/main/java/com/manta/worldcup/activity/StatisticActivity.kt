@@ -67,31 +67,6 @@ class StatisticActivity : AppCompatActivity() {
             TopicCommentDialog().newInstance(topic, user).show(supportFragmentManager, null);
         }
 
-        tv_earn.text = (topic.mView * Constants.POINT_CLEAR_GAME).toString();
-
-
-
-
-        btn_info.setOnClickListener {
-            val balloon: Balloon = Balloon.Builder(this)
-                .setArrowSize(10)
-                .setArrowOrientation(ArrowOrientation.BOTTOM)
-                .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
-                .setPadding(6)
-                .setArrowPosition(0.5f)
-                .setCornerRadius(10f)
-                .setBackgroundColorResource(R.color.yellow)
-                .setTextColorResource(R.color.black)
-                .setText(resources.getString(R.string.tooltip_topic_income) + " " + Constants.POINT_CLEAR_GAME)
-                .setBalloonAnimation(BalloonAnimation.FADE)
-                .build()
-
-            balloon.show(btn_info)
-        }
-
-
-        tv_like.text = topic.mLike.toString()
-        tv_dislike.text = topic.mDislike.toString()
     }
 
 

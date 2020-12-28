@@ -5,34 +5,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginVertical="20dp">
+    android:layout_marginVertical="20dp"
+    android:orientation="vertical">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        >
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/iv_crown"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/crown"
-        android:backgroundTint="@color/gold"
-        android:layout_marginEnd="5dp"
-        android:layout_toLeftOf="@id/tv_ranking"/>
+        <ImageView
+            android:id="@+id/iv_crown"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="5dp"
+            android:layout_toLeftOf="@id/tv_ranking"
+            android:background="@drawable/crown"
+            android:backgroundTint="@color/gold" />
 
-    <TextView
-        android:id="@+id/tv_ranking"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/TextAppearance.AppCompat.Large"
-        android:layout_centerHorizontal="true"
-        android:text="1위"/>
+        <TextView
+            android:id="@+id/tv_ranking"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="1위" />
 
     </RelativeLayout>
 
@@ -40,21 +39,42 @@
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_margin="5dp"
+        android:layout_marginVertical="5dp"
         app:cardCornerRadius="20dp">
 
-        <ImageView
-            android:id="@+id/iv_picture"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/colorSecondary"
-            android:scaleType="centerCrop"
-            android:src="@drawable/suyaless"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.39" />
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_picture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/colorSecondary"
+                android:scaleType="centerCrop"
+                android:src="@drawable/suyaless" />
+
+
+            <com.manta.worldcup.view.CustomTextOutLineView
+                android:id="@+id/tv_picture_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="스야리스공주"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.93"
+                app:textStroke="true"
+                app:textStrokeColor="@color/black"
+                app:textStrokeWidth="5" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -62,26 +82,26 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_percent"
-            android:layout_marginStart="5dp"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="?android:attr/textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="77%" />
+            android:layout_marginStart="5dp"
+            android:text="77%"
+            android:textColor="?android:attr/textColorPrimary" />
 
         <TextView
             android:id="@+id/tv_winCnt"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="?android:attr/textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="(0)" />
+            android:text="(0)"
+            android:textColor="?android:attr/textColorPrimary" />
     </LinearLayout>
 
 

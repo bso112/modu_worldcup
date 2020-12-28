@@ -58,4 +58,13 @@ class UserViewModel(private val application: Application) : ViewModel() {
         }
     }
 
+    fun getUser(userEmail : String) {
+        viewModelScope.launch {
+            val result = mRepository.getUser(userEmail);
+            if(result.isSuccessful){
+                mUser.value = result.body()
+            }
+        }
+    }
+
 }

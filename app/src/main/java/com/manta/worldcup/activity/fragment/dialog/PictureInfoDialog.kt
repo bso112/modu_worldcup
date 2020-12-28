@@ -268,6 +268,11 @@ class PictureInfoDialog : DialogFragment() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        //앱 내릴때 dismiss 안하면 터짐
+        dismiss()
+    }
 
     private fun hideReplyCard() {
         //리플라이 대상 초기화
