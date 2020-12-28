@@ -32,14 +32,22 @@ import kotlin.math.log2
  */
 class GameActivity : AppCompatActivity() {
 
-    private lateinit var mPictureModels: ArrayList<PictureModel>;
+    private var mPictureModels = mutableListOf<PictureModel>();
+    private val mToDelete =  mutableListOf<PictureModel>();
     private lateinit var mTopic: Topic;
     private lateinit var mPlayer: User;
     //유저가 선택을 했는가?
     private var misAlreadyChoose : Boolean = false;
 
+
     //토픽에 있는 사진의 총 갯수
     private var mPictureSum = 0;
+
+    //라운드당 최대 게임 횟수
+    private var mMaxGameCnt = 0;
+    //라운드당 현재 진행한 게임 수
+    private var mCurrGameCnt = 0;
+
 
 
     private val mPictureViewModel: PictureViewModel by lazy {
@@ -79,9 +87,10 @@ class GameActivity : AppCompatActivity() {
         mPictureViewModel.getPictures(mTopic.mId);
         //서버에서 받아온 사진 데이터를 copy해서 어댑터에 넣는다.
         mPictureViewModel.mPictures.observe(this, androidx.lifecycle.Observer {
-            mPictureModels = ArrayList(it);
+            mPictureModels = it.toMutableList();
             mPictureSum = mPictureModels.size;
             mPictureModels.shuffle();
+            mMaxGameCnt = mPictureModels.size / 2;
             showImage();
         })
 
@@ -133,25 +142,39 @@ class GameActivity : AppCompatActivity() {
         if (mPictureModels.size < 2)
             return;
 
+
         //고르지 않은것을 지운다.
         if (isA) {
-            mPictureModels.removeAt(1)
+            mToDelete.add(mPictureModels[getFirstPictureIndex() + 1])
             moveViewToScreenCenter(cv_A)
             cv_B.startAnimation(mOutDownwardAnim)
             tv_vs.startAnimation(mOutDownwardAnim)
         } else {
-            mPictureModels.removeAt(0)
+            mToDelete.add(mPictureModels[getFirstPictureIndex()])
             moveViewToScreenCenter(cv_B)
             cv_A.startAnimation(mOutUpwardAnim)
             tv_vs.startAnimation(mOutUpwardAnim)
+        }
+
+        mCurrGameCnt++;
+        //이번 라운드가 끝났으면 초기화
+        if(mCurrGameCnt >= mMaxGameCnt){
+            for(toDeletePicture in mToDelete){
+                mPictureModels.remove(toDeletePicture)
+            }
+            //결과를 셔플
+            mPictureModels.shuffle();
+            mCurrGameCnt = 0;
+            mMaxGameCnt = mPictureModels.size / 2;
+
+
+
         }
 
 
     }
 
     private fun onAnimationEnd() {
-        //결과를 셔플
-        mPictureModels.shuffle();
 
         //사진이 하나만 남으면 우승결정됨
         if (mPictureModels.size < 2) {
@@ -184,22 +207,23 @@ class GameActivity : AppCompatActivity() {
         misAlreadyChoose = false;
     }
 
+    private fun getFirstPictureIndex() = mCurrGameCnt * 2
 
     private fun showImage() {
         if (mPictureModels.size < 2) return;
         val round = pow(2.0, ceil(log2(mPictureModels.size.toDouble()))).toInt();
         var title = "";
         if (round == 2)
-            title = "결승 (${mPictureModels.size}/${mPictureSum})"
+            title = "결승 (${mPictureModels.size - mCurrGameCnt}/${mPictureSum})"
         else
-            title = "${round}강 (${mPictureModels.size}/${mPictureSum})"
+            title = "${round}강 (${mPictureModels.size - mCurrGameCnt}/${mPictureSum})"
 
         tv_title.text = title;
-        tv_picture_name_A.text = mPictureModels[0].mPictureName;
-        tv_picture_name_B.text = mPictureModels[1].mPictureName;
-        val url1 = Constants.BASE_URL + "image/get/${mPictureModels[0].mId}/";
+        tv_picture_name_A.text = mPictureModels[getFirstPictureIndex()].mPictureName;
+        tv_picture_name_B.text = mPictureModels[getFirstPictureIndex() + 1].mPictureName;
+        val url1 = Constants.BASE_URL + "image/get/${mPictureModels[getFirstPictureIndex()].mId}/";
         Constants.GlideWithHeader(url1, this, iv_A, this);
-        val url2 = Constants.BASE_URL + "image/get/${mPictureModels[1].mId}/";
+        val url2 = Constants.BASE_URL + "image/get/${mPictureModels[getFirstPictureIndex() + 1].mId}/";
         Constants.GlideWithHeader(url2, this, iv_B, this);
 
     }
