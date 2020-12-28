@@ -235,7 +235,7 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
     }
 
     fun setComments(comments: List<Comment>) {
-        val nomalized = nomalizeComments(comments) ?: return
+        val nomalized = nomalizeComments(comments)
         val result = DiffUtil.calculateDiff(CommentDiffUtilCallback(mDataset, nomalized))
         mDataset = nomalized;
         mRecommend = Array(mDataset.size) { RECOMMEND.EMPTY }
@@ -245,9 +245,9 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
 
     //베스트댓글을 맨위로 올리고 대댓글 위치조정
     //대댓글이 베스트가 되는건 막는다.
-    private fun nomalizeComments(comments: List<Comment>): List<Comment>? {
+    private fun nomalizeComments(comments: List<Comment>): List<Comment> {
         if (comments.isEmpty())
-            return null;
+            return comments;
 
         val result = LinkedList<Comment>();
 
@@ -257,7 +257,7 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         }
 
         if (result.isEmpty())
-            return null;
+            return comments;
 
         var maxRecommend = 0
         var bestCommentIndex = 0
@@ -274,7 +274,7 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
 
         //대댓글 위치조정
         //parent는 result에, 자식은 comment 에 있다.
-        for (index in 0 until comments.size) {
+        for (index in comments.indices) {
             if (comments[index].mParentID != null) {
                 val parentIndex = result.indexOfFirst { it.mId == comments[index].mParentID }
                 if (parentIndex >= 0) {

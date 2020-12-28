@@ -28,9 +28,9 @@ interface CommentAPI {
 
     @FormUrlEncoded
     @POST("comment/picture/update_recommend")
-    suspend fun updateRecommend(@Field("comment_id") commentID : Long,
-                                @Field("good") good: Int,
-                                @Field("bad") bad : Int)
+    suspend fun updatePictureCommentRecommend(@Field("comment_id") commentID : Long,
+                                              @Field("good") good: Int,
+                                              @Field("bad") bad : Int)
 
     @POST("comment/picture/delete")
     suspend fun deletePictureComment(@Body comment : Comment) : Response<List<Comment>>
@@ -38,4 +38,19 @@ interface CommentAPI {
 
     @POST("comment/picture/update")
     suspend fun updatePictureComment(@Body comment : Comment) : Response<List<Comment>>
+
+    @FormUrlEncoded
+    @POST("comment/topic/update_recommend")
+    suspend fun updateTopicCommentRecommend(@Field("comment_id") commentID : Long,
+                                              @Field("good") good: Int,
+                                              @Field("bad") bad : Int)
+
+    @POST("comment/topic/delete")
+    suspend fun deleteTopicComment(@Body comment : Comment) : Response<List<Comment>>
+
+
+    @POST("comment/topic/update")
+    suspend fun updateTopicComment(@Body comment : Comment) : Response<List<Comment>>
+
+
 }

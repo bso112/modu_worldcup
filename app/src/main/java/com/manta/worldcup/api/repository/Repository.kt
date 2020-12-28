@@ -44,7 +44,6 @@ class Repository(application: Context) {
 
     suspend fun insertPictureComment(comment: Comment) = commentAPI.insertPictureComment(comment);
 
-    suspend fun updateRecommend(commentID : Long, good : Int, bad : Int) = commentAPI.updateRecommend(commentID, good, bad)
 
     suspend fun sendIdToken(token: String) = authAPI.sendIdToken(token);
 
@@ -58,15 +57,25 @@ class Repository(application: Context) {
 
     suspend fun getUser(email: String) = topicAPI.getUser(email);
 
-    suspend fun updateRecommned(like: Boolean, topicId: Long) = topicAPI.updateRecommend(like, topicId);
+    suspend fun updateTopicRecommend(like: Boolean, topicId: Long) = topicAPI.updateRecommend(like, topicId);
+
 
     suspend fun increaseView(topicId: Long) = topicAPI.increaseView(topicId);
 
     suspend fun updateUserNickname(nickname: String, email: String) = userAPI.updateUserNickname(nickname, email)
 
-    suspend fun updatePictureName(pictureID : Long, name : String) = topicAPI.updatePictureName(pictureID, name)
+    suspend fun updatePictureName(pictureID: Long, name: String) = topicAPI.updatePictureName(pictureID, name)
 
-    suspend fun deleteComment(comment : Comment) = commentAPI.deletePictureComment(comment)
+    suspend fun deletePictureComment(comment: Comment) = commentAPI.deletePictureComment(comment)
 
-    suspend fun updateComment(comment : Comment) = commentAPI.updatePictureComment(comment)
+    suspend fun updatePictureComment(comment: Comment) = commentAPI.updatePictureComment(comment)
+
+    suspend fun updatePictureCommentRecommend(commentID: Long, good: Int, bad: Int) = commentAPI.updatePictureCommentRecommend(commentID, good, bad)
+
+    suspend fun deleteTopicComment(comment: Comment) = commentAPI.deleteTopicComment(comment)
+
+    suspend fun updateTopicComment(comment: Comment) = commentAPI.updateTopicComment(comment)
+
+    suspend fun updateTopicCommentRecommend(commentID: Long, good: Int, bad: Int) = commentAPI.updateTopicCommentRecommend(commentID, good, bad)
+
 }

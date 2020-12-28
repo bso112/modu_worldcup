@@ -44,6 +44,7 @@
 
             <ImageButton
                 android:id="@+id/btn_change_picture_name"
+                android:visibility="gone"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="5dp"

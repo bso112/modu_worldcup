@@ -6,13 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.WindowManager
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
+import com.manta.worldcup.adapter.CommentAdapter
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
+import com.manta.worldcup.viewmodel.CommentViewModel
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.activity_game_result.*
 import kotlin.math.round
@@ -29,6 +33,14 @@ class GameResultActivity : AppCompatActivity() {
             }
         }).get(TopicViewModel::class.java);
     }
+//    private val mCommentViewModel : CommentViewModel by lazy{
+//        ViewModelProvider(this, object : ViewModelProvider.Factory {
+//            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+//                return CommentViewModel(application) as T;
+//            }
+//        }).get(CommentViewModel::class.java);
+//    }
+//    private lateinit var mCommentAdapter : CommentAdapter
 
     /**
      * 토픽에 좋아요를 눌렀는가?
@@ -51,6 +63,17 @@ class GameResultActivity : AppCompatActivity() {
         mTopic = (intent.getSerializableExtra(Constants.EXTRA_TOPIC) as? Topic) ?: return;
         val winner = (intent.getSerializableExtra(Constants.EXTRA_PICTURE_MODEL) as? PictureModel) ?: return;
         val player = (intent.getSerializableExtra(Constants.EXTRA_USER) as? User) ?: return;
+
+//        mCommentAdapter = CommentAdapter(player)
+//        rv_comment.adapter = mCommentAdapter
+//        rv_comment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+//
+//        mCommentViewModel.getTopicComments(mTopic.mId)
+//        mCommentViewModel.mComments.observe(this, Observer {
+//            mCommentAdapter.setComments(it)
+//        })
+//
+
 
         tv_winner_name.text = winner.mPictureName;
 

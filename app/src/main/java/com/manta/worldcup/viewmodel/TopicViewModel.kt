@@ -1,15 +1,12 @@
 package com.manta.worldcup.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manta.worldcup.api.repository.Repository
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.TopicJoinUser
-import com.manta.worldcup.model.User
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.coroutines.launch
 
 class TopicViewModel(private val application: Application) : ViewModel() {
@@ -42,7 +39,7 @@ class TopicViewModel(private val application: Application) : ViewModel() {
      */
     fun UpdateRecommend(like: Boolean, topicId: Long) {
         viewModelScope.launch {
-            mRepository.updateRecommned(like, topicId)
+            mRepository.updateTopicRecommend(like, topicId)
         }
     }
 

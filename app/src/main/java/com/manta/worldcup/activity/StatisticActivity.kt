@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.manta.worldcup.adapter.MyPictureAdapter
+import com.manta.worldcup.adapter.PictureAdapter
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
@@ -16,14 +16,14 @@ import com.skydoves.balloon.*
 import kotlinx.android.synthetic.main.activity_statistic.*
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.TopicCommentDialog
+import com.manta.worldcup.adapter.CommentAdapter
 
 /**
  * 월드컵의 결과를 통계적으로 보여주는 액티비티
  */
 class StatisticActivity : AppCompatActivity() {
 
-    private lateinit var mMyPictureAdapter : MyPictureAdapter;
-   // private val mCommentAdapter = CommentAdapter();
+    private lateinit var mPictureAdapter : PictureAdapter;
     private val mMasterViewModel: PictureViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -33,14 +33,6 @@ class StatisticActivity : AppCompatActivity() {
         }).get(PictureViewModel::class.java);
     }
 
-    private val mCommentViewModel : CommentViewModel by lazy{
-        ViewModelProvider(this, object : ViewModelProvider.Factory{
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return CommentViewModel(application) as T;
-            }
-
-        }).get(CommentViewModel::class.java);
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,13 +41,13 @@ class StatisticActivity : AppCompatActivity() {
         val topic = intent.getSerializableExtra(Constants.EXTRA_TOPIC) as? Topic ?: return;
         val user = intent.getSerializableExtra(Constants.EXTRA_USER) as? User ?: return;
 
-        mMyPictureAdapter = MyPictureAdapter(supportFragmentManager);
-        mMyPictureAdapter.setUser(user);
-        rv_picture.adapter = mMyPictureAdapter
+        mPictureAdapter = PictureAdapter(supportFragmentManager);
+        mPictureAdapter.setUser(user);
+        rv_picture.adapter = mPictureAdapter
         rv_picture.layoutManager = GridLayoutManager(this, 2 );
 
 
-        mMasterViewModel.mPictures.observe(this, Observer { mMyPictureAdapter.setPictures(ArrayList(it)) })
+        mMasterViewModel.mPictures.observe(this, Observer { mPictureAdapter.setPictures(ArrayList(it)) })
 
         mMasterViewModel.getPictures(topic.mId)
 

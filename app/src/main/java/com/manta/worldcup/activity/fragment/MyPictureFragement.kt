@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -17,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.manta.worldcup.R
-import com.manta.worldcup.adapter.MyPictureAdapter
+import com.manta.worldcup.adapter.PictureAdapter
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.viewmodel.PictureViewModel
 import com.manta.worldcup.viewmodel.UserViewModel
@@ -32,7 +31,7 @@ import kotlinx.coroutines.withContext
  */
 class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
     private lateinit var mUserViewModel: UserViewModel;
-    private lateinit var mMyPictureAdapter: MyPictureAdapter;
+    private lateinit var mPictureAdapter: PictureAdapter;
 
     private val mPictureModel: PictureViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -69,20 +68,20 @@ class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
 
         }).get(UserViewModel::class.java);
 
-        mMyPictureAdapter = MyPictureAdapter(
+        mPictureAdapter = PictureAdapter(
             requireActivity().supportFragmentManager,
             arguments?.getString(Constants.EXTRA_NOTIFIED_PICTURE_ID)
         )
 
         rv_picture.layoutManager = GridLayoutManager(context, 2)
-        rv_picture.adapter = mMyPictureAdapter;
+        rv_picture.adapter = mPictureAdapter;
 
         mUserViewModel.mUser.observe(this, Observer { user ->
-            mMyPictureAdapter.setUser(user);
+            mPictureAdapter.setUser(user);
         })
 
         mUserViewModel.mPictures.observe(this, Observer {
-            mMyPictureAdapter.setPictures(ArrayList(it));
+            mPictureAdapter.setPictures(ArrayList(it));
         })
 
         LocalBroadcastManager.getInstance(requireContext())
@@ -113,7 +112,7 @@ class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
             true;
         }
 
-        mMyPictureAdapter.setOnLongClickListener(object : MyPictureAdapter.OnItemLongClickListener {
+        mPictureAdapter.setOnLongClickListener(object : PictureAdapter.OnItemLongClickListener {
             override fun onItemLongClick() {
                 ll_option_mypicture.visibility = View.VISIBLE;
                 ll_option_mypicture.startAnimation(showAnim)
@@ -121,12 +120,12 @@ class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
         })
 
         btn_delete.setOnClickListener {
-            val selection = mMyPictureAdapter.getSelection();
+            val selection = mPictureAdapter.getSelection();
             CoroutineScope(Dispatchers.IO).launch {
                 val result = mPictureModel.deletePictures(selection)
                 if (result.isSuccessful) {
                     withContext(Dispatchers.Main) {
-                        mMyPictureAdapter.endSelectMode()
+                        mPictureAdapter.endSelectMode()
                         LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(
                             Intent().apply { action = Constants.ACTION_NEED_REFRESH }
                         )
@@ -140,10 +139,10 @@ class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
         }
 
         btn_select_all.setOnClickListener {
-            mMyPictureAdapter.selectAll()
+            mPictureAdapter.selectAll()
         }
         btn_cancel.setOnClickListener {
-            mMyPictureAdapter.endSelectMode()
+            mPictureAdapter.endSelectMode()
             ll_option_mypicture.startAnimation(dismissAnim)
         }
 

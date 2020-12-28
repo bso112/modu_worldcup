@@ -59,15 +59,15 @@ class CommentViewModel(application: Context) : ViewModel() {
         }
     }
 
-    fun updateRecommend(commendID : Long, good : Int, bad : Int){
+    fun updateTopicCommentRecommend(commendID : Long, good : Int, bad : Int){
         viewModelScope.launch {
-            repository.updateRecommend(commendID, good, bad);
+            repository.updateTopicCommentRecommend(commendID, good, bad);
         }
     }
 
-    fun deleteComment(comment : Comment){
+    fun deleteTopicComment(comment : Comment){
         viewModelScope.launch {
-            val response = repository.deleteComment(comment)
+            val response = repository.deleteTopicComment(comment)
             if(response.isSuccessful){
                 mComments.value = response.body()
             }
@@ -75,9 +75,36 @@ class CommentViewModel(application: Context) : ViewModel() {
     }
 
 
-    fun updateComment(comment : Comment){
+    fun updateTopicComment(comment : Comment){
         viewModelScope.launch {
-            val response = repository.updateComment(comment)
+            val response = repository.updateTopicComment(comment)
+            if(response.isSuccessful){
+                mComments.value = response.body()
+            }
+        }
+    }
+
+
+
+    fun updatePictureRecommend(commendID : Long, good : Int, bad : Int){
+        viewModelScope.launch {
+            repository.updatePictureCommentRecommend(commendID, good, bad);
+        }
+    }
+
+    fun deletePictureComment(comment : Comment){
+        viewModelScope.launch {
+            val response = repository.deletePictureComment(comment)
+            if(response.isSuccessful){
+                mComments.value = response.body()
+            }
+        }
+    }
+
+
+    fun updatePictureComment(comment : Comment){
+        viewModelScope.launch {
+            val response = repository.updatePictureComment(comment)
             if(response.isSuccessful){
                 mComments.value = response.body()
             }

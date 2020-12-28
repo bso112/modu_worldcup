@@ -1,10 +1,12 @@
 package com.manta.worldcup.activity.fragment.dialog
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +19,9 @@ import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.CommentViewModel
 import kotlinx.android.synthetic.main.dialog_comment.*
+import kotlinx.android.synthetic.main.dialog_comment.cv_reply
+import kotlinx.android.synthetic.main.dialog_comment.rv_comment
+import kotlinx.android.synthetic.main.dialog_comment.tv_reply_to
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,6 +43,9 @@ class TopicCommentDialog : DialogFragment() {
      */
     //private var mParentComment : Comment? = null;
 
+    private var mCommentReplyTo: Long? = null
+
+
     fun newInstance(topic: Topic, player: User): TopicCommentDialog {
         val args = Bundle(2);
         args.putSerializable(Constants.EXTRA_TOPIC, topic);
@@ -58,16 +66,11 @@ class TopicCommentDialog : DialogFragment() {
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         val topic = requireArguments().getSerializable(Constants.EXTRA_TOPIC) as? Topic ?: return;
-        val player = requireArguments().getSerializable(Constants.EXTRA_USER) as? User ?: return;
+        val user = requireArguments().getSerializable(Constants.EXTRA_USER) as? User ?: return;
 
+        mCommentAdapter = CommentAdapter(user)
         rv_comment.adapter = mCommentAdapter;
         rv_comment.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-
-        mCommentAdapter = CommentAdapter(player)
-        //닉네임 적는 란 비활성화
-        tv_user_nickname.setText(player.mNickname);
-        tv_user_nickname.isEnabled = false;
-        tv_user_nickname.setTextColor(resources.getColor(R.color.disabled))
 
         mCommentViewModel.mComments.observe(this, androidx.lifecycle.Observer {
             mCommentAdapter.setComments(it);
@@ -75,17 +78,82 @@ class TopicCommentDialog : DialogFragment() {
 
         mCommentViewModel.getTopicComments(topic.mId);
 
-        btn_submit.setOnClickListener {
-            val date = Calendar.getInstance().time;
-            val locale = requireContext().applicationContext.resources.configuration.locale;
-            val comment = Comment(
-                0, tv_user_nickname.text.toString(), player.mEmail, et_content.text.toString(),
-                SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date), topic.mId, topic.mManagerEmail)
-            mCommentViewModel.insertTopicComment(comment);
-            //작성 후 덧글창 비우기
-            et_content.setText("");
+
+        cv_reply.setOnClickListener {
+            hideReplyCard()
         }
 
+        //코멘트 대댓글
+        mCommentAdapter.setOnItemClickListener(object : CommentAdapter.OnItemClickListener {
+            override fun onItemClick(comment: Comment) {
+                mCommentReplyTo = comment.mId;
+                cv_reply.visibility = View.VISIBLE
+                tv_reply_to.text = comment.mWriter;
+            }
+        })
+
+        //내 코멘트 수정
+        mCommentAdapter.setOnCommentChangeListener(object : CommentAdapter.OnCommentChangeListener {
+            override fun onCommentDelete(comment: Comment) {
+                mCommentViewModel.deleteTopicComment(comment)
+            }
+
+            override fun onMoreButtonClick() {
+                hideReplyCard()
+            }
+
+            override fun onCommentUpdate(comment: Comment) {
+                mCommentViewModel.updateTopicComment(comment);
+            }
+        })
+
+        //코멘트 좋아요 싫어요
+        mCommentAdapter.setOnRecommendBtnClickListener(object : CommentAdapter.OnRecommendBtnClickListener {
+            override fun onRecommendChanged(commentID: Long, good: Int, bad: Int) {
+                mCommentViewModel.updateTopicCommentRecommend(commentID, good, bad)
+            }
+
+
+        })
+
+        //댓글 제출
+        btn_send.setOnClickListener {
+            val date = Calendar.getInstance().time;
+            val locale = requireContext().applicationContext.resources.configuration.locale;
+
+            //루트 댓글을 찾는다.
+            if (mCommentReplyTo != null) {
+                mCommentReplyTo = mCommentAdapter.getRootCommentID(mCommentReplyTo!!);
+            }
+
+            val comment = Comment(
+                0,
+                user.mNickname,
+                user.mEmail,
+                et_comment.text.toString(),
+                SimpleDateFormat("yyyy.MM.dd HH:mm", locale).format(date),
+                topic.mId,
+                topic.mManagerEmail,
+                mParentID = mCommentReplyTo
+            )
+
+            mCommentViewModel.insertTopicComment(comment);
+            //작성 후 덧글창 비우기
+            et_comment.setText("");
+            //리플라이 대상 초기화
+            hideReplyCard()
+
+            //키보드 내리기
+            val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(et_comment.windowToken, 0)
+        }
+
+    }
+
+    private fun hideReplyCard() {
+        //리플라이 대상 초기화
+        mCommentReplyTo = null;
+        cv_reply.visibility = View.GONE;
     }
 
 
