@@ -22,6 +22,9 @@ interface TopicAPI {
     @GET("topic/get_name/{topic_id}")
     suspend fun getTopicName(@Path("topic_id") topicID : Long) : Response<String>
 
+    @GET("topic/get/{topic_id}")
+    suspend fun getTopicJoinUser(@Path("topic_id") topicID : Long) : Response<TopicJoinUser>
+
 
     @GET("topicJoinUser/get_all")
     suspend fun getAllTopicJoinUser() : Response<ArrayList<TopicJoinUser>>
@@ -31,6 +34,7 @@ interface TopicAPI {
 
     @GET("user/get/{email}")
     suspend fun getUser(@Path("email") email : String) : Response<ArrayList<User>>
+
 
     @Multipart
     @POST("picture/new")

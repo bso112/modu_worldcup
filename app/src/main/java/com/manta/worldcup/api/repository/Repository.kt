@@ -18,6 +18,8 @@ class Repository(application: Context) {
 
     suspend fun getTopicJoinUsers(userEmail: String) = topicAPI.getTopicJoinUsers(userEmail)
 
+    suspend fun getTopicJoinUser(topicID : Long) = topicAPI.getTopicJoinUser(topicID)
+
     suspend fun insertTopic(topic: Topic, pictures: List<PictureModel>, image: List<MultipartBody.Part>) = topicAPI.insertTopic(topic, pictures, image);
 
     suspend fun deleteTopic(topicID: Long) = topicAPI.deleteTopic(topicID);

@@ -35,6 +35,8 @@ class GameActivity : AppCompatActivity() {
     private lateinit var mPictureModels: ArrayList<PictureModel>;
     private lateinit var mTopic: Topic;
     private lateinit var mPlayer: User;
+    //유저가 선택을 했는가?
+    private var misAlreadyChoose : Boolean = false;
 
     //토픽에 있는 사진의 총 갯수
     private var mPictureSum = 0;
@@ -122,6 +124,10 @@ class GameActivity : AppCompatActivity() {
      * 두 사진 중 하나를 고른다. 위쪽 사진을 골랐으면 true를 인자로 넣는다.
      */
     fun choose(isA: Boolean) {
+        if(misAlreadyChoose)
+            return;
+
+        misAlreadyChoose = true;
 
         //예외처리
         if (mPictureModels.size < 2)
@@ -174,6 +180,8 @@ class GameActivity : AppCompatActivity() {
         }
 
         showImage();
+
+        misAlreadyChoose = false;
     }
 
 

@@ -121,6 +121,7 @@ class PictureInfoDialog : DialogFragment() {
         mCommentAdapter = CommentAdapter(user)
         rv_comment.adapter = mCommentAdapter;
         rv_comment.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+        rv_comment.isNestedScrollingEnabled = false;
 
         cv_reply.setOnClickListener {
             hideReplyCard()
@@ -206,7 +207,7 @@ class PictureInfoDialog : DialogFragment() {
         }
 
         //우승횟수
-        tv_winCnt.text = "\t" + pictureModel.WinCnt.toString()
+        tv_winCnt.text = "\t" + pictureModel.mWinCnt.toString()
 
         //사진셋팅
         val url = Constants.BASE_URL + "image/get/${pictureModel.mId}/";
@@ -215,7 +216,7 @@ class PictureInfoDialog : DialogFragment() {
         //사진 이름 셋팅
         tv_picture_name.text = pictureModel.mPictureName;
 
-        tv_income.text = "\t" + (pictureModel.WinCnt * Constants.POINT_WIN_PICTURE)
+        tv_income.text = "\t" + (pictureModel.mWinCnt * Constants.POINT_WIN_PICTURE)
 
         btn_info.setOnClickListener {
             val balloon: Balloon = Balloon.Builder(requireContext())

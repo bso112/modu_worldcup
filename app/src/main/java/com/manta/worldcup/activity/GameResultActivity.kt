@@ -6,17 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.WindowManager
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.manta.worldcup.R
-import com.manta.worldcup.adapter.CommentAdapter
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
-import com.manta.worldcup.viewmodel.CommentViewModel
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.activity_game_result.*
 import kotlin.math.round
@@ -133,7 +130,7 @@ class GameResultActivity : AppCompatActivity() {
         }
 
         //0으로 나누기 방지
-        val percent = if(mTopic.mView == 0) 0F else round(winner.WinCnt.toFloat() / mTopic.mView.toFloat() * 100)
+        val percent = if(mTopic.mView == 0) 0 else (winner.mWinCnt.toFloat() / mTopic.mView.toFloat() * 100).toInt()
         tv_percent.text = percent.toString() + "%";
 
     }
@@ -150,7 +147,11 @@ class GameResultActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        mIsLike?.let { mTopicViewModel.UpdateRecommend(it, mTopic.mId) }
+        mIsLike?.let {
+            mTopicViewModel.UpdateRecommend(it, mTopic.mId)
+            LocalBroadcastManager.getInstance(this).sendBroadcast(
+                Intent().apply { action = Constants.ACTION_NEED_REFRESH })
+        }
 
     }
 

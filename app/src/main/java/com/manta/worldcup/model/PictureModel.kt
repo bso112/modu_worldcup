@@ -10,7 +10,7 @@ data class PictureModel(
     @SerializedName("id")
     val mId: Long,
     @SerializedName("winCnt")
-    val WinCnt: Int,
+    val mWinCnt: Int,
     @SerializedName("file_name")
     val mFileName : String,
     @SerializedName("name")

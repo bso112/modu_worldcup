@@ -33,6 +33,9 @@ class TopicViewModel(private val application: Application) : ViewModel() {
         }
     }
 
+    suspend fun getTopicJoinUser(topicID: Long) = mRepository.getTopicJoinUser(topicID)
+
+
 
     /**
      * @param like true if like, false if dislike

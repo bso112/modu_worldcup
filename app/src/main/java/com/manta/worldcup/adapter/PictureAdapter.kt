@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.PictureInfoDialog
 import com.manta.worldcup.helper.Constants
+import com.manta.worldcup.model.Picture
 import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.User
 import kotlinx.android.synthetic.main.item_my_picture.view.*
@@ -114,7 +115,7 @@ class PictureAdapter(
 
         fun setPicture(picture: PictureModel) {
             Glide.with(view.context).load(Constants.BASE_URL + "image/get/${picture.mId}").into(mPictureView);
-            mWinCnt.text = if (picture.WinCnt >= 1000) "${floor(picture.WinCnt / 100.0F) / 10.0F}K" else picture.WinCnt.toString();
+            mWinCnt.text = if (picture.mWinCnt >= 1000) "${floor(picture.mWinCnt / 100.0F) / 10.0F}K" else picture.mWinCnt.toString();
 
             //노티피케이션 확인
             if (mNotification[adapterPosition])
@@ -170,9 +171,13 @@ class PictureAdapter(
         holder.setPicture(mDataset[position]);
     }
 
-    fun setPictures(pictures: ArrayList<PictureModel>) {
-        val result = DiffUtil.calculateDiff(PictureDiffUtill(mDataset, pictures))
-        mDataset = pictures;
+    fun setPictures(pictures: ArrayList<PictureModel>, isSortByWinCnt : Boolean = false) {
+        var sortedList : ArrayList<PictureModel> = pictures
+        if(isSortByWinCnt) {
+            sortedList = sortByWinCnt(pictures)
+        }
+        val result = DiffUtil.calculateDiff(PictureDiffUtill(mDataset, sortedList))
+        mDataset = sortedList;
         mNotification = MutableList(mDataset.size) { false };
         mSelected = MutableList(mDataset.size) { false };
         result.dispatchUpdatesTo(this);
@@ -225,6 +230,10 @@ class PictureAdapter(
     fun setOnLongClickListener(listener: OnItemLongClickListener) {
         mOnItemLongClick = listener;
     }
+
+
+    private fun sortByWinCnt(pictureModels : List<PictureModel>) = ArrayList(pictureModels.sortedByDescending { it.mWinCnt })
+
 
     fun notifyItemDeleted(pictureModels: List<PictureModel>) {
         for (picture in pictureModels) {
