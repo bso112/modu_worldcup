@@ -4,20 +4,24 @@
         android:id="@+id/page_home"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_home_24"
-        android:title="@string/Home"/>
+        android:iconTint="?attr/colorPrimary"
+        android:title="홈"/>
     <item
         android:id="@+id/page_all_topic"
         android:enabled="true"
         android:icon="@drawable/trophy"
-        android:title="@string/worldcup"/>
+        android:iconTint="?attr/colorPrimary"
+        android:title="전체 월드컵"/>
     <item
         android:id="@+id/page_my_topic"
         android:enabled="true"
         android:icon="@drawable/trophy"
-        android:title="@string/my_worldcup"/>
+        android:iconTint="?attr/colorPrimary"
+        android:title="내 월드컵"/>
     <item
         android:id="@+id/page_my_picture"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_add_photo_alternate_24"
-        android:title="@string/my_picture"/>
+        android:icon="@drawable/ic_baseline_insert_photo_24"
+        android:iconTint="?attr/colorPrimary"
+        android:title="내 사진"/>
 </menu>

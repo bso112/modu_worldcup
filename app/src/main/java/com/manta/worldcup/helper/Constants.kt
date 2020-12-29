@@ -3,7 +3,7 @@ package com.manta.worldcup.helper
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
+import android.content.res.Resources
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
@@ -12,13 +12,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.manta.worldcup.R
-import com.manta.worldcup.activity.AddTopicActivity
-import com.manta.worldcup.activity.LoginActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.math.ln
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.HashSet
 
 object Constants {
     const val BASE_URL = "http://192.168.219.144:8001/anime/";
@@ -164,6 +160,34 @@ object Constants {
         return typedValue.data;
     }
 
+
+    /**
+     * lastDate이 현재로부터 얼마나 시간이 지났는지 얻어온다.
+     *  @param resources 문자열리소스를 얻어올 리소스
+     *  @param lastDate 예전 시간
+     */
+    fun getTimePassedFromNow(resources : Resources, lastDate : Date) : String{
+        val currdate = Calendar.getInstance().time;
+        val date = lastDate
+        val diffInMillies = currdate.time - date.time;
+
+
+        val diffDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        val diffYears = (diffDays / 365).toLong()
+        val diffHours = TimeUnit.HOURS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        val diffMinutes = TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+        if(diffYears > 0)
+            return diffYears.toString() + resources.getString(R.string.year_before)
+        else if(diffDays > 0)
+            return diffDays.toString() + resources.getString(R.string.day_before)
+        else if(diffHours > 0)
+            return diffHours.toString() + resources.getString(R.string.hour_before)
+        else if(diffMinutes > 0)
+            return diffMinutes.toString() + resources.getString(R.string.minute_before)
+
+        return resources.getString(R.string.just_before)
+    }
 
 
 

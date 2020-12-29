@@ -46,18 +46,24 @@ class StatisticPictureAdpater(
 
     inner class MyPictureViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val mPictureView: ImageView = view.iv_picture;
-        val mPictureName : TextView = view.tv_picture_name
+        val mPictureName: TextView = view.tv_picture_name
         val mWinCnt: TextView = view.tv_winCnt;
-        val mWinPercent : TextView = view.tv_percent;
-        val mRanking : TextView = view.tv_ranking;
-        val mCrown : ImageView = view.iv_crown;
+        val mWinPercent: TextView = view.tv_percent;
+        val mRanking: TextView = view.tv_ranking;
+        val mCrown: ImageView = view.iv_crown;
 
         fun setPicture(picture: PictureModel) {
             Glide.with(view.context).load(Constants.BASE_URL + "image/get/${picture.mId}").into(mPictureView);
             mWinPercent.text = "${getWinPercent(picture).toString()}%";
-            mWinCnt.text = if (picture.mWinCnt >= 1000) "(${floor(picture.mWinCnt / 100.0F) / 10.0F}K명)" else "(${picture.mWinCnt}명)";
-            mRanking.text = "${adapterPosition +1}위"
-            if(adapterPosition == 0)
+            val resource = view.context.resources;
+            mWinCnt.text =
+                if (picture.mWinCnt >= 1000)
+                    "(${floor(picture.mWinCnt / 100.0F) / 10.0F}K${resource.getString(R.string.people)})"
+                else
+                    "(${picture.mWinCnt}${resource.getString(R.string.people)})";
+
+            mRanking.text = "${adapterPosition + 1}" + resource.getString(R.string.place)
+            if (adapterPosition == 0)
                 mCrown.visibility = View.VISIBLE;
             else
                 mCrown.visibility = View.GONE;
@@ -65,12 +71,12 @@ class StatisticPictureAdpater(
             mPictureName.text = picture.mPictureName
         }
 
-        private fun getWinPercent(picture : PictureModel) : Int{
+        private fun getWinPercent(picture: PictureModel): Int {
             var sumWin = 0
-            for(data in mDataset){
+            for (data in mDataset) {
                 sumWin += data.mWinCnt
             }
-            return if(sumWin == 0) 0 else ( picture.mWinCnt.toFloat() / sumWin.toFloat() * 100).toInt()
+            return if (sumWin == 0) 0 else (picture.mWinCnt.toFloat() / sumWin.toFloat() * 100).toInt()
         }
     }
 
@@ -106,9 +112,9 @@ class StatisticPictureAdpater(
         holder.setPicture(mDataset[position]);
     }
 
-    fun setPictures(pictures: ArrayList<PictureModel>, isSortByWinCnt : Boolean = false) {
-        var sortedList : ArrayList<PictureModel> = pictures
-        if(isSortByWinCnt) {
+    fun setPictures(pictures: ArrayList<PictureModel>, isSortByWinCnt: Boolean = false) {
+        var sortedList: ArrayList<PictureModel> = pictures
+        if (isSortByWinCnt) {
             sortedList = sortByWinCnt(pictures)
         }
         val result = DiffUtil.calculateDiff(PictureDiffUtill(mDataset, sortedList))
@@ -126,8 +132,7 @@ class StatisticPictureAdpater(
     }
 
 
-
-    private fun sortByWinCnt(pictureModels : List<PictureModel>) = ArrayList(pictureModels.sortedByDescending { it.mWinCnt })
+    private fun sortByWinCnt(pictureModels: List<PictureModel>) = ArrayList(pictureModels.sortedByDescending { it.mWinCnt })
 
 
 }

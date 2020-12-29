@@ -58,7 +58,7 @@ class PictureDescriptionDialog() : DialogFragment() {
             if(IsNameDuplicated(pictureNames, currentPictureName))
                 tv_title_warning.visibility = View.VISIBLE;
             else{
-                tv_title_warning.visibility = View.INVISIBLE;
+                tv_title_warning.visibility = View.GONE;
             }
         }
 
@@ -70,7 +70,7 @@ class PictureDescriptionDialog() : DialogFragment() {
                 //키보드 내리기
                 val inputManager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputManager.hideSoftInputFromWindow(view.et_title.windowToken, 0)
-                tv_title_warning.visibility = View.INVISIBLE;
+                tv_title_warning.visibility = View.GONE;
                 onSubmitListener.onSubmit(pictureName);
                 dismiss();
             }

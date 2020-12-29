@@ -15,7 +15,8 @@ import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.MyTopicOptionDialog
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
-import kotlinx.android.synthetic.main.item_topic4.view.*
+import kotlinx.android.synthetic.main.item_topic.view.*
+import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
 /**
@@ -113,7 +114,15 @@ class MyTopicAdapter(private val mNotifiedTopicId: String? = null) : RecyclerVie
 
             mTitle.text = data.mTitle;
             mManagerName.text = data.mManagerName;
-            mDate.text = data.mDate;
+            //시간 설정
+            val locale = view.context.applicationContext.resources.configuration.locale;
+            val transFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", locale);
+            val date = transFormat.parse(data.mDate)
+            date?.let {
+                val timePassed = Constants.getTimePassedFromNow(view.context.resources, it)
+                mDate.text = timePassed
+            }
+            
 
             val tierIconID = Constants.getTierIconID(data.mTier);
             if (tierIconID != null)
@@ -138,7 +147,7 @@ class MyTopicAdapter(private val mNotifiedTopicId: String? = null) : RecyclerVie
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic4, parent, false);
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic, parent, false);
         return TopicViewHolder(view);
     }
 

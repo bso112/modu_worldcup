@@ -22,6 +22,7 @@
     <string name="alert_add_topic">스타포인트를 100점 차감하게 됩니다. 계속하시겠습니까?</string>
     <string name="warn_not_enough_point">포인트가 부족합니다.</string>
     <string name="signin">로그인</string>
+    <string name="signout">로그아웃</string>
     <string name="show_result_picture">다른 결과 보기</string>
     <string name="show_result_comment">댓글보기</string>
     <string name="how_was_worldcup">이 월드컵은 어땠나요?</string>
@@ -35,5 +36,19 @@
     <string name="subscribe">구독하기</string>
     <string name="report">신고하기</string>
     <string name="best_comment">베스트 댓글</string>
-    <string name="picture_from">From</string>
+    <string name="need_signin">로그인이 필요합니다.</string>
+    <string name="year_before">년 전</string>
+    <string name="day_before">일 전</string>
+    <string name="hour_before">시간 전</string>
+    <string name="minute_before">분 전</string>
+    <string name="just_before">방금</string>
+    <string name="revenue">수익</string>
+    <string name="Home">홈</string>
+    <string name="worldcup">전체 월드컵</string>
+    <string name="my_worldcup">내 월드컵</string>
+    <string name="my_picture">내 사진</string>
+    <string name="people">명</string>
+    <string name="place">등</string>
+    <string name="from">소속</string>
+    <string name="win_cnt">우승횟수</string>
 </resources>

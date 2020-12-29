@@ -57,7 +57,7 @@
                 style="@style/TextAppearance.AppCompat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="From" />
+                android:text="@string/from" />
 
             <TextView
                 android:id="@+id/tv_from"
@@ -72,7 +72,7 @@
                 style="@style/TextAppearance.AppCompat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="우승횟수" />
+                android:text="@string/win_cnt" />
 
             <TextView
                 android:id="@+id/tv_winCnt"
@@ -88,7 +88,7 @@
                     style="@style/TextAppearance.AppCompat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="수익" />
+                    android:text="@string/revenue" />
 
                 <ImageButton
                     android:id="@+id/btn_info"

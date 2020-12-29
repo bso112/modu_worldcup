@@ -8,15 +8,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.OnTopicClickDialog
+import com.manta.worldcup.adapter.RecentTopicAdapter
 import com.manta.worldcup.adapter.TopicAdapter_Top10
-import com.manta.worldcup.adapter.TopicAdapter_Banner
 import com.manta.worldcup.model.TopicJoinUser
 import com.manta.worldcup.viewmodel.UserViewModel
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.frag_home.*
-import kotlin.collections.ArrayList
 import kotlin.math.min
 
 
@@ -24,13 +24,36 @@ import kotlin.math.min
  * 홈화면
  */
 class HomeFragment : Fragment(R.layout.frag_home) {
-    private lateinit var mTopicViewModel: TopicViewModel;
-    private lateinit var mUserViewModel: UserViewModel;
+    private val mTopicViewModel: TopicViewModel by lazy {
+        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return TopicViewModel(requireActivity().application) as T;
+        }}).get(TopicViewModel::class.java);
+    };
+    private val mUserViewModel: UserViewModel by lazy{
+        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return UserViewModel(requireActivity().application) as T;
+            }
+
+        }).get(UserViewModel::class.java);
+    };
+
+    private val mRecentTopicAdpater  = RecentTopicAdapter().apply {
+        setOnTopicClickListener(object : RecentTopicAdapter.OnTopicClickListener{
+            override fun onTopicClick(topicJoinUser : TopicJoinUser) {
+                if (mUserViewModel.mUser.value == null) {
+                    Toast.makeText(context, resources.getString(R.string.need_signin), Toast.LENGTH_SHORT).show()
+                    return@onTopicClick;
+                }
+                fragmentManager?.let { OnTopicClickDialog().newInstance(topicJoinUser.getTopic(), mUserViewModel.mUser.value!!).show(it, null) };
+            }
+        })
+
+    }
+
     private lateinit var mTopicAdaptorTop10Recommend: TopicAdapter_Top10;
     private lateinit var mTopicAdaptorTop10View: TopicAdapter_Top10;
-    private lateinit var mTopicAdaptor: TopicAdapter_Banner;
-
-    private val REQUST_ADD_TOPIC = 0;
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,20 +65,13 @@ class HomeFragment : Fragment(R.layout.frag_home) {
         mTopicAdaptorTop10Recommend = TopicAdapter_Top10();
         mTopicAdaptorTop10View = TopicAdapter_Top10();
 
-
-        mTopicViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(requireActivity().application) as T;
+        vp_recent_topic.adapter = mRecentTopicAdpater;
+        vp_recent_topic.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                page_indicator.selectDot(position)
             }
-        }).get(TopicViewModel::class.java);
-
-        mUserViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return UserViewModel(requireActivity().application) as T;
-            }
-
-        }).get(UserViewModel::class.java);
-
+        })
 
         rv_top10_recommend.adapter = mTopicAdaptorTop10Recommend;
         rv_top10_recommend.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -65,58 +81,33 @@ class HomeFragment : Fragment(R.layout.frag_home) {
 
 
 
+
         mTopicViewModel.mDataset.observe(this, Observer { topics ->
             val copyList = topics.toMutableList(); //sort하려면 mutableList여야하는듯
-            copyList.sortByDescending { it.mLike }
             //subList는 새로운 List를 만드는게 아닌 것 같다. toMutableList로 새로운 리스트를 만들어야함.
+            //최근 5개 토픽을 보여준다.
+            mRecentTopicAdpater.setTopicJoinUsers(topics.subList(0, min(5, copyList.size)).toMutableList())
+            //인디케이터 생성
+            page_indicator.createDotPanel(min(5, copyList.size), R.drawable.circle_indicator_dot, R.drawable.circle_indicator_dot_selected, 0)
+
+            copyList.sortByDescending { it.mLike }
             mTopicAdaptorTop10Recommend.setTopics(copyList.subList(0, min(10, copyList.size)).toMutableList())
             copyList.sortByDescending { it.mView }
             mTopicAdaptorTop10View.setTopics(copyList.subList(0, min(10, copyList.size)).toMutableList())
+
+
         })
 
 
 
-        mTopicAdaptor = TopicAdapter_Banner();
-
-
-        rv_all_topic.adapter = mTopicAdaptor;
-        rv_all_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-        mTopicViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(activity!!.application) as T;
-            }
-        }).get(TopicViewModel::class.java);
-
-        mUserViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return UserViewModel(requireActivity().application) as T;
-            }
-
-        }).get(UserViewModel::class.java);
-
-
-
-        mTopicViewModel.mDataset.observe(this, Observer { topics ->
-            val copyList = ArrayList(topics)
-            mTopicAdaptor.setTopics(copyList);
-            //refresh_topic.isRefreshing = false;
-        })
 
         val onTopicClick = onTopicClick@ fun(topicJoinUser: TopicJoinUser) {
             if (mUserViewModel.mUser.value == null) {
-                Toast.makeText(context, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getString(R.string.need_signin), Toast.LENGTH_SHORT).show()
                 return@onTopicClick;
             }
             fragmentManager?.let { OnTopicClickDialog().newInstance(topicJoinUser.getTopic(), mUserViewModel.mUser.value!!).show(it, null) };
         }
-
-        //토픽 클릭시 게임 or 선수출진 다이어로그 띄우기
-        mTopicAdaptor.setOnItemClickListener(object : TopicAdapter_Banner.OnItemClickListener {
-            override fun onItemClick(topicJoinUser: TopicJoinUser) {
-                onTopicClick(topicJoinUser)
-            }
-        })
 
         mTopicAdaptorTop10Recommend.setOnItemClickListener(
             object : TopicAdapter_Top10.OnItemClickListener {

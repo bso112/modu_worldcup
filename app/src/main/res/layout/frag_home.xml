@@ -9,15 +9,37 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_all_topic"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="300dp">
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_recent_topic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+            <com.manta.worldcup.view.CircleIndicator
+                android:id="@+id/page_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.060000002"
+                app:layout_constraintHorizontal_bias="0.5"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         <TextView
             style="@style/TextAppearance.AppCompat.Medium"

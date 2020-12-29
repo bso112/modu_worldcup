@@ -25,6 +25,8 @@
                 android:textAlignment="center"
                 android:maxLength="150"
                 android:textSize="20sp"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:textColor="?android:attr/textColorPrimary"
                 />
 
             <TextView
@@ -51,6 +53,7 @@
             android:layout_margin="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
             android:text="@string/game_start"/>
 
         <Button
@@ -58,6 +61,7 @@
             android:layout_margin="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
             android:text="@string/add_picture"/>
     </LinearLayout>
 

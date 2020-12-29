@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
-import kotlinx.android.synthetic.main.item_topic2.view.*
+import kotlinx.android.synthetic.main.item_topic_top10.view.*
 import kotlin.collections.ArrayList
 
 /**
@@ -86,7 +86,7 @@ class TopicAdapter_Top10() : RecyclerView.Adapter<TopicAdapter_Top10.TopicViewHo
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic2, parent, false);
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic_top10, parent, false);
         return TopicViewHolder(view);
     }
 

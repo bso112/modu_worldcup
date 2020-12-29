@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
 
         btn_login_logout.setOnClickListener {
-            if (btn_login_logout.text == "로그아웃") {
+            if (btn_login_logout.text == resources.getString(R.string.signout)) {
                 //토큰지우기
                 val pref = this.getSharedPreferences(Constants.PREF_FILENAME_TOKEN, Context.MODE_PRIVATE)
                 pref.edit().putString(Constants.PREF_TOKEN, "").apply();
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun SignIn(user: User) {
         //로그인됬을때
-        btn_login_logout.text = "로그아웃";
+        btn_login_logout.text = resources.getString(R.string.signout)
         tv_user_nickname.text = user.mNickname;
         ll_point.visibility = View.VISIBLE;
         tv_point.text = user.mCurrPoint.toString();

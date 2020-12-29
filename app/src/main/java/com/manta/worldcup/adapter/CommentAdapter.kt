@@ -18,7 +18,9 @@ import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import kotlinx.android.synthetic.main.item_comment.view.*
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.math.min
 
@@ -166,6 +168,16 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
             mDate.text = comment.mDate
             mtvLike.text = comment.mGood.toString();
             mtvDislike.text = comment.mBad.toString();
+
+
+            val locale = view.context.applicationContext.resources.configuration.locale;
+            val transFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", locale);
+            val date = transFormat.parse(comment.mDate)
+            date?.let {
+                val timePassed = Constants.getTimePassedFromNow(view.context.resources, it)
+                mDate.text = timePassed
+            }
+
 
             //추천, 비추천 표시
             val primaryColorState = ColorStateList.valueOf(Constants.resolveAttribute(view.context, R.attr.colorPrimary))

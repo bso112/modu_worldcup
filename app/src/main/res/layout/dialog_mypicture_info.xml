@@ -24,6 +24,23 @@
                 android:src="@drawable/suyaless" />
 
 
+            <ImageButton
+                android:id="@+id/btn_change_picture_name"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_baseline_create_24"
+                android:tint="?attr/colorPrimary"
+                android:background="@drawable/rounded_corner"
+                android:layout_margin="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                />
+
             <com.manta.worldcup.view.CustomTextOutLineView
                 android:id="@+id/tv_picture_name"
                 android:layout_width="wrap_content"
@@ -42,19 +59,6 @@
                 app:textStrokeColor="@color/black"
                 app:textStrokeWidth="5" />
 
-            <ImageButton
-                android:id="@+id/btn_change_picture_name"
-                android:visibility="gone"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="5dp"
-                android:background="@drawable/ic_baseline_create_24"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_picture_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/tv_picture_name"
-                app:layout_constraintTop_toTopOf="@+id/tv_picture_name" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -70,7 +74,7 @@
                 style="@style/TextAppearance.AppCompat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/picture_from" />
+                android:text="@string/from" />
 
             <TextView
                 android:id="@+id/tv_from"
@@ -85,7 +89,7 @@
                 style="@style/TextAppearance.AppCompat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="우승횟수" />
+                android:text="@string/win_cnt" />
 
             <TextView
                 android:id="@+id/tv_winCnt"
@@ -101,7 +105,7 @@
                     style="@style/TextAppearance.AppCompat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="수익" />
+                    android:text="@string/revenue" />
 
                 <ImageButton
                     android:id="@+id/btn_info"
