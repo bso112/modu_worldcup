@@ -55,4 +55,5 @@
     <string name="report_completed">"It's been reported."</string>
     <string name="dispath_from_gallery">Dispath from gallery</string>
     <string name="replace_to_basic_image">Replace with default image</string>
+    <string name="login_google">sign in with google</string>
 </resources>
