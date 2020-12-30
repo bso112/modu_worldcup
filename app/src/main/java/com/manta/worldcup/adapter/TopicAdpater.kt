@@ -79,7 +79,7 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
             }
 
             mOptionBtn.setOnClickListener {
-                TopicOptionDialog().show((mContext as AppCompatActivity).supportFragmentManager, null);
+                TopicOptionDialog().newInstance(mDataset[adapterPosition]).show((mContext as AppCompatActivity).supportFragmentManager, null);
             }
         }
 

@@ -52,7 +52,7 @@
             android:layout_below="@+id/et_title"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            app:cardBackgroundColor="?attr/colorSecondary"
+            app:cardBackgroundColor="?attr/colorSecondaryVariant"
             app:cardCornerRadius="30dp"
             app:cardElevation="0dp">
 
@@ -72,12 +72,22 @@
 
 
 
+        <TextView
+            android:id="@+id/tv_warning"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/warn_add_picture"
+            style="@style/TextAppearance.AppCompat"
+            android:layout_below="@id/cv_content"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_picture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cv_content"
-            android:layout_marginTop="15dp"
+            android:layout_below="@id/tv_warning"
+            android:layout_marginTop="20dp"
             android:scrollbars="none"
             />
 

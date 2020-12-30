@@ -3,32 +3,35 @@ package com.manta.worldcup.model
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class TopicJoinUser (
+data class TopicJoinUser(
     @SerializedName("id")
     val mId: Long,
     @SerializedName("date")
-    val mDate : String,
+    val mDate: String,
     @SerializedName("title")
     val mTitle: String,
     @SerializedName("description")
-    val mDescription : String,
+    val mDescription: String,
     @SerializedName("manager")
     val mManagerName: String,
     @SerializedName("image_length")
-    val mImageLength : Int,
+    val mImageLength: Int,
     @SerializedName("manager_email")
-    val mManagerEmail : String,
+    val mManagerEmail: String,
     @SerializedName("tier")
-    val mTier : Int,
+    val mTier: Int,
     @SerializedName("point")
-    val mCurrPoint : Int,
+    val mCurrPoint: Int,
     @SerializedName("like")
-    val mLike : Int = 0,
+    val mLike: Int = 0,
     @SerializedName("dislike")
-    val mDislike : Int = 0,
+    val mDislike: Int = 0,
     @SerializedName("view")
-    val mView : Int = 0) : Serializable{
+    val mView: Int = 0,
+    @SerializedName("profile_path")
+    val mProfileImgName: String = ""
+) : Serializable {
 
-    fun getTopic() : Topic = Topic(mId, mDate, mTitle, mDescription, mManagerName, mImageLength, mManagerEmail, mLike, mDislike, mView);
-    fun getUser() : User = User(mManagerEmail, mManagerName, mTier, mCurrPoint)
+    fun getTopic(): Topic = Topic(mId, mDate, mTitle, mDescription, mManagerName, mImageLength, mManagerEmail, mLike, mDislike, mView);
+    fun getUser(): User = User(mManagerEmail, mManagerName, mTier, mCurrPoint, mProfileImgName)
 }

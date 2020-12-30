@@ -11,4 +11,8 @@ data class User (
     @SerializedName("tier")
     val mTier : Int,
     @SerializedName("point")
-    val mCurrPoint : Int) : Serializable;
+    val mCurrPoint : Int,
+    @SerializedName("profile_path")
+    val mProfileImgName : String = ""
+) : Serializable;
+

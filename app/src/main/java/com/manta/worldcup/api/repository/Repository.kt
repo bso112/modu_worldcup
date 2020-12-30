@@ -2,9 +2,7 @@ package com.manta.worldcup.api.repository
 
 import android.content.Context
 import com.manta.worldcup.api.RetrofitInstance
-import com.manta.worldcup.model.Comment
-import com.manta.worldcup.model.PictureModel
-import com.manta.worldcup.model.Topic
+import com.manta.worldcup.model.*
 import okhttp3.MultipartBody
 
 class Repository(application: Context) {
@@ -80,4 +78,9 @@ class Repository(application: Context) {
 
     suspend fun updateTopicCommentRecommend(commentID: Long, good: Int, bad: Int) = commentAPI.updateTopicCommentRecommend(commentID, good, bad)
 
+    suspend fun reportTopic(topicJoinUser: TopicJoinUser) = topicAPI.reportTopic(topicJoinUser)
+
+    suspend fun uploadProfileImage(userEmail : String, image : MultipartBody.Part) = userAPI.uploadProfileImage(userEmail, image)
+
+    suspend fun updateUser(user : User) = userAPI.updateUser(user)
 }

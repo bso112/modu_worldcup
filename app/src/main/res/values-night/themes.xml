@@ -7,10 +7,10 @@
         <item name="android:colorBackground">@color/black_medium</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorAccent">@color/white</item>
-        <item name="colorSurface">@color/black_weak</item>
+        <item name="colorSurface">@color/black_medium</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/black_medium</item>
-        <item name="colorSecondaryVariant">@color/black</item>
+        <item name="colorSecondaryVariant">@color/black_weak</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>

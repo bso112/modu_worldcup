@@ -160,7 +160,7 @@ class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
 
     private fun refresh() {
         //내 사진을 가져온다.
-        mUserViewModel.getAllPicture()
+        mUserViewModel.getUserPictures()
     }
 
     override fun onPause() {

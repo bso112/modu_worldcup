@@ -2,6 +2,7 @@ package com.manta.worldcup.activity
 
 import android.app.NotificationManager
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,15 +14,14 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.manta.worldcup.R
-import com.manta.worldcup.activity.fragment.dialog.ChangeNicknameDialog
+import com.manta.worldcup.activity.fragment.dialog.ProfileDialog
 import com.manta.worldcup.adapter.MainViewPageAdapter
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.TopicViewModel
 import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.ll_point
-import kotlinx.android.synthetic.main.activity_main.tv_point
+import kotlinx.android.synthetic.main.activity_main.ll_profile
 
 
 class MainActivity : AppCompatActivity() {
@@ -82,9 +82,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         //사용자가 누른 알림이 토픽에 관한거면 MyTopicFragment를, 아니면 MyPictureFragment를 보여줌
-        if(notifiedTopicId != null)
+        if (notifiedTopicId != null)
             vp_mainPager.currentItem = 2
-        else if(notifiedPictureId != null)
+        else if (notifiedPictureId != null)
             vp_mainPager.currentItem = 3
 
 
@@ -102,24 +102,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        tv_user_nickname.setOnClickListener {
-            ChangeNicknameDialog().newInstance(object : ChangeNicknameDialog.OnSubmitListener {
-                override fun onSubmit(nickname: String) {
-                    mUserViewModel.updateUserNickname(nickname) {
-                        tv_user_nickname.text = nickname;
-                        //변경사항 반영
-                        mTopicViewModel.getAllTopic();
-                    };
-                }
-            }).show(supportFragmentManager, null);
+        //내 프로필 정보보기
+        iv_profile.setOnClickListener {
+            mUserViewModel.mUser.value?.let {
+                val profileDialog = ProfileDialog.newInstance(it)
+                profileDialog.show(supportFragmentManager, null)
+            }
         }
-
 
     }
 
 
     override fun onStart() {
         super.onStart()
+        updateUser()
+
+    }
+
+    fun updateUser(){
         //로그인 상태에따라 로그인, 로그아웃표시
         mUserViewModel.CheckUserSignIn({
             //로그인한 상태이고, 로그인 정보가 변경되었을때만 불림 (최초)
@@ -136,8 +136,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun SignOut() {
         btn_login_logout.text = "로그인"
-        ll_point.visibility = View.INVISIBLE;
-        iv_tier.visibility = View.INVISIBLE;
+        ll_profile.visibility = View.INVISIBLE;
         tv_user_nickname.text = "";
         Intent(this, LoginActivity::class.java).apply {
             startActivity(this);
@@ -146,13 +145,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun SignIn(user: User) {
         //로그인됬을때
-        btn_login_logout.text = resources.getString(R.string.signout)
-        tv_user_nickname.text = user.mNickname;
-        ll_point.visibility = View.VISIBLE;
-        tv_point.text = user.mCurrPoint.toString();
-        val tier = Constants.getTierIconID(user.mTier);
-        tier?.let { _tier -> iv_tier.setImageResource(_tier) };
-        iv_tier.visibility = View.VISIBLE;
+        setUserInfo(user)
 
         //파이어베이스 클라우드 메시징을 위한 토큰 요청
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -166,16 +159,33 @@ class MainActivity : AppCompatActivity() {
             //웹서버에 토큰 등록
             mUserViewModel.registerFirebaseToken(user.mEmail, token!!);
         })
+
+
     }
 
+    private fun setUserInfo(user: User) {
+        btn_login_logout.text = resources.getString(R.string.signout)
+        tv_user_nickname.text = user.mNickname;
+        ll_profile.visibility = View.VISIBLE;
+        //유저 프로필이미지 셋팅
+        if (mUserViewModel.mUser.value != null) {
+            val mProfileImgName = mUserViewModel.mUser.value!!.mProfileImgName
+            if (mProfileImgName == null) {
+                iv_profile.setImageResource(R.drawable.ic_baseline_account_circle_24)
+            } else {
+                val url = Constants.BASE_URL + "profile_image/get/" + mProfileImgName
+                Constants.GlideWithHeader(url, iv_profile, iv_profile, this);
+            }
+        }
+    }
 
-    fun clearNotificationBar() {
+    private fun clearNotificationBar() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
     }
+
 }

@@ -26,6 +26,9 @@ interface TopicAPI {
     suspend fun getTopicJoinUser(@Path("topic_id") topicID : Long) : Response<TopicJoinUser>
 
 
+    @POST("topic/report")
+    suspend fun  reportTopic(@Body topicJoinUser: TopicJoinUser);
+
     @GET("topicJoinUser/get_all")
     suspend fun getAllTopicJoinUser() : Response<ArrayList<TopicJoinUser>>
 
@@ -59,6 +62,7 @@ interface TopicAPI {
     @FormUrlEncoded
     @POST("picture/rename")
     suspend fun updatePictureName(@Field("picture_id") pictureID : Long, @Field("name") name : String)
+
 
 
 

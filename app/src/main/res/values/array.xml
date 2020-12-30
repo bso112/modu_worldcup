@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="option_profile_picture">
+        <item>@string/dispath_from_gallery</item>
+        <item>@string/replace_to_basic_image</item>
+    </string-array>
+</resources>

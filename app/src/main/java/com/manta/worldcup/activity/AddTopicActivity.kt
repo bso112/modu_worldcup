@@ -14,7 +14,12 @@ import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.PictureViewModel
+import com.skydoves.balloon.ArrowConstraints
+import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
 import kotlinx.android.synthetic.main.activity_add_topic.*
+import kotlinx.android.synthetic.main.dialog_topic_comment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -76,6 +81,8 @@ class AddTopicActivity : AppCompatActivity() {
 
             }
         }
+
+
     }
 
 

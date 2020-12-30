@@ -50,5 +50,9 @@
     <string name="place">" place"</string>
     <string name="from">From</string>
     <string name="win_cnt">Number of wins</string>
-
+    <string name="warn_add_picture">When registering pornography, it can be arbitrarily deleted and you could be sued.</string>
+    <string name="info_add_picture">"You can add pictures to someone else's World Cup."</string>
+    <string name="report_completed">"It's been reported."</string>
+    <string name="dispath_from_gallery">Dispath from gallery</string>
+    <string name="replace_to_basic_image">Replace with default image</string>
 </resources>

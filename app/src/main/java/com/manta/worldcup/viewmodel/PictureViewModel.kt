@@ -32,6 +32,15 @@ class PictureViewModel(private val application: Application) : ViewModel() {
         }
     }
 
+    fun getPictures(userEmail : String){
+        viewModelScope.launch {
+            val res = mRepository.getAllPictures(userEmail)
+            if(res.isSuccessful){
+                mPictures.value = res.body();
+            }
+        }
+    }
+
     /**
      * 토픽에 사진을 추가한다.
      */

@@ -73,5 +73,11 @@ class TopicViewModel(private val application: Application) : ViewModel() {
             return "";
     }
 
+    fun reportTopic(topicJoinUser: TopicJoinUser){
+        viewModelScope.launch {
+            mRepository.reportTopic(topicJoinUser)
+        }
+    }
+
 
 }

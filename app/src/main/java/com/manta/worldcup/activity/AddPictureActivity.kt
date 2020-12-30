@@ -13,9 +13,15 @@ import com.manta.worldcup.adapter.TopicPictureAdapter
 import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.viewmodel.PictureViewModel
+import com.skydoves.balloon.ArrowConstraints
+import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import kotlinx.android.synthetic.main.activity_add_picture.*
 import kotlinx.android.synthetic.main.activity_add_picture.btn_add_Picture
 import kotlinx.android.synthetic.main.activity_add_picture.rv_picture
 import kotlinx.android.synthetic.main.activity_add_topic.*
+import kotlinx.android.synthetic.main.activity_add_topic.btn_submit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -86,6 +92,23 @@ class AddPictureActivity : AppCompatActivity() {
             }
 
 
+        }
+
+        btn_help.setOnClickListener {
+            val balloon: Balloon = Balloon.Builder(this)
+                .setArrowSize(10)
+                .setArrowOrientation(ArrowOrientation.TOP)
+                .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+                .setPadding(6)
+                .setArrowPosition(0.5f)
+                .setCornerRadius(10f)
+                .setBackgroundColorResource(R.color.yellow)
+                .setTextColorResource(R.color.black)
+                .setText(resources.getString(R.string.info_add_picture))
+                .setBalloonAnimation(BalloonAnimation.FADE)
+                .build()
+
+            balloon.showAlignBottom(btn_help)
         }
     }
 

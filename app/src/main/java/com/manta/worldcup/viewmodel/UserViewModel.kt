@@ -1,14 +1,19 @@
 package com.manta.worldcup.viewmodel
 
 import android.app.Application
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manta.worldcup.api.repository.Repository
 import com.manta.worldcup.helper.AuthSingleton
+import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.User
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class UserViewModel(private val application: Application) : ViewModel() {
     private val mRepository: Repository = Repository(application);
@@ -17,7 +22,7 @@ class UserViewModel(private val application: Application) : ViewModel() {
     val mUser: MutableLiveData<User?> = MutableLiveData();
 
 
-    fun getAllPicture() {
+    fun getUserPictures() {
         if (mUser.value == null) return;
         viewModelScope.launch {
             val result = mRepository.getAllPictures(mUser.value!!.mEmail)
@@ -58,12 +63,32 @@ class UserViewModel(private val application: Application) : ViewModel() {
         }
     }
 
-    fun getUser(userEmail : String) {
+    fun updateUser(user : User){
+        viewModelScope.launch {
+            mRepository.updateUser(user)
+        }
+    }
+
+    fun getUser(userEmail: String) {
         viewModelScope.launch {
             val result = mRepository.getUser(userEmail);
-            if(result.isSuccessful){
+            if (result.isSuccessful) {
                 mUser.value = result.body()
             }
+        }
+    }
+
+    fun uploadProfileImage(image: Bitmap, onSucess: (() -> Unit)? = null) {
+        mUser.value ?: return;
+        viewModelScope.launch {
+            val bitmapData = BitmapHelper.bitmapToByteArray(image);
+            val reqBody = RequestBody.create("image/webp".toMediaTypeOrNull(), bitmapData);
+            val bodyPart = MultipartBody.Part.createFormData("image", "tmp", reqBody);
+            val response = mRepository.uploadProfileImage(mUser.value!!.mEmail, bodyPart)
+            if(response.isSuccessful)
+                if (onSucess != null) {
+                    onSucess()
+                };
         }
     }
 

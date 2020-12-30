@@ -31,6 +31,7 @@ object Constants {
     const val EXTRA_USER_EMAIL =  "com.manta.worldcup.PREF_USER_EMAIL"
     const val EXTRA_USER_NICKNAME =  "com.manta.worldcup.EXTRA_USER_NICKNAME"
     const val EXTRA_USER =  "com.manta.worldcup.EXTRA_USER"
+    const val EXTRA_ONDISMISS_LISTENER = "com.manta.worldcup.EXTRA_ONDISMISS_LISTENER"
     const val EXTRA_TOPIC_JOIN_USER = "com.manta.worldcup.EXTRA_TOPIC_JOIN_USER"
     const val EXTRA_MYPICTURE_OPTION_CLICK_LISTENER = "com.manta.worldcup.EXTRA_MYPICTURE_OPTION_CLICK_LISTENER"
     const val EXTRA_PICTURE_NAME_CHANGE_LISTENER = "com.manta.worldcup.EXTRA_PICTURE_NAME_CHANGE_LISTENER"
@@ -52,6 +53,8 @@ object Constants {
      * 화면을 리프레시할 필요가 있다. 그것을 위한 액션
      */
     const val ACTION_NEED_REFRESH = "ACTION_NEED_REFRESH"
+
+    const val ACTION_USER_INFO_UPDATED = "ACTION_USER_INFO_UPDATED"
     /**
      * 토픽생성할때 드는 포인트
      */
