@@ -94,12 +94,13 @@ class ProfileDialog private constructor() : DialogFragment() {
         //현재 로그인한 유저
         val userWhoSignIn = mUserViewModel.mUser.value ?: return;
 
-
+        iv_set_picture.visibility = View.GONE
+        iv_set_nickname.visibility = View.GONE
         //내 정보라면 유저 정보를 수정할 수 있게한다.
         if (userWhoHasInfo == userWhoSignIn) {
             iv_set_picture.visibility = View.VISIBLE
             iv_set_nickname.visibility = View.VISIBLE
-            iv_set_picture.setOnClickListener {
+            iv_profile.setOnClickListener {
                 CreateProfilePictureSelectDialog().show()
             }
 

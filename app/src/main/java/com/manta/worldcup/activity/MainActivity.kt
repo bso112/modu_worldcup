@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //내 프로필 정보보기
-        iv_profile.setOnClickListener {
+        ll_profile.setOnClickListener {
             mUserViewModel.mUser.value?.let {
                 val profileDialog = ProfileDialog.newInstance(it)
                 profileDialog.show(supportFragmentManager, null)

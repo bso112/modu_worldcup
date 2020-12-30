@@ -80,7 +80,7 @@ class Repository(application: Context) {
 
     suspend fun reportTopic(topicJoinUser: TopicJoinUser) = topicAPI.reportTopic(topicJoinUser)
 
-    suspend fun uploadProfileImage(userEmail : String, image : MultipartBody.Part) = userAPI.uploadProfileImage(userEmail, image)
+    suspend fun uploadProfileImage(userEmail : String, fileName : String, image : MultipartBody.Part) = userAPI.uploadProfileImage(userEmail, fileName, image)
 
     suspend fun updateUser(user : User) = userAPI.updateUser(user)
 }

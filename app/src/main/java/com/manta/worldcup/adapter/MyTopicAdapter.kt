@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
 import com.manta.worldcup.activity.fragment.dialog.MyTopicOptionDialog
+import com.manta.worldcup.activity.fragment.dialog.ProfileDialog
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
 import kotlinx.android.synthetic.main.item_topic.view.*
@@ -74,6 +75,7 @@ class MyTopicAdapter(private val mNotifiedTopicId: String? = null) : RecyclerVie
         val mTier: ImageView = view.iv_tier
         val mNotificationBadge: ImageView = view.iv_notification
         val mOptionBtn: ImageButton = view.btn_more
+        val mProfilePicture : ImageView = view.iv_profile
 
         init {
             view.setOnClickListener {
@@ -96,18 +98,26 @@ class MyTopicAdapter(private val mNotifiedTopicId: String? = null) : RecyclerVie
             mOptionBtn.setOnClickListener {
                 MyTopicOptionDialog().newInstance(mDataset.get(adapterPosition)).show((mContext as AppCompatActivity).supportFragmentManager, null);
             }
+
         }
 
 
         fun setTopic(data: TopicJoinUser) {
-
-            mContext.let {
+            mContext.let {context->
                 //이미지가 서버에 없더라도 기기에 캐싱되어서 화면에 보여지기 때문에 imageLength로 판단해줘야함.
                 val isUseCache = data.mImageLength > 2
                 var urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
-                Constants.GlideWithHeader(urlToPicture, view, mFirstImg, it, isUseCache);
+                Constants.GlideWithHeader(urlToPicture, view, mFirstImg, context, isUseCache);
                 urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/1";
-                Constants.GlideWithHeader(urlToPicture, view, mSecondImg, it, isUseCache);
+                Constants.GlideWithHeader(urlToPicture, view, mSecondImg, context, isUseCache);
+
+                val urlToProfilePicture = Constants.BASE_URL + "profile_image/get/" + data.mProfileImgName
+                Constants.GlideWithHeader(urlToProfilePicture, view, mProfilePicture, context);
+
+
+                mProfilePicture.setOnClickListener {
+                    ProfileDialog.newInstance(data.getUser()).show((context as AppCompatActivity).supportFragmentManager, null);
+                }
 
             }
 

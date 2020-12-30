@@ -84,7 +84,7 @@ class UserViewModel(private val application: Application) : ViewModel() {
             val bitmapData = BitmapHelper.bitmapToByteArray(image);
             val reqBody = RequestBody.create("image/webp".toMediaTypeOrNull(), bitmapData);
             val bodyPart = MultipartBody.Part.createFormData("image", "tmp", reqBody);
-            val response = mRepository.uploadProfileImage(mUser.value!!.mEmail, bodyPart)
+            val response = mRepository.uploadProfileImage(mUser.value!!.mEmail, mUser.value!!.mProfileImgName, bodyPart)
             if(response.isSuccessful)
                 if (onSucess != null) {
                     onSucess()

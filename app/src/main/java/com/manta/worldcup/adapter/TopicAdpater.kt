@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manta.worldcup.R
+import com.manta.worldcup.activity.fragment.dialog.ProfileDialog
 import com.manta.worldcup.activity.fragment.dialog.TopicOptionDialog
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
@@ -68,6 +69,7 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
         val mDate: TextView = view.tv_date;
         val mTier: ImageView = view.iv_tier
         val mOptionBtn: ImageButton = view.btn_more
+        val mProfilePicture : ImageView = view.iv_profile
 
 
         init {
@@ -86,13 +88,22 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
 
         fun setTopic(data: TopicJoinUser) {
 
-            mContext.let {
+            mContext.let { context->
                 //이미지가 서버에 없더라도 기기에 캐싱되어서 화면에 보여지기 때문에 imageLength로 판단해줘야함.
                 val isUseCache = data.mImageLength > 2
                 var urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
-                Constants.GlideWithHeader(urlToPicture, view, mFirstImg, it, isUseCache);
+                Constants.GlideWithHeader(urlToPicture, view, mFirstImg, context, isUseCache);
                 urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/1";
-                Constants.GlideWithHeader(urlToPicture, view, mSecondImg, it, isUseCache);
+                Constants.GlideWithHeader(urlToPicture, view, mSecondImg, context, isUseCache);
+
+                val urlToProfilePicture = Constants.BASE_URL + "profile_image/get/" + data.mProfileImgName
+                Constants.GlideWithHeader(urlToProfilePicture, view, mProfilePicture, context);
+
+
+                mProfilePicture.setOnClickListener {
+                    ProfileDialog.newInstance(data.getUser()).show((context as AppCompatActivity).supportFragmentManager, null);
+                }
+
             }
 
             mTitle.text = data.mTitle;
