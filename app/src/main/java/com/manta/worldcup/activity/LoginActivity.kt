@@ -28,9 +28,21 @@ class LoginActivity : AppCompatActivity() {
     //다른 액티비티로 가도 유지하기 위해(로그아웃을 하려면 유지할 필요가 있음) companion object로 뺀다.
     companion object {
         private var mGoogleSignInClient: GoogleSignInClient? = null;
+        private lateinit var mAuth: FirebaseAuth
+         fun initializeGoogleSigninClient(activity : AppCompatActivity) {
+            // Configure Google Sign In
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(activity.resources.getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+
+            mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+            mAuth = FirebaseAuth.getInstance();
+
+        }
+
     }
 
-    private lateinit var mAuth: FirebaseAuth
     private val RC_SIGN_IN = 0;
 
     private val mRepository: Repository by lazy {
@@ -56,26 +68,15 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
 
         if (mGoogleSignInClient == null) {
-            initializeGoogleSigninClient();
+            initializeGoogleSigninClient(this);
         } else {
             mGoogleSignInClient?.signOut()?.addOnSuccessListener {
-                initializeGoogleSigninClient()
+                initializeGoogleSigninClient(this)
             }
         }
 
     }
 
-    private fun initializeGoogleSigninClient() {
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        mAuth = FirebaseAuth.getInstance();
-
-    }
 
     private fun onSignInSuccess(currentUser: FirebaseUser?) {
         finish();
@@ -132,7 +133,6 @@ class LoginActivity : AppCompatActivity() {
                     Log.w(javaClass.toString(), "signInWithCredential:failure", task.exception)
                     // ...
                     Snackbar.make(findViewById(R.id.parent), "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-                    onSignInSuccess(null)
                 }
 
             }

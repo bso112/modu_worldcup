@@ -39,8 +39,8 @@ class UserViewModel(private val application: Application) : ViewModel() {
         AuthSingleton.getInstance(application).CheckUserSignIn({
             if (mUser.value != it) {
                 mUser.value = it;
-                onSignIn(it);
             }
+            onSignIn(it);
         }, {
             mUser.value = null;
             if (onSignOut != null) onSignOut(it)
@@ -63,7 +63,7 @@ class UserViewModel(private val application: Application) : ViewModel() {
         }
     }
 
-    fun updateUser(user : User){
+    fun updateUser(user: User) {
         viewModelScope.launch {
             mRepository.updateUser(user)
         }
@@ -85,7 +85,7 @@ class UserViewModel(private val application: Application) : ViewModel() {
             val reqBody = RequestBody.create("image/webp".toMediaTypeOrNull(), bitmapData);
             val bodyPart = MultipartBody.Part.createFormData("image", "tmp", reqBody);
             val response = mRepository.uploadProfileImage(mUser.value!!.mEmail, mUser.value!!.mProfileImgName, bodyPart)
-            if(response.isSuccessful)
+            if (response.isSuccessful)
                 if (onSucess != null) {
                     onSucess()
                 };

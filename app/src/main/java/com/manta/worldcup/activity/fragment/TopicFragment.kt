@@ -75,6 +75,8 @@ class TopicFragment : Fragment(R.layout.frag_topic){
 
 
         mTopicViewModel.mDataset.observe(this, Observer {topics->
+            if(topics.isEmpty())
+                tv_emty_page.visibility = View.VISIBLE
             val copyList = ArrayList(topics)
             mTopicAdaptor.setTopics(copyList);
             refresh_topic.isRefreshing = false;

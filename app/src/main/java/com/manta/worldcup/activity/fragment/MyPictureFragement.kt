@@ -21,6 +21,8 @@ import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.viewmodel.PictureViewModel
 import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.frag_mypicture.*
+import kotlinx.android.synthetic.main.frag_mypicture.tv_emty_page
+import kotlinx.android.synthetic.main.frag_topic.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -81,6 +83,8 @@ class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
         })
 
         mUserViewModel.mPictures.observe(this, Observer {
+            if(it.isEmpty())
+                tv_emty_page.visibility = View.VISIBLE
             mPictureAdapter.setPictures(ArrayList(it));
         })
 

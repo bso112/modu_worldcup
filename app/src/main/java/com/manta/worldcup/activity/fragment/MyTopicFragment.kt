@@ -19,7 +19,10 @@ import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
 import com.manta.worldcup.viewmodel.UserViewModel
 import com.manta.worldcup.viewmodel.TopicViewModel
+import kotlinx.android.synthetic.main.frag_topic.*
 import kotlinx.android.synthetic.main.fragment_my_topic.*
+import kotlinx.android.synthetic.main.fragment_my_topic.rv_topic
+import kotlinx.android.synthetic.main.fragment_my_topic.tv_emty_page
 
 /**
  * 내 토픽을 볼 수 있는 프래그먼트
@@ -68,6 +71,8 @@ class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
         rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
         mTopicViewModel.mDataset.observe(this, Observer { topic ->
+            if(topic.isEmpty())
+                tv_emty_page.visibility = View.VISIBLE
             mTopicAdapter.setTopics(topic)
         })
 

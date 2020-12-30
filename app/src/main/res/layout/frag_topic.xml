@@ -4,6 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/tv_emty_page"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/empty_worldcup"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="?android:attr/textColorPrimary"/>
+
+
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_topic"

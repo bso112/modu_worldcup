@@ -113,8 +113,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         updateUser()
 
     }
@@ -146,6 +146,9 @@ class MainActivity : AppCompatActivity() {
     private fun SignIn(user: User) {
         //로그인됬을때
         setUserInfo(user)
+
+        //로그인액티비티 컴패니언 오브젝트의 GoogleSigninClient 초기화
+        LoginActivity.initializeGoogleSigninClient(this)
 
         //파이어베이스 클라우드 메시징을 위한 토큰 요청
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
