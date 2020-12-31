@@ -56,4 +56,9 @@
     <string name="dispath_from_gallery">Dispath from gallery</string>
     <string name="replace_to_basic_image">Replace with default image</string>
     <string name="login_google">sign in with google</string>
+    <string name="empty_picture">There are no pictures to display.</string>
+    <string name="empty_worldcup">There are no World Cups to display.</string>
+    <string name="number_of_worldcup">Number of World Cups</string>
+    <string name="number_of_picture">Number of pictures</string>
+    <string name="tier">Tier</string>
 </resources>

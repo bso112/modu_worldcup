@@ -5,10 +5,12 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -21,6 +23,7 @@ import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.PictureViewModel
 import com.manta.worldcup.viewmodel.TopicViewModel
 import com.manta.worldcup.viewmodel.UserViewModel
+import com.skydoves.balloon.*
 import kotlinx.android.synthetic.main.dialog_profile.*
 import kotlinx.android.synthetic.main.dialog_profile.iv_profile
 import kotlinx.android.synthetic.main.dialog_profile.iv_tier
@@ -41,6 +44,7 @@ class ProfileDialog private constructor() : DialogFragment() {
 
         }).get(UserViewModel::class.java);
     }
+
 
     //유저가 올린 사진 수를 가지고 오기 위한 뷰모델
     private val mPictureViewModel: PictureViewModel by lazy {
@@ -81,7 +85,9 @@ class ProfileDialog private constructor() : DialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
+        //변경사항 적용
         (requireActivity() as? MainActivity)?.updateUser()
+        (requireActivity() as? MainActivity)?.updateTopic()
     }
 
 
@@ -100,6 +106,8 @@ class ProfileDialog private constructor() : DialogFragment() {
         if (userWhoHasInfo == userWhoSignIn) {
             iv_set_picture.visibility = View.VISIBLE
             iv_set_nickname.visibility = View.VISIBLE
+
+            //프로필 사진 변경
             iv_profile.setOnClickListener {
                 CreateProfilePictureSelectDialog().show()
             }
@@ -110,6 +118,7 @@ class ProfileDialog private constructor() : DialogFragment() {
                     override fun onSubmit(nickname: String) {
                         mUserViewModel.updateUserNickname(nickname) {
                             tv_name.text = nickname;
+
                         };
                     }
                 }).show(requireFragmentManager(), null);
@@ -141,6 +150,30 @@ class ProfileDialog private constructor() : DialogFragment() {
         })
         mPictureViewModel.getPictures(userWhoHasInfo.mEmail)
 
+        var typedValue = TypedValue();
+        requireContext().theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true);
+        val colorBackground = ContextCompat.getColor(requireContext(), typedValue.resourceId)
+
+        requireContext().theme.resolveAttribute(android.R.attr.textColorPrimary, typedValue, true);
+        val colorTextColor = ContextCompat.getColor(requireContext(), typedValue.resourceId)
+
+        btn_help_tier.setOnClickListener {
+            val balloon: Balloon = Balloon.Builder(requireContext())
+                .setArrowSize(10)
+                .setArrowOrientation(ArrowOrientation.BOTTOM)
+                .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+                .setPadding(6)
+                .setArrowPosition(0.5f)
+                .setCornerRadius(10f)
+                .setLayout(R.layout.dialog_help_tier)
+                .setBackgroundColor(colorBackground)
+                .setTextColor(colorTextColor)
+                .setText(resources.getString(R.string.info_add_picture))
+                .setBalloonAnimation(BalloonAnimation.FADE)
+                .build()
+
+            balloon.show(btn_help_tier)
+        }
 
     }
 
@@ -166,7 +199,8 @@ class ProfileDialog private constructor() : DialogFragment() {
                     }
                     1 -> {
                         //기본이미지로 대체
-                        iv_profile.setBackgroundResource(R.drawable.ic_baseline_account_circle_24)
+                        iv_profile.setImageResource(R.drawable.ic_baseline_account_circle_24)
+                        mUserViewModel.removeProfileImage()
                     }
 
                 }

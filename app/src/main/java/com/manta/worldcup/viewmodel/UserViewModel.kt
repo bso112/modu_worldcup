@@ -31,6 +31,17 @@ class UserViewModel(private val application: Application) : ViewModel() {
         }
     }
 
+    fun removeProfileImage(onRemove : (()->Unit)? = null){
+        viewModelScope.launch {
+            val result = mRepository.removeProfileImage(mUser.value!!.mEmail, mUser.value!!.mProfileImgName)
+            if(result.isSuccessful){
+                if (onRemove != null) {
+                    onRemove()
+                };
+            }
+        }
+    }
+
     /**
      * 유저가 로그인했는지 확인한다.
      * @param onSignIn 로그인한 상태이고, 로그인 정보가 달라졌을때만 불린다.

@@ -83,4 +83,6 @@ class Repository(application: Context) {
     suspend fun uploadProfileImage(userEmail : String, fileName : String, image : MultipartBody.Part) = userAPI.uploadProfileImage(userEmail, fileName, image)
 
     suspend fun updateUser(user : User) = userAPI.updateUser(user)
+
+    suspend fun removeProfileImage(userEmail : String, oldImageName : String) = userAPI.removeProfileImage(userEmail, oldImageName)
 }

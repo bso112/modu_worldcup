@@ -69,7 +69,9 @@
                 android:id="@+id/iv_tier"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="@drawable/ic_tier0_24" />
+                android:src="@drawable/tier0"
+                android:adjustViewBounds="true"
+                />
 
             </LinearLayout>
 

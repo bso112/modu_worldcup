@@ -59,4 +59,7 @@
     <string name="login_google">구글 계정으로 로그인</string>
     <string name="empty_picture">표시할 사진이 없습니다.</string>
     <string name="empty_worldcup">표시할 월드컵이 없습니다.</string>
+    <string name="number_of_worldcup">월드컵 수</string>
+    <string name="number_of_picture">사진 수</string>
+    <string name="tier">티어</string>
 </resources>

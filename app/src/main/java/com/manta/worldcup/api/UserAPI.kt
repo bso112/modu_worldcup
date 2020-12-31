@@ -21,4 +21,8 @@ interface UserAPI {
 
     @POST("user/upate")
     suspend fun updateUser(@Body user : User)
+
+    @FormUrlEncoded
+    @POST("user/remove_profile_image")
+    suspend fun removeProfileImage(@Field("user_email") userEmail: String, @Field("old_file_name") oldImageName : String) : Response<Int>
 }

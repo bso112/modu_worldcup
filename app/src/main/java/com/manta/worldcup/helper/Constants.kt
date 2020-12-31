@@ -152,8 +152,11 @@ object Constants {
 
     fun getTierIconID(tier : Int) : Int? {
         return when (tier) {
-            0 -> R.drawable.ic_tier0_24
-            else -> null;
+            0 -> R.drawable.tier0
+            1 -> R.drawable.tier1
+            2 -> R.drawable.tier2
+            3 -> R.drawable.tier3
+            else -> R.drawable.tier0;
         }
     }
 

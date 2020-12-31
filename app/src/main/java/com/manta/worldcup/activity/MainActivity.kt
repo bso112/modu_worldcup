@@ -132,6 +132,9 @@ class MainActivity : AppCompatActivity() {
         })
 
     }
+    fun updateTopic(){
+        mTopicViewModel.getAllTopic()
+    }
 
 
     private fun SignOut() {
