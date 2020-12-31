@@ -69,7 +69,7 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
         val mDate: TextView = view.tv_date;
         val mTier: ImageView = view.iv_tier
         val mOptionBtn: ImageButton = view.btn_more
-        val mProfilePicture : ImageView = view.iv_profile
+        val mProfilePicture: ImageView = view.iv_profile
 
 
         init {
@@ -88,7 +88,7 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
 
         fun setTopic(data: TopicJoinUser) {
 
-            mContext.let { context->
+            mContext.let { context ->
                 //이미지가 서버에 없더라도 기기에 캐싱되어서 화면에 보여지기 때문에 imageLength로 판단해줘야함.
                 val isUseCache = data.mImageLength > 2
                 var urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/0";
@@ -96,9 +96,12 @@ class TopicAdpater() : RecyclerView.Adapter<TopicAdpater.TopicViewHolder>() {
                 urlToPicture = Constants.BASE_URL + "image/get/${data.mId}/1";
                 Constants.GlideWithHeader(urlToPicture, view, mSecondImg, context, isUseCache);
 
-                val urlToProfilePicture = Constants.BASE_URL + "profile_image/get/" + data.mProfileImgName
-                Constants.GlideWithHeader(urlToProfilePicture, view, mProfilePicture, context);
-
+                if (data.mProfileImgName == null)
+                    mProfilePicture.setImageResource(R.drawable.ic_baseline_account_circle_24)
+                else {
+                    val urlToProfilePicture = Constants.BASE_URL + "profile_image/get/" + data.mProfileImgName
+                    Constants.GlideWithHeader(urlToProfilePicture, view, mProfilePicture, context);
+                }
 
                 mProfilePicture.setOnClickListener {
                     ProfileDialog.newInstance(data.getUser()).show((context as AppCompatActivity).supportFragmentManager, null);
