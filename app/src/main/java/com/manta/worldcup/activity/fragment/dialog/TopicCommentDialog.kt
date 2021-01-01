@@ -172,8 +172,8 @@ class TopicCommentDialog : DialogFragment() {
         Constants.GlideWithHeader(url, iv_picture, iv_picture, requireContext(), true)
         //토픽 주인의 티어가 어딘지 가져오기
         mUserViewModel.getUser(topic.mManagerEmail);
-        mUserViewModel.mUser.observe(this, androidx.lifecycle.Observer {
-            it?.let{iv_tier.setImageResource(it.mTier)}
+        mUserViewModel.mUser.observe(this, androidx.lifecycle.Observer {user->
+            user?.let{iv_tier.setImageResource(Constants.getTierIconID(it.mTier))}
         })
 
 

@@ -169,6 +169,10 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
             mtvLike.text = comment.mGood.toString();
             mtvDislike.text = comment.mBad.toString();
 
+            //프로필 이미지 셋팅
+            val profileUrl = Constants.BASE_URL + "user/profile_image/" + comment.mWriterEmail;
+            Constants.GlideWithHeader(profileUrl, mProfile, mProfile, view.context)
+
 
             val locale = view.context.applicationContext.resources.configuration.locale;
             val transFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", locale);

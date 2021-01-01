@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">wifu worldcup</string>
+    <string name="app_name">anime worldcup</string>
     <string name="game_start">game start</string>
     <string name="add_picture">submit picture</string>
     <string name="hint_topic_title">title</string>
