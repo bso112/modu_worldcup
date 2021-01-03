@@ -79,7 +79,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notification = Notification.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(true)
-            .setSmallIcon(R.drawable.google)
+            .setSmallIcon(R.drawable.icon_hestia)
             .setContentTitle(title)
             .setContentText(content)
             .setContentIntent(pendingIntent)
@@ -92,7 +92,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //노티피케이션을 그룹짓는 노티피케이션
         val notificationSummary = Notification.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(true)
-            .setSmallIcon(R.drawable.google)
+            .setSmallIcon(R.drawable.icon_hestia)
             .setContentIntent(pendingIntent)
             .setGroup(NOTIFICATION_GROUP_COMMENT)
             .setGroupSummary(true)

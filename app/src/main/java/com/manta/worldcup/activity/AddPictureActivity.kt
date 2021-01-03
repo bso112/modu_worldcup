@@ -12,7 +12,9 @@ import com.manta.worldcup.R
 import com.manta.worldcup.adapter.TopicPictureAdapter
 import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.helper.Constants
+import com.manta.worldcup.model.Topic
 import com.manta.worldcup.viewmodel.PictureViewModel
+import com.manta.worldcup.viewmodel.TopicViewModel
 import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
@@ -20,7 +22,6 @@ import com.skydoves.balloon.BalloonAnimation
 import kotlinx.android.synthetic.main.activity_add_picture.*
 import kotlinx.android.synthetic.main.activity_add_picture.btn_add_Picture
 import kotlinx.android.synthetic.main.activity_add_picture.rv_picture
-import kotlinx.android.synthetic.main.activity_add_topic.*
 import kotlinx.android.synthetic.main.activity_add_topic.btn_submit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,16 +32,26 @@ import kotlinx.coroutines.launch
  */
 class AddPictureActivity : AppCompatActivity() {
     lateinit var mTopicPictureAdapter: TopicPictureAdapter;
+
     val REQUEST_PICK_FROM_ALBUM = 0;
     var mTopicImageNames: HashSet<String>? = null;
 
-    private val mViewModel: PictureViewModel by lazy {
+    private val mPictureViewModel: PictureViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return PictureViewModel(application) as T;
             }
 
         }).get(PictureViewModel::class.java);
+    }
+
+    private val mTopicViewModel: TopicViewModel by lazy {
+        ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return TopicViewModel(application) as T;
+            }
+
+        }).get(TopicViewModel::class.java);
     }
 
 
@@ -50,7 +61,7 @@ class AddPictureActivity : AppCompatActivity() {
 
         //잘못된 접근(유저이메일이 없는 상태로 접근) 을 제한한다.
         val userEmail = intent.getStringExtra(Constants.EXTRA_USER_EMAIL);
-        if(userEmail == null) {
+        if (userEmail == null) {
             Log.d(javaClass.toString(), "cannot find user email");
             finish()
         };
@@ -58,7 +69,9 @@ class AddPictureActivity : AppCompatActivity() {
 
         mTopicPictureAdapter = TopicPictureAdapter(supportFragmentManager);
 
-        val topicId = intent.getLongExtra(Constants.EXTRA_TOPIC_ID, -1);
+        val topic = intent.getSerializableExtra(Constants.EXTRA_TOPIC) as? Topic ?: return;
+        val topicId = topic.mId
+
         if (topicId < 0) {
             Toast.makeText(this, resources.getString(R.string.warn_error), Toast.LENGTH_SHORT).show();
             finish();
@@ -66,7 +79,7 @@ class AddPictureActivity : AppCompatActivity() {
 
         //현재토픽에 등록된 사진들의 이름목록 가져오기
         CoroutineScope(Dispatchers.IO).launch {
-            val result = mViewModel.getTopicImageNames(topicId)
+            val result = mPictureViewModel.getTopicImageNames(topicId)
             if (result.isSuccessful) {
                 mTopicImageNames = result.body()
                 mTopicPictureAdapter.setPictureNames(mTopicImageNames!!);
@@ -85,7 +98,11 @@ class AddPictureActivity : AppCompatActivity() {
 
         btn_submit.setOnClickListener {
             if (mTopicPictureAdapter.isPicturesReadyToSubmit()) {
-                mViewModel.insertPictureToTopic(mTopicPictureAdapter.getPictures(), topicId);
+                //토픽의 이미지 길이 늘이기
+                topic.mImageLength += mTopicPictureAdapter.getPictureSize()
+                mTopicViewModel.updateTopic(topic)
+                //픽쳐 생성
+                mPictureViewModel.insertPictureToTopic(mTopicPictureAdapter.getPictures(), topicId);
                 finish();
             } else {
                 Toast.makeText(this, resources.getString(R.string.warn_unnamed_picture), Toast.LENGTH_SHORT).show();
@@ -111,7 +128,6 @@ class AddPictureActivity : AppCompatActivity() {
             balloon.showAlignBottom(btn_help)
         }
     }
-
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

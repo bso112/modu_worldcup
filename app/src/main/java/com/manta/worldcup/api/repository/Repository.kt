@@ -26,7 +26,16 @@ class Repository(application: Context) {
 
     suspend fun getTopicName(topicID: Long) = topicAPI.getTopicName(topicID);
 
+    /**
+     * topic의 imagelength를 줄임
+     */
+    suspend fun deleteMyPictures(pictureIDs: List<PictureModel>) = topicAPI.deleteMyPictures(pictureIDs);
+
+    /**
+     * topic의 imagelength를 줄이지 않음
+     */
     suspend fun deletePictures(pictureIDs: List<PictureModel>) = topicAPI.deletePictures(pictureIDs);
+
 
     suspend fun getAllPictures(ownerEmail: String) = topicAPI.getPictures(ownerEmail);
 

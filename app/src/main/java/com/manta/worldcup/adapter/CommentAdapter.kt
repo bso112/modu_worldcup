@@ -286,6 +286,7 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         }
         //swap
         result[0] = result[bestCommentIndex].also { result[bestCommentIndex] = result[0] }
+        
 
 
         //대댓글 위치조정

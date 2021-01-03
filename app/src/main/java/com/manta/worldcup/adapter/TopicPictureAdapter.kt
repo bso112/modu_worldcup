@@ -43,9 +43,6 @@ class TopicPictureAdapter(private val fragmentManager: FragmentManager) : Recycl
         init {
             //엑스클릭하면 항목지우기
             mCancelBtn.setOnClickListener {
-                //removeImage(adapterPosition); 하고나면 adapterPosition 바뀌어버려서 먼저해야함.
-                if (adapterPosition < mIsPictureNamed.size)
-                    mIsPictureNamed.removeAt(adapterPosition);
                 removeImage(adapterPosition);
             }
 
@@ -73,6 +70,8 @@ class TopicPictureAdapter(private val fragmentManager: FragmentManager) : Recycl
             //이미 이름이 있는 사진이면 체크표시
             if (picture.pictureModel.mPictureName != "")
                 mCheckedView.visibility = View.VISIBLE;
+            else
+                mCheckedView.visibility = View.INVISIBLE
 
             //서버로부터 이미지 요청
             if (picture.mBitmap == null) {
@@ -104,6 +103,7 @@ class TopicPictureAdapter(private val fragmentManager: FragmentManager) : Recycl
         if (mDataset.size <= position)
             return;
         mDataset.removeAt(position);
+        mIsPictureNamed.removeAt(position)
         notifyItemRemoved(position)
     }
 
@@ -123,6 +123,7 @@ class TopicPictureAdapter(private val fragmentManager: FragmentManager) : Recycl
      */
     fun setPictures(pictureModels: List<PictureModel>) {
         mDataset.clear();
+        mIsPictureNamed.clear()
         for (pictureModel in pictureModels) {
             mDataset.add(Picture(pictureModel, null));
             mIsPictureNamed.add(true)

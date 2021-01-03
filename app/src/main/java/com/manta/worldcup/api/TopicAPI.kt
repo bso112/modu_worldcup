@@ -56,6 +56,9 @@ interface TopicAPI {
     @GET("pictures/get_all/{owner_email}")
     suspend fun getPictures(@Path("owner_email") ownerEmail : String) : Response<List<PictureModel>>
 
+    @POST("mypictures/delete")
+    suspend fun deleteMyPictures(@Body pictures : List<PictureModel>) : Response<Int>
+
     @POST("pictures/delete")
     suspend fun deletePictures(@Body pictures : List<PictureModel>) : Response<Int>
 

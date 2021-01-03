@@ -8,7 +8,6 @@ import com.manta.worldcup.api.repository.Repository
 import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.model.Picture
 import com.manta.worldcup.model.PictureModel
-import com.manta.worldcup.model.User
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -104,8 +103,8 @@ class PictureViewModel(private val application: Application) : ViewModel() {
     }
 
 
-    suspend fun deletePictures(pictureIDs : List<PictureModel>) = mRepository.deletePictures(pictureIDs)
-
+    suspend fun deleteMyPictures(pictures : List<PictureModel>) = mRepository.deleteMyPictures(pictures)
+    suspend fun deletePictures(pictures : List<PictureModel>) = mRepository.deletePictures(pictures)
 
 
     fun updatePictureName(pictureID : Long, name : String){

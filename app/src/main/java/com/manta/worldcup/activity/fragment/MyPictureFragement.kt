@@ -22,7 +22,6 @@ import com.manta.worldcup.viewmodel.PictureViewModel
 import com.manta.worldcup.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.frag_mypicture.*
 import kotlinx.android.synthetic.main.frag_mypicture.tv_emty_page
-import kotlinx.android.synthetic.main.frag_topic.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -126,7 +125,7 @@ class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
         btn_delete.setOnClickListener {
             val selection = mPictureAdapter.getSelection();
             CoroutineScope(Dispatchers.IO).launch {
-                val result = mPictureModel.deletePictures(selection)
+                val result = mPictureModel.deleteMyPictures(selection)
                 if (result.isSuccessful) {
                     withContext(Dispatchers.Main) {
                         mPictureAdapter.endSelectMode()
@@ -134,8 +133,6 @@ class MyPictureFragement() : Fragment(R.layout.frag_mypicture) {
                             Intent().apply { action = Constants.ACTION_NEED_REFRESH }
                         )
                     }
-                } else {
-                    Toast.makeText(requireContext(), resources.getString(R.string.warn_error), Toast.LENGTH_SHORT).show()
                 }
             }
 

@@ -99,11 +99,11 @@ class GameActivity : AppCompatActivity() {
 
         btn_comment_A.setOnClickListener {
             if (mPictureModels.isNotEmpty())
-                PictureInfoDialog().newInstance(mPictureModels[0], mPlayer, null).show(supportFragmentManager, null);
+                PictureInfoDialog().newInstance(mPictureModels[getFirstPictureIndex()], mPlayer, null).show(supportFragmentManager, null);
         }
         btn_comment_B.setOnClickListener {
             if (mPictureModels.size >= 2)
-                PictureInfoDialog().newInstance(mPictureModels[1], mPlayer, null).show(supportFragmentManager, null);
+                PictureInfoDialog().newInstance(mPictureModels[getFirstPictureIndex() + 1], mPlayer, null).show(supportFragmentManager, null);
         }
     }
 

@@ -69,7 +69,7 @@ class OnTopicClickDialog() : DialogFragment() {
         }
         view.btn_add_picture.setOnClickListener {
             Intent(context, AddPictureActivity::class.java).apply {
-                putExtra(EXTRA_TOPIC_ID, topicModel.mId)
+                putExtra(EXTRA_TOPIC, topicModel)
                 putExtra(Constants.EXTRA_USER_EMAIL, mViewModel.mUser.value?.mEmail)
                 startActivity(this);
                 dismiss()

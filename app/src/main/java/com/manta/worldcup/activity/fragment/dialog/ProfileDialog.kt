@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.dialog_profile.tv_point
 /**
  * 유저 정보를 보여주는 다이어로그
  */
-class ProfileDialog private constructor() : DialogFragment() {
+class ProfileDialog : DialogFragment() {
 
     //현재 로그인한 유저에 대한 정보를 가지고 오기 위한 뷰모델
     private val mUserViewModel: UserViewModel by lazy {
