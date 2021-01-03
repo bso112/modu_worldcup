@@ -18,13 +18,13 @@ Kotlin, Android Studio, MySQL, Node.js
 
 
 ## 실제화면
-1. HomeFragment
-![HomeFragment](readme/homefragment.png)
-2. TopicFragment
-3. MyTopicFragment
-4. MyPictureFragment
-5. GameActivity
-6. GameResultActivity
-7. StatisticActivity
+![alt](readme/슬라이드5.png)
+![alt](readme/슬라이드6.png)
+![alt](readme/슬라이드7.png)
+![alt](readme/슬라이드8.png)
+![alt](readme/슬라이드9.png)
+![alt](readme/슬라이드10.png)
+![alt](readme/슬라이드11.png)
+
 
 
