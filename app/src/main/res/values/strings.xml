@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">아니메 월드컵</string>
+    <string name="app_name">애니메이션 월드컵</string>
     <string name="game_start">게임시작</string>
     <string name="add_picture">참전하기</string>
     <string name="hint_topic_title">제목</string>
