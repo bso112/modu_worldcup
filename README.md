@@ -26,7 +26,8 @@ Kotlin, Android Studio, MySQL, Node.js
 ![alt](readme/슬라이드10.PNG)
 ![alt](readme/슬라이드11.PNG)
 
+
 ## 시연
-[![시연](http://img.youtube.com/vi/tCYWEeGaZ8A/0.jpg)](https://www.youtube.com/watch?v=tCYWEeGaZ8A&t=119s)
+[![시연](http://img.youtube.com/vi/n00snXrRC84/0.jpg)](https://www.youtube.com/watch?v=n00snXrRC84)
 
 
