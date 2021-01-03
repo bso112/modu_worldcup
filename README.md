@@ -19,12 +19,12 @@ Kotlin, Android Studio, MySQL, Node.js
 
 ## 실제화면
 ![alt](readme/슬라이드5.PNG)
-![alt](readme/슬라이드6.png)
-![alt](readme/슬라이드7.png)
-![alt](readme/슬라이드8.png)
-![alt](readme/슬라이드9.png)
-![alt](readme/슬라이드10.png)
-![alt](readme/슬라이드11.png)
+![alt](readme/슬라이드6.PNG)
+![alt](readme/슬라이드7.PNG)
+![alt](readme/슬라이드8.PNG)
+![alt](readme/슬라이드9.PNG)
+![alt](readme/슬라이드10.PNG)
+![alt](readme/슬라이드11.PNG)
 
 
 
