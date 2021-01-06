@@ -5,6 +5,15 @@
 ## 사용기술
 Kotlin, Android Studio, MySQL, Node.js
 
+## 실행법
+```
+# 깃 허브에서 소스코드를 다운로드 받습니다.
+git clone https://github.com/bsw112/anime_worldcup.git
+
+# 안드로이드 스튜디오로 빌드합니다. 개발환경은 4.1 버전입니다.
+```
+
+
 ## 주요기능
 * FirbaseAuth를 이용한 구글로그인. JWT 토큰으로 로그인을 유지합니다.
 * 이상형월드컵 CRUD
@@ -25,6 +34,7 @@ Kotlin, Android Studio, MySQL, Node.js
 ![alt](readme/슬라이드9.PNG)
 ![alt](readme/슬라이드10.PNG)
 ![alt](readme/슬라이드11.PNG)
+
 
 ## 시연
 [![시연](http://img.youtube.com/vi/n00snXrRC84/0.jpg)](https://www.youtube.com/watch?v=n00snXrRC84)
