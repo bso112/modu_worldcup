@@ -7,6 +7,9 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 
+/**
+ * http 요청시 쿠키를 받는 인터셉터
+ */
 class ReceivedCookiesInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         //요청에 대한 응답을 받음. 여기서 실제로 요청을 보낸다. 아마 이 함수자체가 다른 워커스레드에서 불리는듯.

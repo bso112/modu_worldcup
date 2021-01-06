@@ -67,11 +67,12 @@ class GameActivity : AppCompatActivity() {
         }).get(TopicViewModel::class.java);
     }
 
-
+    //위로 이동하는 애니메이션
     private val mOutUpwardAnim: Animation by lazy {
         AnimationUtils.loadAnimation(this, R.anim.anim_out_upward_screen)
     }
 
+    //아래로 이동하는 애니메이션
     private val mOutDownwardAnim: Animation by lazy {
         AnimationUtils.loadAnimation(this, R.anim.anim_out_downward_screen)
     }
@@ -107,7 +108,10 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     * 선택된 사진을 화면 중앙으로 옮기는 애니메이션을 실행한다.
+     * @param view 선택된 사진을 표시하는 view.
+     */
     private fun moveViewToScreenCenter(view: View) {
         val root = findViewById<View>(R.id.root) as ConstraintLayout
         val dm = DisplayMetrics()

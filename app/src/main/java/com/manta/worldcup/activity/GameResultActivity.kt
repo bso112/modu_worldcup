@@ -30,14 +30,8 @@ class GameResultActivity : AppCompatActivity() {
             }
         }).get(TopicViewModel::class.java);
     }
-//    private val mCommentViewModel : CommentViewModel by lazy{
-//        ViewModelProvider(this, object : ViewModelProvider.Factory {
-//            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-//                return CommentViewModel(application) as T;
-//            }
-//        }).get(CommentViewModel::class.java);
-//    }
-//    private lateinit var mCommentAdapter : CommentAdapter
+
+
 
     /**
      * 토픽에 좋아요를 눌렀는가?
@@ -60,16 +54,6 @@ class GameResultActivity : AppCompatActivity() {
         mTopic = (intent.getSerializableExtra(Constants.EXTRA_TOPIC) as? Topic) ?: return;
         val winner = (intent.getSerializableExtra(Constants.EXTRA_PICTURE_MODEL) as? PictureModel) ?: return;
         val player = (intent.getSerializableExtra(Constants.EXTRA_USER) as? User) ?: return;
-
-//        mCommentAdapter = CommentAdapter(player)
-//        rv_comment.adapter = mCommentAdapter
-//        rv_comment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//
-//        mCommentViewModel.getTopicComments(mTopic.mId)
-//        mCommentViewModel.mComments.observe(this, Observer {
-//            mCommentAdapter.setComments(it)
-//        })
-//
 
 
         tv_winner_name.text = winner.mPictureName;

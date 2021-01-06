@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * 토픽 추가가 가능한 액티비티
+ * 토픽(월드컵) 추가가 가능한 액티비티
  */
 class AddTopicActivity : AppCompatActivity() {
 

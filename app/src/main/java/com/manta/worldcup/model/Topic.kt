@@ -3,6 +3,9 @@ package com.manta.worldcup.model
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+/**
+ * 월드컵을 의미한다.
+ */
 data class Topic(
     @SerializedName("id")
     val mId: Long,

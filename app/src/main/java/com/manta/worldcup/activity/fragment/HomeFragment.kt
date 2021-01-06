@@ -51,8 +51,9 @@ class HomeFragment : Fragment(R.layout.frag_home) {
         })
 
     }
-
+    //탑 10 추천순위 월드컵을 보여주는 어댑터
     private lateinit var mTopicAdaptorTop10Recommend: TopicAdapter_Top10;
+    //탑 10 조회수순위 월드컵을 보여주는 어댑터
     private lateinit var mTopicAdaptorTop10View: TopicAdapter_Top10;
 
 
@@ -65,6 +66,7 @@ class HomeFragment : Fragment(R.layout.frag_home) {
         mTopicAdaptorTop10Recommend = TopicAdapter_Top10();
         mTopicAdaptorTop10View = TopicAdapter_Top10();
 
+        //최근 10개 월드컵을 보여주는 ViewPager 설정. 인디케이터도 같이 설정한다.
         vp_recent_topic.adapter = mRecentTopicAdpater;
         vp_recent_topic.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -100,7 +102,7 @@ class HomeFragment : Fragment(R.layout.frag_home) {
 
 
 
-
+        //월드컵 클릭시
         val onTopicClick = onTopicClick@ fun(topicJoinUser: TopicJoinUser) {
             if (mUserViewModel.mUser.value == null) {
                 Toast.makeText(context, resources.getString(R.string.need_signin), Toast.LENGTH_SHORT).show()

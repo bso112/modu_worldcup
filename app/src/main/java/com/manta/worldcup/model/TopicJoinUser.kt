@@ -3,6 +3,10 @@ package com.manta.worldcup.model
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+
+/**
+ * 월드컵과 유저데이터를 조인한 자료이다.
+ */
 data class TopicJoinUser(
     @SerializedName("id")
     val mId: Long,

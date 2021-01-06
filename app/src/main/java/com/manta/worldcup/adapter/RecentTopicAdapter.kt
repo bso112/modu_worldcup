@@ -9,6 +9,9 @@ import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.TopicJoinUser
 import kotlinx.android.synthetic.main.item_topic_recent.view.*
 
+/**
+ * 홈 프래그먼트에서 최근토픽을 보여주는 어댑터
+ */
 class RecentTopicAdapter() : RecyclerView.Adapter<RecentTopicAdapter.PagerViewHolder>() {
     private var mDataset = emptyList<TopicJoinUser>()
 

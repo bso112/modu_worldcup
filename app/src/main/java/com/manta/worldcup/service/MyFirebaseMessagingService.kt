@@ -32,7 +32,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     };
 
-    //이어베이스 메시징을 위해 사용되는 앱 인스턴스용 등록 토큰이 변경될때마다 호출된다.
+    //파이어베이스 메시징을 위해 사용되는 앱 인스턴스용 등록 토큰이 변경될때마다 호출된다.
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         Log.d(Constants.LOG_TAG, p0);
@@ -64,6 +64,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
 
+    /**
+     * 실제 노티피케이션을 실행한다.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun notifyNotification(title: String?, content: String?, notifiedTopicId: String, notifiedPictureId: String) {
         if (title == null || content == null) return;
@@ -71,6 +74,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //알림을 받은 topicId나 pictureID를 로컬에 저장한다.
         SaveNotification(notifiedTopicId, notifiedPictureId)
 
+        //알림을 클릭했을때 알림이 대상이되는 토픽이나 사진으로 이동하게한는 인텐트.
+        //인텐트 안에는 알림의 대상의 id를 담는다.
         val notificationIntent = Intent(this, MainActivity::class.java).apply {
             if (notifiedTopicId != "0")
                 putExtra(Constants.EXTRA_NOTIFIED_TOPIC_ID, notifiedTopicId)
@@ -84,14 +89,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
         val notification = Notification.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
-            .setAutoCancel(true)
-            .setSmallIcon(R.drawable.icon_hestia)
-            .setContentTitle(title)
-            .setContentText(content)
-            .setContentIntent(pendingIntent)
-            .setGroup(NOTIFICATION_GROUP_COMMENT)
+            .setAutoCancel(true) //사용자가 스와이프했을때 노티피케이션을 지울것인가
+            .setSmallIcon(R.drawable.icon_hestia) //노티피케이션 아이콘
+            .setContentTitle(title) //노티피케이션 제목
+            .setContentText(content) //노티피케이션 본문
+            .setContentIntent(pendingIntent) //노티피케이션을 클릭했을때 실행할 팬딩인텐트
+            .setGroup(NOTIFICATION_GROUP_COMMENT) //그룹
             .build()
 
+        //각각의 노티피케이션은 id가 달라야 별개의 노티피케이션으로 인식된다.
         mNotificationManager.notify(Constants.NOTIFICATION_ID + mNotificationCnt++, notification)
 
 
@@ -101,15 +107,21 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setSmallIcon(R.drawable.icon_hestia)
             .setContentIntent(pendingIntent)
             .setGroup(NOTIFICATION_GROUP_COMMENT)
-            .setGroupSummary(true)
+            .setGroupSummary(true) //이 노티피케이션은 그룹의 부모이다.
             .build()
 
-        //notify시의 id가 같다면 이미 있는걸 갱신한다.
-
+        //현존하는 노티피케이션 중 NOTIFICATION_GROUP_COMMENT에 해당하는 것들을 그룹으로 묶는다.
         mNotificationManager.notify(Constants.NOTIFICATION_ID_SUMMERY, notificationSummary)
     }
 
-    //알림을 받은 topicId나 pictureID를 로컬에 저장한다.
+    /**
+     * 알림을 받은 topicId나 pictureID를 sharedPreference에 저장한다.
+     * 앱을 켰을때, 그동안 온 알림에 대한 정보를 알아야하기 떄문이다.
+     * 파라미터 예시) 사진에 댓글이 달렸을경우 notifiedTPictureId는 "0" 이 아니고,
+     * notifiedTopicId 는 "0" 이다.
+     * @param notifiedPictureId 알림의 대상이되는 사진의 id
+     * @param notifiedTopicId 알림의 대상이되는 토픽의 id
+     */
     private fun SaveNotification(notifiedTopicId: String, notifiedPictureId: String) {
         if (!notifiedTopicId.equals("0") || !notifiedPictureId.equals("0")) {
             val sharedPref = applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)

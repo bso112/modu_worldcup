@@ -6,6 +6,9 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
+/**
+ * http 요청시 액세스토큰(웹서버에 로그인을 인증하기 위한 토큰)을 추가하는 인터셉터
+ */
 class AddTokenInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         //리퀘스트빌더

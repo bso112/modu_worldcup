@@ -6,6 +6,9 @@ import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.LinearLayout
 
+/**
+ * viewPager에서 현재 프래그먼트의 위치를 나타내주는 인디케이터
+ */
 class CircleIndicator: LinearLayout {
 
     private var mContext: Context? = null

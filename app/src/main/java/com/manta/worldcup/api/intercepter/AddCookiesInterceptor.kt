@@ -6,7 +6,9 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
-
+/**
+ * http 요청시 쿠키를 추가하는 인터셉터
+ */
 class AddCookiesInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         //리퀘스트빌더
