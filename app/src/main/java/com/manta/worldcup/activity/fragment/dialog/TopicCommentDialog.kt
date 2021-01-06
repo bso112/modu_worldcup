@@ -13,10 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manta.worldcup.R
 import com.manta.worldcup.adapter.CommentAdapter
-import com.manta.worldcup.helper.BitmapHelper
 import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.Comment
-import com.manta.worldcup.model.PictureModel
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.CommentViewModel
@@ -115,6 +113,10 @@ class TopicCommentDialog : DialogFragment() {
 
             override fun onMoreButtonClick() {
                 hideReplyCard()
+            }
+
+            override fun onCommentReported(comment: Comment) {
+                mCommentViewModel.reportTopicComment(comment.mId)
             }
 
             override fun onCommentUpdate(comment: Comment) {

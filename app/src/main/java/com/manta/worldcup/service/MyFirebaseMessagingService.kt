@@ -18,7 +18,9 @@ import com.manta.worldcup.activity.MainActivity
 import com.manta.worldcup.activity.fragment.MyTopicFragment
 import com.manta.worldcup.helper.Constants
 
-
+/**
+ * FCM을 받기위한 서비스
+ */
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
@@ -30,7 +32,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     };
 
-
+    //이어베이스 메시징을 위해 사용되는 앱 인스턴스용 등록 토큰이 변경될때마다 호출된다.
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         Log.d(Constants.LOG_TAG, p0);
@@ -44,6 +46,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     }
 
+    /**
+     *  웹서버에서 FCM을 요청하고, 파이어베이스에서 이 앱 인스턴스에 FCM을 보내면 호출된다.
+     *  @param p0 웹서버에서 FCM 요청과 함께보낸 데이터.
+     */
     override fun onMessageReceived(p0: RemoteMessage) {
         super.onMessageReceived(p0)
 

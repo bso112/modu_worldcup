@@ -146,6 +146,10 @@ class PictureInfoDialog : DialogFragment() {
                 hideReplyCard()
             }
 
+            override fun onCommentReported(comment: Comment) {
+                mCommentViewModel.reportPictureComment(comment.mId)
+            }
+
             override fun onCommentUpdate(comment: Comment) {
                 mCommentViewModel.updatePictureComment(comment);
             }

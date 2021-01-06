@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -57,6 +58,7 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
 
     interface OnCommentChangeListener {
         fun onMoreButtonClick()
+        fun onCommentReported(comment : Comment)
         fun onCommentUpdate(comment: Comment)
         fun onCommentDelete(comment: Comment)
     }
@@ -108,15 +110,17 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
                 notifyItemChanged(adapterPosition)
             }
 
+
             mMoreBtn.setOnClickListener {
 
+                val isMyComment = mDataset[adapterPosition].mWriterEmail == mUser.mEmail
                 mOnCommentChangeListener?.onMoreButtonClick()
 
                 val typedValue = TypedValue();
                 mContext.theme.resolveAttribute(R.attr.colorSurface, typedValue, true);
                 val colorSurface = ContextCompat.getColor(mContext, typedValue.resourceId)
                 var layoutID =
-                    if (mDataset[adapterPosition].mWriterEmail == mUser.mEmail)
+                    if (isMyComment)
                         R.layout.dialog_mycomment_option
                     else
                         R.layout.dialog_comment_option
@@ -132,33 +136,33 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
                     .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
                     .build()
 
-                balloon.getContentView().findViewById<TextView>(R.id.btn_modify).setOnClickListener {
-                    //글 수정 가능하게 UI 갱신
-                    mContent.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, R.color.black))
-                    mContent.isEnabled = true;
-                    mModifyBtn.visibility = View.VISIBLE
-                    balloon.dismiss()
-                }
+                if (isMyComment) {
+                    balloon.getContentView().findViewById<TextView>(R.id.btn_modify).setOnClickListener {
+                        //글 수정 가능하게 UI 갱신
+                        mContent.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, R.color.black))
+                        mContent.isEnabled = true;
+                        mModifyBtn.visibility = View.VISIBLE
+                        balloon.dismiss()
+                    }
 
-                balloon.getContentView().findViewById<TextView>(R.id.btn_delete).setOnClickListener {
-                    mOnCommentChangeListener?.onCommentDelete(mDataset[adapterPosition])
-                    balloon.dismiss()
+                    balloon.getContentView().findViewById<TextView>(R.id.btn_delete).setOnClickListener {
+                        mOnCommentChangeListener?.onCommentDelete(mDataset[adapterPosition])
+                        balloon.dismiss()
+                    }
+                } else {
+                    balloon.getContentView().findViewById<TextView>(R.id.btn_report).setOnClickListener {
+                        //신고하기
+                        mOnCommentChangeListener?.onCommentReported(mDataset[adapterPosition])
+                        Toast.makeText(view.context, mContent.resources.getString(R.string.report_completed), Toast.LENGTH_SHORT).show()
+                        balloon.dismiss()
+
+                    }
                 }
 
                 balloon.show(mMoreBtn)
             }
 
-            mModifyBtn.setOnClickListener {
-                //글 수정
-                val newComment = mDataset[adapterPosition];
-                newComment.mContents = mContent.text.toString()
-                mOnCommentChangeListener?.onCommentUpdate(newComment);
-                mContent.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, R.color.transparent))
-                mContent.isEnabled = false;
-                mModifyBtn.visibility = View.GONE
 
-                notifyItemChanged(adapterPosition)
-            }
         }
 
 
@@ -168,6 +172,23 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
             mDate.text = comment.mDate
             mtvLike.text = comment.mGood.toString();
             mtvDislike.text = comment.mBad.toString();
+
+            //내 코멘트 일때만
+            if (comment.mWriterEmail == mUser.mEmail) {
+                //수정한 글 제출하기
+                mModifyBtn.setOnClickListener {
+                    //글 수정
+                    val newComment = mDataset[adapterPosition];
+                    newComment.mContents = mContent.text.toString()
+                    mOnCommentChangeListener?.onCommentUpdate(newComment);
+                    mContent.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, R.color.transparent))
+                    mContent.isEnabled = false;
+                    mModifyBtn.visibility = View.GONE
+
+                    notifyItemChanged(adapterPosition)
+                }
+            }
+
 
             //프로필 이미지 셋팅
             val profileUrl = Constants.BASE_URL + "user/profile_image/" + comment.mWriterEmail;
@@ -286,7 +307,6 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         }
         //swap
         result[0] = result[bestCommentIndex].also { result[bestCommentIndex] = result[0] }
-        
 
 
         //대댓글 위치조정
@@ -319,6 +339,8 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         mOnCommentChangeListener = listener
     }
 
+
+
     /**
      * 재귀적으로 root 코멘트 (부모가 없는 코멘트)를 찾아준다.
      * 실패하면 음수를 리턴한다.
@@ -330,6 +352,7 @@ class CommentAdapter(private val mUser: User) : RecyclerView.Adapter<RecyclerVie
         }
         return parent.mId;
     }
+
 
 
 }

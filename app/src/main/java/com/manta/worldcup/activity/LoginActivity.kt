@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.util.Linkify
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity() {
 
@@ -60,6 +62,10 @@ class LoginActivity : AppCompatActivity() {
             signIn();
         }
 
+        //"여기" 텍스트를 누르면 개인정보이용약관으로 리다이렉트
+        val mTransform = Linkify.TransformFilter { match, url -> ""; }
+        val pattern = Pattern.compile(resources.getString(R.string.here));
+        Linkify.addLinks(tv_login_link, pattern, resources.getString(R.string.personal_info_url), null, mTransform);
 
     }
 

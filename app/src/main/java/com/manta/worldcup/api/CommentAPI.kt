@@ -52,5 +52,14 @@ interface CommentAPI {
     @POST("comment/topic/update")
     suspend fun updateTopicComment(@Body comment : Comment) : Response<List<Comment>>
 
+    @FormUrlEncoded
+    @POST("comment/picture/report")
+    suspend fun reportPictureComment(@Field("comment_id") commentID : Long);
+
+
+    @FormUrlEncoded
+    @POST("comment/topic/report")
+    suspend fun reportTopicComment(@Field("comment_id") commentID : Long);
+
 
 }

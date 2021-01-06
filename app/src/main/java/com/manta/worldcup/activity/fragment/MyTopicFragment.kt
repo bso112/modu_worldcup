@@ -73,6 +73,8 @@ class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
         mTopicViewModel.mDataset.observe(this, Observer { topic ->
             if(topic.isEmpty())
                 tv_emty_page.visibility = View.VISIBLE
+            else
+                tv_emty_page.visibility = View.GONE
             mTopicAdapter.setTopics(topic)
         })
 

@@ -94,4 +94,8 @@ class Repository(application: Context) {
     suspend fun updateUser(user : User) = userAPI.updateUser(user)
 
     suspend fun removeProfileImage(userEmail : String, oldImageName : String) = userAPI.removeProfileImage(userEmail, oldImageName)
+
+    suspend fun reportPictureComment(commentID : Long) = commentAPI.reportPictureComment(commentID)
+    suspend fun reportTopicComment(commentID : Long) = commentAPI.reportTopicComment(commentID)
+
 }

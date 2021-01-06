@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">anime worldcup</string>
-    <string name="game_start">game start</string>
-    <string name="add_picture">submit picture</string>
-    <string name="hint_topic_title">title</string>
-    <string name="submit">submit</string>
+    <string name="app_name">Anime World Cup</string>
+    <string name="game_start">Game start</string>
+    <string name="add_picture">Submit picture</string>
+    <string name="hint_topic_title">Title</string>
+    <string name="submit">Submit</string>
     <string name="topic_description">Please enter the contents.</string>
     <string name="change_nickname">Please enter a nickname to change</string>
     <string name="change_picturename">Enter the name of the picture you want to change.</string>
@@ -16,9 +16,9 @@
     <string name="warn_not_enough_picture">Please upload two or more pictures.</string>
     <string name="warn_error">An error has occurred. Please try again.</string>
     <string name="win">WIN</string>
-    <string name="nickname">nickname</string>
-    <string name="comment">comment</string>
-    <string name="signin">sign in</string>
+    <string name="nickname">Nickname</string>
+    <string name="comment">Comment</string>
+    <string name="signin">Sign in</string>
     <string name="alert_add_topic">You will deduct 100 star points. Would you like to go on?</string>
     <string name="warn_not_enough_point">Not enough points.</string>
     <string name="show_result_picture">View all results</string>
@@ -29,13 +29,13 @@
     <string name="tooltip_topic_income">Number of users who have completed the World Cup x</string>
     <string name="tooltip_picture_income">Number of wins x</string>
     <string name="not_enough_picture_in_worldcup">There are not enough pictures in the World Cup.</string>
-    <string name="modify">modify</string>
-    <string name="delete">delete</string>
-    <string name="subscribe">subscribe</string>
-    <string name="report">report</string>
-    <string name="best_comment">best comment</string>
+    <string name="modify">Modify</string>
+    <string name="delete">Delete</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="report">Report</string>
+    <string name="best_comment">Best comment</string>
     <string name="need_signin">Signin is required.</string>
-    <string name="signout">sign out</string>
+    <string name="signout">Sign out</string>
     <string name="year_before">years ago</string>
     <string name="day_before">days ago</string>
     <string name="hour_before">hours ago</string>
@@ -55,10 +55,13 @@
     <string name="report_completed">"It's been reported."</string>
     <string name="dispath_from_gallery">Dispath from gallery</string>
     <string name="replace_to_basic_image">Replace with default image</string>
-    <string name="login_google">sign in with google</string>
+    <string name="login_google">Sign in with google</string>
     <string name="empty_picture">There are no pictures to display.</string>
     <string name="empty_worldcup">There are no World Cups to display.</string>
     <string name="number_of_worldcup">World Cups</string>
     <string name="number_of_picture">Pictures</string>
     <string name="tier">Tier</string>
+    <string name="here">here</string>
+    <string name="personal_info_url">https://blackmanta.tistory.com/27</string>
+    <string name="personal_information_notification">Upon login, you will be deemed to have agreed to collect your personal information. Privacy policies can be found here.</string>
 </resources>

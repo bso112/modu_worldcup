@@ -111,4 +111,16 @@ class CommentViewModel(application: Context) : ViewModel() {
         }
     }
 
+    fun reportPictureComment(commentID : Long){
+        viewModelScope.launch {
+            repository.reportPictureComment(commentID)
+        }
+    }
+
+    fun reportTopicComment(commentID : Long){
+        viewModelScope.launch {
+            repository.reportTopicComment(commentID)
+        }
+    }
+
 }

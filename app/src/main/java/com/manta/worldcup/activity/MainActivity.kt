@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.text.util.Linkify
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -20,8 +21,10 @@ import com.manta.worldcup.helper.Constants
 import com.manta.worldcup.model.User
 import com.manta.worldcup.viewmodel.TopicViewModel
 import com.manta.worldcup.viewmodel.UserViewModel
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.ll_profile
+import java.util.regex.Pattern
 
 
 class MainActivity : AppCompatActivity() {
