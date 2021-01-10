@@ -54,10 +54,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(p0)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            /*
+            * p0에는 notification 객체와 메시지에 포함된 데이터(웹서버측에서 보낸 데이터다)가 있다.
+            * 이것들을 가지고 노티피케이션을 수행하자.
+            */
             notifyNotification(
-                p0.notification?.title,
-                p0.notification?.body,
-                p0.data["topic_id"] ?: "0",
+                p0.notification?.title, /*노티피케이션의 타이틀*/
+                p0.notification?.body, /*노티피케이션의 내용*/
+                p0.data["topic_id"] ?: "0", /*메시지의 데이터*/
                 p0.data["picture_id"] ?: "0"
             );
         }
@@ -114,35 +118,35 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         mNotificationManager.notify(Constants.NOTIFICATION_ID_SUMMERY, notificationSummary)
     }
 
-    /**
-     * 알림을 받은 topicId나 pictureID를 sharedPreference에 저장한다.
-     * 앱을 켰을때, 그동안 온 알림에 대한 정보를 알아야하기 떄문이다.
-     * 파라미터 예시) 사진에 댓글이 달렸을경우 notifiedTPictureId는 "0" 이 아니고,
-     * notifiedTopicId 는 "0" 이다.
-     * @param notifiedPictureId 알림의 대상이되는 사진의 id
-     * @param notifiedTopicId 알림의 대상이되는 토픽의 id
-     */
-    private fun SaveNotification(notifiedTopicId: String, notifiedPictureId: String) {
-        if (!notifiedTopicId.equals("0") || !notifiedPictureId.equals("0")) {
-            val sharedPref = applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
-            val prefEdit = sharedPref.edit();
-            var notifiedPictureIDs: MutableSet<String>?
-            var notifiedTopicIDs: MutableSet<String>?
+        /**
+         * 알림을 받은 topicId나 pictureID를 sharedPreference에 저장한다.
+         * 앱을 켰을때, 그동안 온 알림에 대한 정보를 알아야하기 떄문이다.
+         * 파라미터 예시) 사진에 댓글이 달렸을경우 notifiedTPictureId는 "0" 이 아니고,
+         * notifiedTopicId 는 "0" 이다.
+         * @param notifiedPictureId 알림의 대상이되는 사진의 id
+         * @param notifiedTopicId 알림의 대상이되는 토픽의 id
+         */
+        private fun SaveNotification(notifiedTopicId: String, notifiedPictureId: String) {
+            if (!notifiedTopicId.equals("0") || !notifiedPictureId.equals("0")) {
+                val sharedPref = applicationContext.getSharedPreferences(Constants.PREF_FILE_NOTIFICATION, Context.MODE_PRIVATE)
+                val prefEdit = sharedPref.edit();
+                var notifiedPictureIDs: MutableSet<String>?
+                var notifiedTopicIDs: MutableSet<String>?
 
-            if (!notifiedTopicId.equals("0")) {
-                notifiedTopicIDs = sharedPref.getStringSet(Constants.PREF_NOTIFIED_TOPIC_ID, HashSet());
-                notifiedTopicIDs?.add(notifiedTopicId);
-                prefEdit.putStringSet(Constants.PREF_NOTIFIED_TOPIC_ID, notifiedTopicIDs);
+                if (!notifiedTopicId.equals("0")) {
+                    notifiedTopicIDs = sharedPref.getStringSet(Constants.PREF_NOTIFIED_TOPIC_ID, HashSet());
+                    notifiedTopicIDs?.add(notifiedTopicId);
+                    prefEdit.putStringSet(Constants.PREF_NOTIFIED_TOPIC_ID, notifiedTopicIDs);
+                }
+                if (!notifiedPictureId.equals("0")) {
+                    notifiedPictureIDs = sharedPref.getStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, HashSet());
+                    notifiedPictureIDs?.add(notifiedPictureId);
+                    prefEdit.putStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, notifiedPictureIDs)
+                }
+                prefEdit.apply();
             }
-            if (!notifiedPictureId.equals("0")) {
-                notifiedPictureIDs = sharedPref.getStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, HashSet());
-                notifiedPictureIDs?.add(notifiedPictureId);
-                prefEdit.putStringSet(Constants.PREF_NOTIFIED_PICTURE_ID, notifiedPictureIDs)
-            }
-            prefEdit.apply();
+
         }
-
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(notificationManager: NotificationManager) {

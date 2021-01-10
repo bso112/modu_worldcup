@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.HashSet
 
 object Constants {
-    //const val BASE_URL = "http://profilepicker.cafe24app.com/anime/";
-    const val BASE_URL = "http://192.168.219.144:8001/anime/";
+    const val BASE_URL = "http://profilepicker.cafe24app.com/anime/";
+    //const val BASE_URL = "http://192.168.219.144:8001/anime/";
     const val LOG_TAG = "com.manta.worldcup"
 
     const val EXTRA_TOPIC_ID = "com.manta.worldcup.EXTRA_TOPIC_ID"
