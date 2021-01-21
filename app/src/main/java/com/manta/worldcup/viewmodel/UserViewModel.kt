@@ -15,6 +15,12 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
+/**
+ * 유저에 대한 데이터를 처리하는 뷰모델
+ * ->리팩토링 : viewModel은 이렇게 데이터타입 단위로말고, view 단위로 만들어야할듯
+ * (view 단위지, 꼭 activity단위여야할 필요는 없다)
+ * 원래 viewModel은 동일하거나 거의 비슷한 view가 아니면 재사용하지 않는듯.
+ */
 class UserViewModel(private val application: Application) : ViewModel() {
     private val mRepository: Repository = Repository(application);
 

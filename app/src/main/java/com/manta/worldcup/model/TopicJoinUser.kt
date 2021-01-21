@@ -6,6 +6,9 @@ import java.io.Serializable
 
 /**
  * 월드컵과 유저데이터를 조인한 자료이다.
+ * -> 리팩토링 : 이렇게 하기보다는 Topic, User 로 가지고 있는게 나을듯
+ * 그러려면 TypeConverter를 만들어야함. 예를들어, Topic을 json string으로 json string을 Topic으로 만드는
+ * TypeConverter가 있으면 커스텀 클래스를 저장하는 것도 가능함.
  */
 data class TopicJoinUser(
     @SerializedName("id")

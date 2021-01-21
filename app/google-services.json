@@ -38,7 +38,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111890520747-07dnc8pb1jg7a170p98tqh6drof24d4m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -51,7 +56,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "111890520747-m57o0n2a444gooupeamemjqginnu71fq.apps.googleusercontent.com",
+          "client_id": "111890520747-hq3cb7ipbrq522giqr7leokl9i5ksees.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manta.worldcup",
+            "certificate_hash": "0b8f624d8d44d65c29736556e2b1bfaeeb87ab6e"
+          }
+        },
+        {
+          "client_id": "111890520747-qulg0n7ri03houeorv4j4aoellhqj6bv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.manta.worldcup",
@@ -66,7 +79,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111890520747-07dnc8pb1jg7a170p98tqh6drof24d4m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

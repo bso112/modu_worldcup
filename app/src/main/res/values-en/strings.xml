@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Anime World Cup</string>
+    <string name="app_name">Modu World Cup</string>
     <string name="game_start">Game start</string>
     <string name="add_picture">Submit picture</string>
     <string name="hint_topic_title">Title</string>

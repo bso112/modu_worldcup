@@ -48,9 +48,6 @@ class MyTopicOptionDialog: BottomSheetDialogFragment() {
         val topicJoinUser = arguments?.getSerializable(Constants.EXTRA_TOPIC_JOIN_USER) as? TopicJoinUser ?: return;
 
         btn_modify.setOnClickListener {
-            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(
-                Intent().apply { action = Constants.ACTION_NEED_REFRESH })
-
             Intent(context, UpdateTopicActivity::class.java).apply {
                 putExtra(Constants.EXTRA_TOPIC, topicJoinUser.getTopic())
                 putExtra(Constants.EXTRA_USER, topicJoinUser.getUser())
@@ -59,11 +56,13 @@ class MyTopicOptionDialog: BottomSheetDialogFragment() {
             }
         }
         btn_delete.setOnClickListener {
-            mTopicViewModel.deleteTopic(topicJoinUser.mId);
-            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(
-                Intent().apply { action = Constants.ACTION_NEED_REFRESH }
-            )
-            dismiss()
+            mTopicViewModel.deleteTopic(topicJoinUser.mId) {
+                LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(
+                    Intent().apply { action = Constants.ACTION_NEED_REFRESH }
+                )
+                dismiss()
+            }
+
         }
     }
 }

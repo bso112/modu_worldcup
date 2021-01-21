@@ -59,9 +59,11 @@ class TopicViewModel(private val application: Application) : ViewModel() {
         }
     }
 
-    fun deleteTopic(topicID: Long) {
+    fun deleteTopic(topicID: Long, onDelete : ()->Unit) {
         viewModelScope.launch {
-            mRepository.deleteTopic(topicID);
+            val res = mRepository.deleteTopic(topicID);
+            if(res.isSuccessful)
+                onDelete();
         }
     }
 
