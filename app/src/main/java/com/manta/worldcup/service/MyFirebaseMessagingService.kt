@@ -94,7 +94,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notification = Notification.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(true) //사용자가 스와이프했을때 노티피케이션을 지울것인가
-            .setSmallIcon(R.drawable.icon_hestia) //노티피케이션 아이콘
+            .setSmallIcon(R.drawable.crown) //노티피케이션 아이콘
             .setContentTitle(title) //노티피케이션 제목
             .setContentText(content) //노티피케이션 본문
             .setContentIntent(pendingIntent) //노티피케이션을 클릭했을때 실행할 팬딩인텐트
@@ -108,7 +108,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //노티피케이션을 그룹짓는 노티피케이션
         val notificationSummary = Notification.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(true)
-            .setSmallIcon(R.drawable.icon_hestia)
+            .setSmallIcon(R.drawable.crown)
             .setContentIntent(pendingIntent)
             .setGroup(NOTIFICATION_GROUP_COMMENT)
             .setGroupSummary(true) //이 노티피케이션은 그룹의 부모이다.
