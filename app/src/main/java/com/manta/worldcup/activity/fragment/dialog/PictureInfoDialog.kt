@@ -53,26 +53,15 @@ import kotlin.collections.ArrayList
 class PictureInfoDialog : DialogFragment() {
 
     private val mCommentViewModel: CommentViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return CommentViewModel(requireActivity().application) as T; }
-        }).get(CommentViewModel::class.java);
+       CommentViewModel.provideViewModel(this, requireActivity().application)
     }
 
     private val mTopicViewModel: TopicViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(requireActivity().application) as T;
-            }
-        }).get(TopicViewModel::class.java)
+        TopicViewModel.provideViewModel(this, requireActivity().application)
     }
 
     private val mPictureViewModel: PictureViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PictureViewModel(requireActivity().application) as T;
-            }
-        }).get(PictureViewModel::class.java)
+        PictureViewModel.provideViewModel(this, requireActivity().application);
     }
 
 

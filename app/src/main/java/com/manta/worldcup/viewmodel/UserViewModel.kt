@@ -2,9 +2,7 @@ package com.manta.worldcup.viewmodel
 
 import android.app.Application
 import android.graphics.Bitmap
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.manta.worldcup.api.repository.Repository
 import com.manta.worldcup.helper.AuthSingleton
 import com.manta.worldcup.helper.BitmapHelper
@@ -27,6 +25,14 @@ class UserViewModel(private val application: Application) : ViewModel() {
     val mPictures: MutableLiveData<List<PictureModel>> = MutableLiveData();
     val mUser: MutableLiveData<User?> = MutableLiveData();
 
+    companion object {
+        fun provideViewModel(owner: ViewModelStoreOwner, application: Application) =
+            ViewModelProvider(owner, object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return UserViewModel(application) as T;
+                }
+            }).get(UserViewModel::class.java);
+    }
 
     fun getUserPictures() {
         if (mUser.value == null) return;

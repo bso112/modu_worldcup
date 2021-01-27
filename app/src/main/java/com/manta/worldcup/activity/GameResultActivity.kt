@@ -24,11 +24,7 @@ import kotlin.math.round
 class GameResultActivity : AppCompatActivity() {
 
     private val mTopicViewModel: TopicViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(application) as T;
-            }
-        }).get(TopicViewModel::class.java);
+       TopicViewModel.provideViewModel(this, application)
     }
 
 

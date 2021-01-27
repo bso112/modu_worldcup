@@ -29,12 +29,7 @@ import java.util.*
 class AddTopicActivity : AppCompatActivity() {
 
     private val mPictureViewModel: PictureViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory{
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PictureViewModel(application) as T;
-            }
-
-        }).get(PictureViewModel::class.java);
+        PictureViewModel.provideViewModel(this, application);
     }
     private lateinit var mTopicPictureAdapter: TopicPictureAdapter;
 

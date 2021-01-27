@@ -1,15 +1,22 @@
 package com.manta.worldcup.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.manta.worldcup.api.repository.Repository
 import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.TopicJoinUser
 import kotlinx.coroutines.launch
 
-class TopicViewModel(private val application: Application) : ViewModel() {
+class TopicViewModel private constructor(private val application: Application) : ViewModel() {
+
+    companion object {
+        fun provideViewModel(owner: ViewModelStoreOwner, application: Application) =
+            ViewModelProvider(owner, object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return TopicViewModel(application) as T;
+                }
+            }).get(TopicViewModel::class.java);
+    }
 
     private val mRepository: Repository = Repository(application);
 
@@ -36,7 +43,6 @@ class TopicViewModel(private val application: Application) : ViewModel() {
     suspend fun getTopicJoinUser(topicID: Long) = mRepository.getTopicJoinUser(topicID)
 
 
-
     /**
      * @param like true if like, false if dislike
      */
@@ -59,10 +65,10 @@ class TopicViewModel(private val application: Application) : ViewModel() {
         }
     }
 
-    fun deleteTopic(topicID: Long, onDelete : ()->Unit) {
+    fun deleteTopic(topicID: Long, onDelete: () -> Unit) {
         viewModelScope.launch {
             val res = mRepository.deleteTopic(topicID);
-            if(res.isSuccessful)
+            if (res.isSuccessful)
                 onDelete();
         }
     }
@@ -75,7 +81,7 @@ class TopicViewModel(private val application: Application) : ViewModel() {
             return "";
     }
 
-    fun reportTopic(topicJoinUser: TopicJoinUser){
+    fun reportTopic(topicJoinUser: TopicJoinUser) {
         viewModelScope.launch {
             mRepository.reportTopic(topicJoinUser)
         }

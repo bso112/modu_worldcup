@@ -33,17 +33,11 @@ import java.util.*
 class TopicCommentDialog : DialogFragment() {
 
     private val mCommentViewModel: CommentViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return CommentViewModel(requireActivity().application) as T; }
-        }).get(CommentViewModel::class.java);
+        CommentViewModel.provideViewModel(this, requireActivity().application)
     }
 
     private val mUserViewModel: UserViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return UserViewModel(requireActivity().application) as T; }
-        }).get(UserViewModel::class.java);
+        UserViewModel.provideViewModel(this, requireActivity().application)
     }
 
     private lateinit var mCommentAdapter: CommentAdapter

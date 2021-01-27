@@ -30,8 +30,12 @@ import kotlin.math.abs
  * 다른 사람의 토픽을 볼 수 있는 프래그먼트
  */
 class TopicFragment : Fragment(R.layout.frag_topic){
-    private lateinit var mTopicViewModel: TopicViewModel;
-    private lateinit var mUserViewModel: UserViewModel;
+    private val mTopicViewModel: TopicViewModel by lazy{
+        TopicViewModel.provideViewModel(requireActivity(), requireActivity().application)
+    };
+    private val mUserViewModel: UserViewModel by lazy {
+        UserViewModel.provideViewModel(requireActivity(), requireActivity().application);
+    };
     private lateinit var mTopicAdaptor: TopicAdpater;
 
     private val REQUST_ADD_TOPIC = 0;
@@ -58,20 +62,6 @@ class TopicFragment : Fragment(R.layout.frag_topic){
 
         rv_topic.adapter = mTopicAdaptor;
         rv_topic.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-        mTopicViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory{
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(activity!!.application) as T;
-            }
-        }).get(TopicViewModel::class.java);
-
-        mUserViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return UserViewModel(requireActivity().application) as T;
-            }
-
-        }).get(UserViewModel::class.java);
-
 
 
         mTopicViewModel.mDataset.observe(this, Observer {topics->

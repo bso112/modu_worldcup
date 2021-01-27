@@ -1,10 +1,9 @@
 package com.manta.worldcup.viewmodel
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.manta.worldcup.api.repository.Repository
 import com.manta.worldcup.model.Comment
 import kotlinx.coroutines.launch
@@ -13,6 +12,17 @@ class CommentViewModel(application: Context) : ViewModel() {
 
     private val repository: Repository = Repository(application);
     val mComments: MutableLiveData<List<Comment>> = MutableLiveData();
+
+    companion object {
+        fun provideViewModel(owner: ViewModelStoreOwner, application: Application) =
+            ViewModelProvider(owner, object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return CommentViewModel(application) as T;
+                }
+            }).get(CommentViewModel::class.java);
+    }
+
+
 
     fun getTopicComments(topicId: Long){
         viewModelScope.launch {

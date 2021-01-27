@@ -29,11 +29,7 @@ class OnTopicClickDialog() : DialogFragment() {
 
 
     private val mViewModel: UserViewModel by lazy {
-        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return UserViewModel(requireActivity().application) as T;
-            }
-        }).get(UserViewModel::class.java);
+        UserViewModel.provideViewModel(this, requireActivity().application)
     };
 
     fun newInstance(topic: Topic, user: User): OnTopicClickDialog {

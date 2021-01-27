@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.manta.worldcup.R
 import com.manta.worldcup.helper.Constants
+import com.manta.worldcup.model.Topic
 import com.manta.worldcup.model.TopicJoinUser
 import com.manta.worldcup.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.dialog_topic_option.*
@@ -20,12 +21,7 @@ import kotlinx.android.synthetic.main.dialog_topic_option.*
 class TopicOptionDialog: BottomSheetDialogFragment() {
 
     private val mTopicViewModel : TopicViewModel by lazy{
-        ViewModelProvider(this, object : ViewModelProvider.Factory{
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(requireActivity().application) as T;
-            }
-
-        }).get(TopicViewModel::class.java);
+        TopicViewModel.provideViewModel(this, requireActivity().application)
     }
 
 

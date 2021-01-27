@@ -32,18 +32,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mMainViewPagerAdapter: MainViewPageAdapter;
 
     private val mTopicViewModel: TopicViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(application) as T;
-            }
-        }).get(TopicViewModel::class.java);
+        TopicViewModel.provideViewModel(this, application)
     }
     private val mUserViewModel: UserViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return UserViewModel(application) as T;
-            }
-        }).get(UserViewModel::class.java)
+       UserViewModel.provideViewModel(this, application)
     }
 
 

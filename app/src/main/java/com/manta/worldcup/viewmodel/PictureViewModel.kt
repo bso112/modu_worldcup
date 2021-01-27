@@ -15,11 +15,21 @@ import okhttp3.RequestBody
 import java.lang.Exception
 
 
-class PictureViewModel(private val application: Application) : ViewModel() {
+class PictureViewModel private constructor(private val application: Application) : ViewModel() {
 
     private val mRepository: Repository = Repository(application);
 
     val mPictures: MutableLiveData<List<PictureModel>> = MutableLiveData();
+
+    companion object {
+        fun provideViewModel(owner: ViewModelStoreOwner, application: Application) =
+            ViewModelProvider(owner, object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return PictureViewModel(application) as T;
+                }
+            }).get(PictureViewModel::class.java);
+    }
+
 
 
     fun getPictures(topicId: Long) {

@@ -51,20 +51,11 @@ class GameActivity : AppCompatActivity() {
 
 
     private val mPictureViewModel: PictureViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PictureViewModel(application) as T;
-            }
-
-        }).get(PictureViewModel::class.java);
+        PictureViewModel.provideViewModel(this, application);
     }
 
     private val mTopicViewModel: TopicViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(application) as T;
-            }
-        }).get(TopicViewModel::class.java);
+       TopicViewModel.provideViewModel(this, application)
     }
 
     //위로 이동하는 애니메이션

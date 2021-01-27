@@ -37,21 +37,11 @@ class AddPictureActivity : AppCompatActivity() {
     var mTopicImageNames: HashSet<String>? = null;
 
     private val mPictureViewModel: PictureViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PictureViewModel(application) as T;
-            }
-
-        }).get(PictureViewModel::class.java);
+       PictureViewModel.provideViewModel(this, application);
     }
 
     private val mTopicViewModel: TopicViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(application) as T;
-            }
-
-        }).get(TopicViewModel::class.java);
+        TopicViewModel.provideViewModel(this, application);
     }
 
 

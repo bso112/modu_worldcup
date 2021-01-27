@@ -52,11 +52,7 @@ class MyTopicFragment : Fragment(R.layout.fragment_my_topic) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mTopicViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(requireActivity().application) as T;
-            }
-        }).get(TopicViewModel::class.java);
+        mTopicViewModel = TopicViewModel.provideViewModel(this, requireActivity().application);
 
         mUserViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {

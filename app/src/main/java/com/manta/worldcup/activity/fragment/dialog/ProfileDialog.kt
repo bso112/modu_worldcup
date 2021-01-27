@@ -37,32 +37,18 @@ class ProfileDialog : DialogFragment() {
 
     //현재 로그인한 유저에 대한 정보를 가지고 오기 위한 뷰모델
     private val mUserViewModel: UserViewModel by lazy {
-        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return UserViewModel(requireActivity().application) as T;
-            }
-
-        }).get(UserViewModel::class.java);
+      UserViewModel.provideViewModel(this, requireActivity().application)
     }
 
 
     //유저가 올린 사진 수를 가지고 오기 위한 뷰모델
     private val mPictureViewModel: PictureViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PictureViewModel(requireActivity().application) as T;
-            }
-
-        }).get(PictureViewModel::class.java);
+        PictureViewModel.provideViewModel(this, requireActivity().application);
     }
 
     //내 토픽 갯수를 가져오기 위한 뷰모델
     private val mMyTopicViewModel: TopicViewModel by lazy {
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(requireActivity().application) as T;
-            }
-        }).get(TopicViewModel::class.java);
+        TopicViewModel.provideViewModel(this, requireActivity().application)
     }
 
     private val REQUEST_PICK_FROM_ALBUM = 0

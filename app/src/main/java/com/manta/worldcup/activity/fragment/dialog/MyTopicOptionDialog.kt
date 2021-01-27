@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.manta.worldcup.R
@@ -22,12 +20,8 @@ import kotlinx.android.synthetic.main.dialog_mytopic_option.*
  */
 class MyTopicOptionDialog: BottomSheetDialogFragment() {
 
-    private val mTopicViewModel: TopicViewModel by lazy{
-        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory{
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return TopicViewModel(activity!!.application) as T;
-            }
-        }).get(TopicViewModel::class.java);
+    private val mTopicViewModel: TopicViewModel by lazy {
+        TopicViewModel.provideViewModel(requireActivity(), activity!!.application)
     };
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

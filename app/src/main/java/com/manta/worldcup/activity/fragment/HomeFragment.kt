@@ -25,18 +25,10 @@ import kotlin.math.min
  */
 class HomeFragment : Fragment(R.layout.frag_home) {
     private val mTopicViewModel: TopicViewModel by lazy {
-        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return TopicViewModel(requireActivity().application) as T;
-        }}).get(TopicViewModel::class.java);
+        TopicViewModel.provideViewModel(requireActivity(), requireActivity().application)
     };
     private val mUserViewModel: UserViewModel by lazy{
-        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return UserViewModel(requireActivity().application) as T;
-            }
-
-        }).get(UserViewModel::class.java);
+        UserViewModel.provideViewModel(requireActivity(), requireActivity().application)
     };
 
     private val mRecentTopicAdpater  = RecentTopicAdapter().apply {
