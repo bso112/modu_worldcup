@@ -14,15 +14,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="15dp">
 
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            android:background="@drawable/crown"
-            android:backgroundTint="@color/gold" />
 
         <RelativeLayout
             android:layout_marginTop="5dp"

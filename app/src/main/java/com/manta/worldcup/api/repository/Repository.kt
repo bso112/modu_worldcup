@@ -7,10 +7,10 @@ import okhttp3.MultipartBody
 
 class Repository(application: Context) {
 
-    private val topicAPI = RetrofitInstance(application).topicAPI;
-    private val authAPI = RetrofitInstance(application).authAPI;
-    private val userAPI = RetrofitInstance(application).userAPI;
-    private val commentAPI = RetrofitInstance(application).commentAPI;
+    private val topicAPI = RetrofitInstance.getInstance(application).topicAPI;
+    private val authAPI = RetrofitInstance.getInstance(application).authAPI;
+    private val userAPI = RetrofitInstance.getInstance(application).userAPI;
+    private val commentAPI = RetrofitInstance.getInstance(application).commentAPI;
 
     suspend fun getAllTopicJoinUser() = topicAPI.getAllTopicJoinUser();
 
@@ -96,6 +96,7 @@ class Repository(application: Context) {
     suspend fun removeProfileImage(userEmail : String, oldImageName : String) = userAPI.removeProfileImage(userEmail, oldImageName)
 
     suspend fun reportPictureComment(commentID : Long) = commentAPI.reportPictureComment(commentID)
+
     suspend fun reportTopicComment(commentID : Long) = commentAPI.reportTopicComment(commentID)
 
 }

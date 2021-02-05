@@ -30,7 +30,7 @@ class CustomTextOutLineView : TextView {
 
     }
 
-    //렌더러에 의해 불릴것이다.
+
     private fun initView(context: Context, attrs: AttributeSet?) {
 
         //xml 파일에서 설정된 textoutline: 관련 설정들을 가져온다.

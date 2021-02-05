@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 //Database에 해당. 인터페이스인 api를 retrofit으로 구현하고, 하나만 생성되게 보장한다.
-class RetrofitInstance(context: Context) {
+class RetrofitInstance private constructor(context: Context) {
 
     companion object{
         private var instance: RetrofitInstance? = null
